@@ -1,7 +1,7 @@
 import type { Html, HtmlBuilder } from 'foldkit/html';
 import { CATALOG, type Entry, type Readiness } from '../../shared/catalog';
 import { Message } from './message';
-import type { Filter, Model } from './model';
+import type { Filter, Model, Who } from './model';
 
 type H = HtmlBuilder<Message>;
 
@@ -37,18 +37,58 @@ const badge = (h: H, readiness: Readiness): Html =>
     [READINESS_LABEL[readiness]],
   );
 
-const header = (h: H): Html =>
+const signInLink = (h: H): Html =>
+  h.a(
+    [
+      h.Href('/oauth/start'),
+      h.Class('rounded-md bg-accent px-3 py-1.5 text-sm text-accent-ink hover:opacity-90'),
+    ],
+    ['Sign in with Cloudflare'],
+  );
+
+const signedIn = (h: H, who: Extract<Who, { _tag: 'SignedIn' }>): Html =>
+  h.div(
+    [h.Class('flex items-center gap-3 text-sm')],
+    [
+      h.span(
+        [h.Class('text-dim'), h.DataAttribute('who', 'signed-in')],
+        [who.email ?? 'Signed in', who.account === null ? '' : ` · ${who.account.name ?? who.account.id}`],
+      ),
+      ...(who.account === null
+        ? [h.a([h.Href('/oauth/account'), h.Class('underline')], ['Pick an account'])]
+        : []),
+      h.form(
+        [h.Method('post'), h.Action('/oauth/logout')],
+        [
+          h.button(
+            [h.Type('submit'), h.Class('rounded-md border border-line px-3 py-1.5 hover:border-line-strong')],
+            ['Sign out'],
+          ),
+        ],
+      ),
+    ],
+  );
+
+const account = (h: H, who: Who): Html => {
+  switch (who._tag) {
+    case 'Checking':
+      return h.span([h.Class('text-sm text-faint')], ['…']);
+    case 'SignedOut':
+      return signInLink(h);
+    case 'SignedIn':
+      return signedIn(h, who);
+  }
+};
+
+const header = (h: H, model: Model): Html =>
   h.header(
     [h.Class('flex items-center justify-between border-b border-line px-6 py-4')],
     [
-      h.a([h.Href('/'), h.Class('font-mono text-sm font-semibold tracking-tight')], ['port']),
       h.a(
-        [
-          h.Href('/oauth/start'),
-          h.Class('rounded-md bg-accent px-3 py-1.5 text-sm text-accent-ink hover:opacity-90'),
-        ],
-        ['Sign in with Cloudflare'],
+        [h.Href('/'), h.Class('flex items-center gap-2 text-base font-semibold tracking-tight')],
+        [h.img([h.Src('/brand/favicon.svg'), h.Alt(''), h.Class('h-6 w-6')]), 'port'],
       ),
+      account(h, model.who),
     ],
   );
 
@@ -212,7 +252,7 @@ export const view = (model: Model, h: H): Html => {
   return h.div(
     [h.Class('min-h-full')],
     [
-      header(h),
+      header(h, model),
       intro(h),
       filters(h, model),
       grid(h, model),

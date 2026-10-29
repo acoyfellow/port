@@ -1,9 +1,14 @@
 import { CATALOG } from '../shared/catalog';
 import { SCOPES } from '../shared/scopes';
+import { type AuthEnv, authRoute } from './auth/routes';
+import type { GrantEnv } from './grant';
 
-type Env = {
-  readonly ASSETS: Fetcher;
-};
+export { Grant } from './grant';
+
+type Env = AuthEnv &
+  GrantEnv & {
+    readonly ASSETS: Fetcher;
+  };
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body, null, 2), {
@@ -14,16 +19,11 @@ const json = (body: unknown, status = 200) =>
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+    const auth = authRoute(env, request, url);
 
+    if (auth !== null) return auth;
     if (url.pathname === '/api/catalog') return json(CATALOG);
     if (url.pathname === '/api/scopes') return json(SCOPES);
-    if (url.pathname === '/oauth/start')
-      return json(
-        {
-          error: 'Sign in is not wired yet. The OAuth client is a dashboard step.',
-        },
-        501,
-      );
 
     return env.ASSETS.fetch(request);
   },

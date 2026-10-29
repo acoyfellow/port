@@ -12,7 +12,9 @@ export const update = (model: Model, message: Message): UpdateReturn => {
       return { model: { ...model, open: message.slug } };
     case 'ClosedEntry':
       return { model: { ...model, open: null } };
+    case 'LoadedWho':
+      return { model: { ...model, who: message.who } };
     case 'Ignored':
-      return { model: model };
+      return { model };
   }
 };

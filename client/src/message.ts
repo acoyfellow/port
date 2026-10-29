@@ -1,11 +1,12 @@
 import { Schema } from 'effect';
 import { defineMessageUnion } from 'foldkit/message';
-import { Filter } from './model';
+import { Filter, Who } from './model';
 
 export const Message = defineMessageUnion({
   PickedFilter: { filter: Filter },
   OpenedEntry: { slug: Schema.String },
   ClosedEntry: {},
+  LoadedWho: { who: Who },
   Ignored: {},
 });
 

@@ -2,37 +2,38 @@
 
 @theme {
 	--color-bg: #ffffff;
-	--color-panel: #fafafa;
-	--color-raised: #f2f2f2;
-	--color-line: #ebebeb;
+	--color-accent-brand: #7c5cff;
+	--color-panel: #fafaf9;
+	--color-raised: #f4f4f2;
+	--color-line: #ebebe8;
 	--color-line-strong: #d4d4d4;
-	--color-ink: #171717;
-	--color-dim: #4d4d4d;
-	--color-faint: #737373;
-	--color-accent: #171717;
+	--color-ink: #18181b;
+	--color-dim: #6b6b70;
+	--color-faint: #a1a1a6;
+	--color-accent: #18181b;
 	--color-accent-ink: #ffffff;
-	--color-life: #7c3aed;
+	--color-life: #7c5cff;
 	--color-life-soft: #f5f0ff;
 	--color-life-line: #ddd0fb;
 	--color-ok: #107d32;
 	--color-info: #0068d6;
-	--font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-	--font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	--font-sans: "Google Sans Flex", "Google Sans", ui-sans-serif, system-ui, sans-serif;
+	--font-mono: "Google Sans Code", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--color-bg: #0a0a0a;
-		--color-panel: #111111;
-		--color-raised: #1a1a1a;
-		--color-line: #242424;
-		--color-line-strong: #333333;
-		--color-ink: #ededed;
-		--color-dim: #a1a1a1;
-		--color-faint: #8f8f8f;
-		--color-accent: #ededed;
-		--color-accent-ink: #0a0a0a;
-		--color-life: #b79cff;
+		--color-bg: #141416;
+		--color-panel: #18181b;
+		--color-raised: #1f1f23;
+		--color-line: #26262b;
+		--color-line-strong: #34343a;
+		--color-ink: #ececee;
+		--color-dim: #9b9ba3;
+		--color-faint: #62626a;
+		--color-accent: #ececee;
+		--color-accent-ink: #141416;
+		--color-life: #a593ff;
 		--color-life-soft: #1a1426;
 		--color-life-line: #3a2d5c;
 		--color-ok: #4fd17a;
