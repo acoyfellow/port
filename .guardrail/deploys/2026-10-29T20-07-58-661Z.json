@@ -1,11 +1,7 @@
 {
   "schema": "guardrail.deploy-receipt.v0",
   "timestamp": "2026-10-29T20:07:58.661Z",
-  "command": [
-    "guardrail",
-    "receipt",
-    "./.guardrail-staged.27554.wrangler.jsonc"
-  ],
+  "command": ["guardrail", "receipt", "./.guardrail-staged.27554.wrangler.jsonc"],
   "configPath": "./.guardrail-staged.27554.wrangler.jsonc",
   "git": {
     "sha": "f7111e6b46a8c659d4a485f39a7798340f6f78c5",
@@ -34,9 +30,7 @@
     "surface": "custom route port.customer0.dev",
     "reason": "custom route port.customer0.dev",
     "criticalMessage": "Worker is attached to custom route port.customer0.dev with sensitive bindings",
-    "routes": [
-      "port.customer0.dev"
-    ],
+    "routes": ["port.customer0.dev"],
     "workersDev": false
   },
   "bindings": [
@@ -52,9 +46,7 @@
   "auth": {
     "detected": true,
     "partial": false,
-    "patterns": [
-      "authorization-header"
-    ],
+    "patterns": ["authorization-header"],
     "reason": "auth detected in imported module (authorization-header)",
     "source": "/Users/jcoeyman/cloudflare/port/worker/index.ts"
   }

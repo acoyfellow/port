@@ -176,7 +176,8 @@ const SYSTEM =
 
 const isToolUse = (block: Block): block is ToolUse => block.type === 'tool_use';
 
-const LEADING_DOT_SLASH = new RegExp('^\\.?/');
+const withoutLeadingDotSlash = (path: string) =>
+  path.startsWith('./') ? path.slice(2) : path.startsWith('/') ? path.slice(1) : path;
 
 const text = (value: unknown) => (typeof value === 'string' ? value : '');
 
@@ -247,7 +248,7 @@ export class Agent extends DurableObject<Env> {
     input: Record<string, unknown>,
   ): Promise<{ content: string; error: boolean }> {
     const files = await this.files();
-    const path = text(input.path).replace(LEADING_DOT_SLASH, '');
+    const path = withoutLeadingDotSlash(text(input.path));
 
     if (name === 'list_files') return { content: Object.keys(files).sort().join('\n'), error: false };
     if (name === 'read_file')

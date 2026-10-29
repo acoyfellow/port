@@ -14,10 +14,7 @@
       "existsAfterTeardown": false
     }
   ],
-  "log": [
-    "deleted worker port-fleet-6360cded",
-    "deleted ai-gateway port-fleet-6360cded"
-  ],
+  "log": ["deleted worker port-fleet-6360cded", "deleted ai-gateway port-fleet-6360cded"],
   "alsoRemoved": [
     {
       "install": "11bd2ee8",

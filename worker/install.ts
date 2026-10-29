@@ -1,8 +1,8 @@
+import { FLEET_COMPATIBILITY_DATE, fleetWorkerMetadata } from '../shared/fleet-manifest';
 import { FLEET_BUNDLE, FLEET_VERSION } from './generated/fleet-bundle';
 import { SEED, TASKS } from './generated/swarm-5';
 
 const API = 'https://api.cloudflare.com/client/v4';
-const COMPATIBILITY_DATE = '2026-10-01';
 export const EVAL_MODELS = [
   { id: '@cf/moonshotai/kimi-k2.7-code', label: 'Kimi K2.7 Code · Workers AI, billed to your account' },
   { id: '@cf/zai-org/glm-5.3', label: 'GLM 5.3 · Workers AI, billed to your account' },
@@ -69,26 +69,11 @@ const must = (step: string, result: CloudflareCall) => {
 const randomHex = (bytes: number) =>
   [...crypto.getRandomValues(new Uint8Array(bytes))].map((b) => b.toString(16).padStart(2, '0')).join('');
 
-const workerMetadata = (gateway: string, key: string) => ({
-  main_module: 'fleet.js',
-  compatibility_date: COMPATIBILITY_DATE,
-  compatibility_flags: ['nodejs_compat'],
-  bindings: [
-    { type: 'durable_object_namespace', name: 'AGENT', class_name: 'Agent' },
-    { type: 'worker_loader', name: 'LOADER' },
-    { type: 'ai', name: 'AI' },
-    { type: 'plain_text', name: 'GATEWAY', text: gateway },
-    { type: 'secret_text', name: 'FLEET_KEY', text: key },
-  ],
-  migrations: { new_tag: 'v1', new_sqlite_classes: ['Agent'] },
-  observability: { enabled: true },
-});
-
 const uploadWorker = async (token: string, accountId: string, name: string, gateway: string, key: string) => {
   const form = new FormData();
   form.set(
     'metadata',
-    new Blob([JSON.stringify(workerMetadata(gateway, key))], { type: 'application/json' }),
+    new Blob([JSON.stringify(fleetWorkerMetadata(gateway, key))], { type: 'application/json' }),
   );
   form.set('fleet.js', new Blob([FLEET_BUNDLE], { type: 'application/javascript+module' }), 'fleet.js');
 
@@ -112,7 +97,7 @@ const probeVariants = (
 ): readonly { name: string; metadata: Record<string, unknown>; source: string }[] => {
   const base = {
     main_module: 'w.js',
-    compatibility_date: COMPATIBILITY_DATE,
+    compatibility_date: FLEET_COMPATIBILITY_DATE,
     compatibility_flags: ['nodejs_compat'],
   };
   return [
@@ -148,7 +133,7 @@ const probeVariants = (
       metadata: { ...base, bindings: [], observability: { enabled: true } },
       source: PROBE_SOURCE,
     },
-    { name: 'full-fleet', metadata: workerMetadata(gateway, 'probe'), source: FLEET_BUNDLE },
+    { name: 'full-fleet', metadata: fleetWorkerMetadata(gateway, 'probe'), source: FLEET_BUNDLE },
   ];
 };
 

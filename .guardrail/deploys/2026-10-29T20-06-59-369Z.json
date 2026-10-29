@@ -1,11 +1,7 @@
 {
   "schema": "guardrail.deploy-receipt.v0",
   "timestamp": "2026-10-29T20:06:59.369Z",
-  "command": [
-    "guardrail",
-    "receipt",
-    "fleet/.guardrail-staged.23624.wrangler.jsonc"
-  ],
+  "command": ["guardrail", "receipt", "fleet/.guardrail-staged.23624.wrangler.jsonc"],
   "configPath": "fleet/.guardrail-staged.23624.wrangler.jsonc",
   "git": {
     "sha": "f7111e6b46a8c659d4a485f39a7798340f6f78c5",
@@ -54,9 +50,7 @@
   "auth": {
     "detected": true,
     "partial": false,
-    "patterns": [
-      "bearer-token"
-    ],
+    "patterns": ["bearer-token"],
     "source": "/Users/jcoeyman/cloudflare/port/fleet/worker.ts"
   }
 }

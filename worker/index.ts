@@ -1,4 +1,4 @@
-import { CATALOG } from '../shared/catalog';
+import { FLEET } from '../shared/catalog';
 import { SCOPES } from '../shared/scopes';
 import { type AuthEnv, authRoute } from './auth/routes';
 import type { GrantEnv } from './grant';
@@ -31,7 +31,7 @@ export default {
     const receipt = await receiptRoute(env, url);
 
     if (receipt !== null) return receipt;
-    if (url.pathname === '/api/catalog') return json(CATALOG);
+    if (url.pathname === '/api/catalog') return json(FLEET);
     if (url.pathname === '/api/scopes') return json(SCOPES);
 
     return env.ASSETS.fetch(request);

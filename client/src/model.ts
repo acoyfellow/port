@@ -1,10 +1,5 @@
 import { Schema } from 'effect';
 import { defineTaggedUnion } from 'foldkit/schema';
-import { Readiness } from '../../shared/catalog';
-
-export const Filter = Schema.Literals(['all', ...Readiness.literals]);
-
-export type Filter = typeof Filter.Type;
 
 export const Account = Schema.Struct({ id: Schema.String, name: Schema.NullOr(Schema.String) });
 
@@ -25,12 +20,8 @@ export const Who = defineTaggedUnion({
 
 export type Who = typeof Who.Type;
 
-export const Model = Schema.Struct({
-  filter: Filter,
-  open: Schema.NullOr(Schema.String),
-  who: Who,
-});
+export const Model = Schema.Struct({ who: Who });
 
 export type Model = typeof Model.Type;
 
-export const initialModel: Model = { filter: 'all', open: null, who: Who.Checking() };
+export const initialModel: Model = { who: Who.Checking() };

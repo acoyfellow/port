@@ -87,3 +87,20 @@ env.LOADER                      Worker Loader             local
 
 
 ⎔ Reloading local server...
+⎔ Local server updated and ready
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mAI bindings always access remote resources, and so may incur usage charges even in local dev. To suppress this warning, set `remote: true` for the binding definition in your configuration file.[0m
+
+
+⎔ Reloading local server...
+⎔ Local server updated and ready
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mAI bindings always access remote resources, and so may incur usage charges even in local dev. To suppress this warning, set `remote: true` for the binding definition in your configuration file.[0m
+
+
+⎔ Reloading local server...
+⎔ Local server updated and ready
+[wrangler:info] POST /selftest 200 OK (17ms)
+[wrangler:info] POST /selftest 200 OK (6ms)
+[wrangler:info] POST /selftest 200 OK (6ms)
+[wrangler:info] POST /selftest 200 OK (6ms)
+[wrangler:info] POST /selftest 200 OK (5ms)
+[wrangler:info] POST /selftest 200 OK (5ms)

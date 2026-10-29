@@ -58,4 +58,18 @@ writeFileSync(
   join(out, 'swarm-5.ts'),
   `export const SEED: Record<string, string> = ${JSON.stringify(walk(join(evals, 'seed')))};\n\nexport const TASKS = ${JSON.stringify(tasks)} as const;\n`,
 );
+const diagram = await build({
+  entryPoints: [join(root, 'shared/fleet-diagram.ts')],
+  bundle: true,
+  format: 'esm',
+  platform: 'neutral',
+  write: false,
+  logLevel: 'warning',
+});
+const { diagramSvg, fleetDiagram } = await import(
+  `data:text/javascript;base64,${Buffer.from(diagram.outputFiles[0].text).toString('base64')}`
+);
+mkdirSync(join(root, 'client/public'), { recursive: true });
+writeFileSync(join(root, 'client/public/fleet.svg'), `${diagramSvg(fleetDiagram())}\n`);
+
 console.log(`fleet bundle ${version} ${(code.length / 1024).toFixed(0)} KB, ${tasks.length} tasks`);
