@@ -1,7 +1,8 @@
 node_modules
-public
+/public
 .wrangler
 .dev.vars
 *.local.jsonc
 .DS_Store
 .tmp
+.wrangler-fleet.log

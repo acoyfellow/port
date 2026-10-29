@@ -1,6 +1,8 @@
 import { FLEET_CREATES } from './fleet-manifest';
 
 export const FLEET = {
+  slug: 'fleet',
+  mark: 'F',
   name: 'Agent fleet',
   oneLine:
     'Coding agents on your own account. Each agent runs its loop in a Durable Object and runs tests in a fresh isolate. No container.',
@@ -11,3 +13,5 @@ export const FLEET = {
     'Tear down deleted the Worker and the AI Gateway, then checked both are gone',
   ],
 } as const;
+
+export const DIRECTORY_SLOTS = 5;

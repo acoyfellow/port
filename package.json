@@ -13,9 +13,9 @@
     "node": ">=22.19.0"
   },
   "scripts": {
-    "dev": "vite build --config client/vite.config.ts && wrangler dev",
-    "build": "node scripts/bundle-fleet.mjs && vite build --config client/vite.config.ts",
-    "typecheck": "tsc -p . && tsc -p tsconfig.client.json",
+    "dev": "node scripts/bundle-fleet.mjs && wrangler dev --port 8787 --var PREVIEW:on",
+    "build": "node scripts/bundle-fleet.mjs",
+    "typecheck": "tsc -p .",
     "test": "vitest run",
     "lint": "biome check .",
     "deploy": "npm run build && wrangler deploy"

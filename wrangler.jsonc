@@ -1,11 +1,11 @@
 {
   "name": "port",
-  "main": "worker/index.ts",
+  "main": "worker/main.ts",
   "compatibility_date": "2026-10-01",
   "assets": {
-    "directory": "./public",
+    "directory": "./static",
     "binding": "ASSETS",
-    "run_worker_first": ["/api/*", "/oauth/*", "/installs", "/installs/*", "/receipts/*"]
+    "run_worker_first": true
   },
   "workers_dev": false,
   "routes": [{ "pattern": "port.customer0.dev", "custom_domain": true }],
