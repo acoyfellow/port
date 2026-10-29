@@ -38,6 +38,7 @@ export type GrantSummary = {
 };
 
 const RECORD_KEY = 'grant';
+const INSTALLS_KEY = 'installs';
 const UNUSED_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 const REFRESH_MARGIN_MS = 5 * 60 * 1000;
 
@@ -128,6 +129,20 @@ export class Grant extends DurableObject<GrantEnv> {
     }
 
     await this.forget();
+  }
+
+  async installs(): Promise<string> {
+    return (await this.ctx.storage.get<string>(INSTALLS_KEY)) ?? '[]';
+  }
+
+  async putInstall(id: string, install: string): Promise<void> {
+    const current: unknown = JSON.parse((await this.ctx.storage.get<string>(INSTALLS_KEY)) ?? '[]');
+    const kept = Array.isArray(current)
+      ? current.filter(
+          (each: unknown) => typeof each === 'object' && each !== null && Reflect.get(each, 'id') !== id,
+        )
+      : [];
+    await this.ctx.storage.put(INSTALLS_KEY, JSON.stringify([...kept, JSON.parse(install)]));
   }
 
   private async forget(): Promise<void> {

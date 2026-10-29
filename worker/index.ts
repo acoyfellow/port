@@ -2,6 +2,7 @@ import { CATALOG } from '../shared/catalog';
 import { SCOPES } from '../shared/scopes';
 import { type AuthEnv, authRoute } from './auth/routes';
 import type { GrantEnv } from './grant';
+import { installRoute, receiptRoute } from './install-routes';
 
 export { Grant } from './grant';
 
@@ -22,6 +23,14 @@ export default {
     const auth = authRoute(env, request, url);
 
     if (auth !== null) return auth;
+
+    const installs = await installRoute(env, request, url);
+
+    if (installs !== null) return installs;
+
+    const receipt = await receiptRoute(env, url);
+
+    if (receipt !== null) return receipt;
     if (url.pathname === '/api/catalog') return json(CATALOG);
     if (url.pathname === '/api/scopes') return json(SCOPES);
 

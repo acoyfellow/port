@@ -13,7 +13,6 @@ import {
   clearCookie,
   cookie,
   cookieJar,
-  FLOW_TTL_MS,
   parseSession,
   readCookie,
   SESSION_TTL_MS,
@@ -27,9 +26,9 @@ export type AuthEnv = {
   readonly OAUTH_CLIENT_ID: string;
   readonly OAUTH_CLIENT_SECRET: string;
   readonly SESSION_SECRET: string;
+  readonly CLI_KEY_SECRET: string;
+  readonly RECEIPTS: KVNamespace;
 };
-
-type Flow = { readonly state: string; readonly verifier: string };
 
 const clientFor = (env: AuthEnv, url: URL): OAuthClient => ({
   clientId: env.OAUTH_CLIENT_ID,
@@ -64,7 +63,31 @@ const sameOrigin = (request: Request, url: URL) => request.headers.get('origin')
 
 export const grantFor = (env: AuthEnv, user: string) => env.GRANTS.get(env.GRANTS.idFromName(user));
 
-export const currentUser = async (env: AuthEnv, request: Request): Promise<string | null> => {
+const CLI_KEY_PREFIX = 'portcli.';
+
+const CLI_KEY_TTL_MS = 24 * 60 * 60 * 1000;
+
+const bearer = (request: Request) => {
+  const header = request.headers.get('authorization') ?? '';
+  return header.startsWith(`Bearer ${CLI_KEY_PREFIX}`)
+    ? header.slice(`Bearer ${CLI_KEY_PREFIX}`.length)
+    : null;
+};
+
+export const usesCliKey = (request: Request) => bearer(request) !== null;
+
+type SessionSecrets = Pick<AuthEnv, 'SESSION_SECRET' | 'CLI_KEY_SECRET'>;
+
+export const mintCliKey = async (env: SessionSecrets, owner: string) =>
+  `${CLI_KEY_PREFIX}${await sign(
+    env.CLI_KEY_SECRET,
+    sessionValue({ owner, expires: Date.now() + CLI_KEY_TTL_MS, id: randomToken(16) }),
+  )}`;
+
+export const currentUser = async (env: SessionSecrets, request: Request): Promise<string | null> => {
+  const key = bearer(request);
+  if (key !== null) return parseSession(await unsign(env.CLI_KEY_SECRET, key))?.owner ?? null;
+
   const jar = cookieJar(request.url);
   const session = parseSession(await unsign(env.SESSION_SECRET, readCookie(request, jar.session)));
 
@@ -82,18 +105,31 @@ const accountPicker = (accounts: readonly CloudflareAccount[]) =>
       .join('')}</form>`,
   );
 
-const start = async (env: AuthEnv, request: Request, url: URL) => {
-  const jar = cookieJar(request.url);
-  const flow: Flow = { state: randomToken(), verifier: randomToken(48) };
-  const target = await authorizeUrl(clientFor(env, url), flow.state, flow.verifier);
-  const sealed = await sign(env.SESSION_SECRET, JSON.stringify(flow));
+const FLOW_STATE_TTL_MS = 10 * 60 * 1000;
 
-  return redirect(target, [cookie(jar, jar.flow, sealed, FLOW_TTL_MS)]);
+const newFlowUrl = async (env: AuthEnv, url: URL) => {
+  const verifier = randomToken(48);
+  const state = await sign(
+    env.SESSION_SECRET,
+    JSON.stringify({ verifier, expires: Date.now() + FLOW_STATE_TTL_MS, nonce: randomToken(8) }),
+  );
+
+  return authorizeUrl(clientFor(env, url), state, verifier);
 };
 
-const readFlow = async (env: AuthEnv, request: Request): Promise<Flow | null> => {
-  const jar = cookieJar(request.url);
-  const raw = await unsign(env.SESSION_SECRET, readCookie(request, jar.flow));
+const start = async (env: AuthEnv, url: URL) => redirect(await newFlowUrl(env, url));
+
+const linkPage = async (env: AuthEnv, url: URL) => {
+  const target = await newFlowUrl(env, url);
+
+  return page(
+    'Sign in link',
+    `<h1>Sign in with a link</h1><p>Some networks open new sites in a remote browser, which breaks the Cloudflare sign-in. Copy this link and open it in a new tab. It works for 10 minutes.</p><p><input readonly value="${escapeHtml(target)}" style="width:100%;font:12px monospace;padding:8px" onclick="this.select()"></p><p><button onclick="navigator.clipboard.writeText(document.querySelector('input').value).then(()=>this.textContent='Copied')">Copy link</button> <a href="${escapeHtml(target)}">or open it here</a></p>`,
+  );
+};
+
+const readFlow = async (env: AuthEnv, state: string | null): Promise<string | null> => {
+  const raw = await unsign(env.SESSION_SECRET, state);
 
   if (raw === null) return null;
 
@@ -102,11 +138,12 @@ const readFlow = async (env: AuthEnv, request: Request): Promise<Flow | null> =>
 
     return typeof parsed === 'object' &&
       parsed !== null &&
-      'state' in parsed &&
       'verifier' in parsed &&
-      typeof parsed.state === 'string' &&
-      typeof parsed.verifier === 'string'
-      ? { state: parsed.state, verifier: parsed.verifier }
+      'expires' in parsed &&
+      typeof parsed.verifier === 'string' &&
+      typeof parsed.expires === 'number' &&
+      parsed.expires > Date.now()
+      ? parsed.verifier
       : null;
   } catch {
     return null;
@@ -115,19 +152,19 @@ const readFlow = async (env: AuthEnv, request: Request): Promise<Flow | null> =>
 
 const callback = async (env: AuthEnv, request: Request, url: URL) => {
   const jar = cookieJar(request.url);
-  const flow = await readFlow(env, request);
+  const verifier = await readFlow(env, url.searchParams.get('state'));
   const denied = url.searchParams.get('error');
 
   if (denied !== null)
     return page(
       'Sign in stopped',
-      `<h1>Sign in stopped</h1><p>${escapeHtml(url.searchParams.get('error_description') ?? denied)}</p><p><a href="/">Back</a></p>`,
+      `<h1>Sign in stopped</h1><p>${escapeHtml(url.searchParams.get('error_description') ?? denied)}</p><p>If this says no CSRF value, your network opened the sign-in in two browsers. <a href="/oauth/link">Get a sign-in link</a> and open it in a new tab.</p><p><a href="/">Back</a></p>`,
       400,
     );
 
   const code = url.searchParams.get('code');
 
-  if (flow === null || code === null || url.searchParams.get('state') !== flow.state)
+  if (verifier === null || code === null)
     return page(
       'Sign in expired',
       '<h1>Sign in expired</h1><p><a href="/oauth/start">Try again</a></p>',
@@ -136,7 +173,7 @@ const callback = async (env: AuthEnv, request: Request, url: URL) => {
 
   try {
     const client = clientFor(env, url);
-    const tokens = await exchangeCode(client, code, flow.verifier);
+    const tokens = await exchangeCode(client, code, verifier);
     const person = await userInfo(tokens.accessToken);
     const accounts = await accountsOf(tokens.accessToken);
     const only = accounts.length === 1 ? accounts[0] : undefined;
@@ -156,7 +193,7 @@ const callback = async (env: AuthEnv, request: Request, url: URL) => {
       env.SESSION_SECRET,
       sessionValue({ owner: user, expires: Date.now() + SESSION_TTL_MS, id: randomToken(16) }),
     );
-    const cookies = [cookie(jar, jar.session, session, SESSION_TTL_MS), clearCookie(jar, jar.flow)];
+    const cookies = [cookie(jar, jar.session, session, SESSION_TTL_MS)];
 
     if (accounts.length === 0)
       return page(
@@ -239,7 +276,8 @@ const logout = async (env: AuthEnv, request: Request, url: URL) => {
 export const authRoute = (env: AuthEnv, request: Request, url: URL): Promise<Response> | null => {
   const route = `${request.method} ${url.pathname}`;
 
-  if (route === 'GET /oauth/start') return start(env, request, url);
+  if (route === 'GET /oauth/start') return start(env, url);
+  if (route === 'GET /oauth/link') return linkPage(env, url);
   if (route === 'GET /oauth/callback') return callback(env, request, url);
   if (route === 'GET /oauth/account') return showAccounts(env, request, url);
   if (route === 'POST /oauth/account') return pickAccount(env, request, url);

@@ -1,0 +1,45 @@
+{
+  "schema": "guardrail.deploy-receipt.v0",
+  "timestamp": "2026-10-29T20:07:19.315Z",
+  "command": [
+    "guardrail",
+    "receipt",
+    "fleet/.guardrail-staged.25364.wrangler.jsonc"
+  ],
+  "configPath": "fleet/.guardrail-staged.25364.wrangler.jsonc",
+  "git": {
+    "sha": "f7111e6b46a8c659d4a485f39a7798340f6f78c5",
+    "dirty": true,
+    "remote": "https://github.com/acoyfellow/port.git"
+  },
+  "decision": {
+    "allowed": true,
+    "findings": []
+  },
+  "exposure": {
+    "isPublic": false,
+    "surface": "no public surface",
+    "reason": "",
+    "criticalMessage": "",
+    "routes": [],
+    "workersDev": false
+  },
+  "bindings": [
+    {
+      "type": "ai",
+      "name": "AI"
+    },
+    {
+      "type": "durable_object_namespace",
+      "name": "AGENT"
+    }
+  ],
+  "auth": {
+    "detected": true,
+    "partial": false,
+    "patterns": [
+      "bearer-token"
+    ],
+    "source": "/Users/jcoeyman/cloudflare/port/fleet/worker.ts"
+  }
+}

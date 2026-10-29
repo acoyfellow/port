@@ -1,0 +1,36 @@
+{
+  "source": "https://port.customer0.dev/receipts/761b55945c2886a2cd9bcea39aaf26f1",
+  "install": "6360cded",
+  "state": "removed",
+  "resources": [
+    {
+      "kind": "ai-gateway",
+      "name": "port-fleet-6360cded",
+      "existsAfterTeardown": false
+    },
+    {
+      "kind": "worker",
+      "name": "port-fleet-6360cded",
+      "existsAfterTeardown": false
+    }
+  ],
+  "log": [
+    "deleted worker port-fleet-6360cded",
+    "deleted ai-gateway port-fleet-6360cded"
+  ],
+  "alsoRemoved": [
+    {
+      "install": "11bd2ee8",
+      "receipt": "https://port.customer0.dev/receipts/912375b1415994e849ce7b090ff8fbe6",
+      "resource": "ai-gateway port-fleet-11bd2ee8"
+    },
+    {
+      "install": "c3d3df20",
+      "receipt": "https://port.customer0.dev/receipts/238ac255a4289e6f3db1c44d5a805a03"
+    },
+    {
+      "install": "c1254cef",
+      "receipt": "https://port.customer0.dev/receipts/f3724fc4"
+    }
+  ]
+}

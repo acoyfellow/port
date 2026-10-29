@@ -10,7 +10,7 @@ export const SCOPES = [
   'offline_access',
   'user-details.read',
   'account-settings.read',
-  'workers-scripts.edit',
+  'workers-scripts.admin',
   'containers.write',
   'artifacts.write',
   'workers-kv-storage.write',

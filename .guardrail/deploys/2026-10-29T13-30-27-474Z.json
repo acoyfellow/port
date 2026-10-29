@@ -1,11 +1,7 @@
 {
   "schema": "guardrail.deploy-receipt.v0",
   "timestamp": "2026-10-29T13:30:27.474Z",
-  "command": [
-    "guardrail",
-    "receipt",
-    "./.guardrail-staged.89632.wrangler.jsonc"
-  ],
+  "command": ["guardrail", "receipt", "./.guardrail-staged.89632.wrangler.jsonc"],
   "configPath": "./.guardrail-staged.89632.wrangler.jsonc",
   "git": {
     "sha": "706de5f2c5111719fdf81ce177989a63a4db724d",
@@ -38,9 +34,7 @@
     "surface": "custom route port.customer0.dev",
     "reason": "custom route port.customer0.dev",
     "criticalMessage": "Worker is attached to custom route port.customer0.dev with sensitive bindings",
-    "routes": [
-      "port.customer0.dev"
-    ],
+    "routes": ["port.customer0.dev"],
     "workersDev": false
   },
   "bindings": [

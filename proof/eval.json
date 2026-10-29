@@ -1,0 +1,121 @@
+{
+  "source": "https://port.customer0.dev/receipts/761b55945c2886a2cd9bcea39aaf26f1",
+  "install": "6360cded",
+  "account": "personal",
+  "model": "@cf/moonshotai/kimi-k2.7-code",
+  "passed": 4,
+  "of": 5,
+  "totalUsd": 0.088,
+  "baseline": {
+    "name": "swarm-5 attempt 3 (Pi in containers, claude-haiku-4-5)",
+    "passed": 4,
+    "of": 5,
+    "meanUsd": 0.593
+  },
+  "tasks": [
+    {
+      "task": "business-days",
+      "model": "@cf/moonshotai/kimi-k2.7-code",
+      "passed": true,
+      "turns": 11,
+      "usd": 0.0164,
+      "ms": 69384,
+      "hidden": {
+        "passed": 3,
+        "total": 3
+      },
+      "visible": {
+        "passed": 30,
+        "total": 30
+      },
+      "toolCalls": {
+        "list_files": 1,
+        "write_file": 2,
+        "run_tests": 3,
+        "edit_file": 3,
+        "read_file": 1
+      }
+    },
+    {
+      "task": "cart-merge",
+      "model": "@cf/moonshotai/kimi-k2.7-code",
+      "passed": true,
+      "turns": 10,
+      "usd": 0.0237,
+      "ms": 98728,
+      "hidden": {
+        "passed": 2,
+        "total": 2
+      },
+      "visible": {
+        "passed": 27,
+        "total": 27
+      },
+      "toolCalls": {
+        "list_files": 1,
+        "read_file": 3,
+        "edit_file": 5,
+        "run_tests": 2
+      }
+    },
+    {
+      "task": "csv-parse",
+      "model": "@cf/moonshotai/kimi-k2.7-code",
+      "passed": true,
+      "turns": 7,
+      "usd": 0.0276,
+      "ms": 119875,
+      "hidden": {
+        "passed": 3,
+        "total": 3
+      },
+      "visible": {
+        "passed": 36,
+        "total": 36
+      },
+      "toolCalls": {
+        "list_files": 1,
+        "read_file": 4,
+        "write_file": 2,
+        "run_tests": 1
+      }
+    },
+    {
+      "task": "money-words",
+      "model": "@cf/moonshotai/kimi-k2.7-code",
+      "passed": true,
+      "turns": 10,
+      "usd": 0.0194,
+      "ms": 70921,
+      "hidden": {
+        "passed": 2,
+        "total": 2
+      },
+      "visible": {
+        "passed": 28,
+        "total": 28
+      },
+      "toolCalls": {
+        "list_files": 1,
+        "read_file": 3,
+        "write_file": 2,
+        "run_tests": 3,
+        "edit_file": 2
+      }
+    },
+    {
+      "task": "sku-glob",
+      "model": "@cf/moonshotai/kimi-k2.7-code",
+      "passed": false,
+      "turns": 1,
+      "usd": 0.0009,
+      "ms": 156093,
+      "hidden": null,
+      "visible": null,
+      "toolCalls": {
+        "list_files": 1
+      },
+      "note": "hung: first model call never returned; no timeout in the fleet loop yet. Counted as a failure."
+    }
+  ]
+}

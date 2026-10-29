@@ -1,0 +1,61 @@
+{
+  "schema": "guardrail.deploy-receipt.v0",
+  "timestamp": "2026-10-29T20:06:59.541Z",
+  "command": [
+    "guardrail",
+    "receipt",
+    "./.guardrail-staged.23624.wrangler.jsonc"
+  ],
+  "configPath": "./.guardrail-staged.23624.wrangler.jsonc",
+  "git": {
+    "sha": "f7111e6b46a8c659d4a485f39a7798340f6f78c5",
+    "dirty": true,
+    "remote": "https://github.com/acoyfellow/port.git"
+  },
+  "decision": {
+    "allowed": true,
+    "findings": [
+      {
+        "severity": "WARNING",
+        "message": "custom route port.customer0.dev with sensitive bindings, but code enforces auth (authorization-header). Verify auth is active in production."
+      },
+      {
+        "severity": "WARNING",
+        "message": "kv_namespace binding \"RECEIPTS\" on custom route port.customer0.dev — protected by code auth"
+      },
+      {
+        "severity": "WARNING",
+        "message": "durable_object_namespace binding \"GRANTS\" on custom route port.customer0.dev — protected by code auth"
+      }
+    ]
+  },
+  "exposure": {
+    "isPublic": true,
+    "surface": "custom route port.customer0.dev",
+    "reason": "custom route port.customer0.dev",
+    "criticalMessage": "Worker is attached to custom route port.customer0.dev with sensitive bindings",
+    "routes": [
+      "port.customer0.dev"
+    ],
+    "workersDev": false
+  },
+  "bindings": [
+    {
+      "type": "kv_namespace",
+      "name": "RECEIPTS"
+    },
+    {
+      "type": "durable_object_namespace",
+      "name": "GRANTS"
+    }
+  ],
+  "auth": {
+    "detected": true,
+    "partial": false,
+    "patterns": [
+      "authorization-header"
+    ],
+    "reason": "auth detected in imported module (authorization-header)",
+    "source": "/Users/jcoeyman/cloudflare/port/worker/index.ts"
+  }
+}

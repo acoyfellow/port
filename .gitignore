@@ -4,3 +4,4 @@ public
 .dev.vars
 *.local.jsonc
 .DS_Store
+.tmp

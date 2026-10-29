@@ -1,0 +1,27 @@
+{
+  "at": "2026-10-29",
+  "source": "GET https://port.customer0.dev/oauth/me in the signed-in browser",
+  "signedIn": true,
+  "account": { "name": "Customer 0" },
+  "scopes": [
+    "offline_access",
+    "user-details.read",
+    "account-settings.read",
+    "workers-scripts.edit",
+    "containers.write",
+    "artifacts.write",
+    "workers-kv-storage.write",
+    "d1.write",
+    "workers-r2.write",
+    "queues.write",
+    "browser-rendering.write",
+    "secrets-store.write",
+    "workers-routes.write",
+    "workers-tail.read",
+    "workers-observability.write",
+    "ai.read",
+    "aig.write",
+    "aig.run"
+  ],
+  "flow": "/oauth/link: signed state carries the PKCE verifier, so no flow cookie is needed across isolated browsers"
+}

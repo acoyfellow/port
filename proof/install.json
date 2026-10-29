@@ -1,0 +1,24 @@
+{
+  "source": "https://port.customer0.dev/receipts/761b55945c2886a2cd9bcea39aaf26f1",
+  "install": "6360cded",
+  "account": "personal",
+  "fleetVersion": "495e337a26f4",
+  "url": "https://port-fleet-6360cded.coy.workers.dev",
+  "resources": [
+    {
+      "kind": "ai-gateway",
+      "name": "port-fleet-6360cded",
+      "existsAfterInstall": true
+    },
+    {
+      "kind": "worker",
+      "name": "port-fleet-6360cded",
+      "existsAfterInstall": true
+    }
+  ],
+  "log": [
+    "created AI Gateway port-fleet-6360cded",
+    "uploaded Worker port-fleet-6360cded",
+    "reachable at https://port-fleet-6360cded.coy.workers.dev"
+  ]
+}

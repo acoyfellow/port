@@ -1,0 +1,44 @@
+{
+  "schema": "guardrail.deploy-receipt.v0",
+  "timestamp": "2026-10-29T13:30:41.560Z",
+  "command": ["guardrail", "receipt", "./.guardrail-staged.90228.wrangler.jsonc"],
+  "configPath": "./.guardrail-staged.90228.wrangler.jsonc",
+  "git": {
+    "sha": "706de5f2c5111719fdf81ce177989a63a4db724d",
+    "dirty": true,
+    "remote": "https://github.com/acoyfellow/port.git"
+  },
+  "decision": {
+    "allowed": true,
+    "findings": [
+      {
+        "severity": "WARNING",
+        "message": "Worker is attached to custom route port.customer0.dev with sensitive bindings"
+      },
+      {
+        "severity": "WARNING",
+        "message": "durable_object_namespace binding \"GRANTS\" exposed on custom route port.customer0.dev"
+      }
+    ]
+  },
+  "exposure": {
+    "isPublic": true,
+    "surface": "custom route port.customer0.dev",
+    "reason": "custom route port.customer0.dev",
+    "criticalMessage": "Worker is attached to custom route port.customer0.dev with sensitive bindings",
+    "routes": ["port.customer0.dev"],
+    "workersDev": false
+  },
+  "bindings": [
+    {
+      "type": "durable_object_namespace",
+      "name": "GRANTS"
+    }
+  ],
+  "auth": {
+    "detected": false,
+    "partial": false,
+    "patterns": [],
+    "source": "/Users/jcoeyman/cloudflare/port/worker/index.ts"
+  }
+}

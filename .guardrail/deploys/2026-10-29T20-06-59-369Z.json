@@ -1,0 +1,62 @@
+{
+  "schema": "guardrail.deploy-receipt.v0",
+  "timestamp": "2026-10-29T20:06:59.369Z",
+  "command": [
+    "guardrail",
+    "receipt",
+    "fleet/.guardrail-staged.23624.wrangler.jsonc"
+  ],
+  "configPath": "fleet/.guardrail-staged.23624.wrangler.jsonc",
+  "git": {
+    "sha": "f7111e6b46a8c659d4a485f39a7798340f6f78c5",
+    "dirty": true,
+    "remote": "https://github.com/acoyfellow/port.git"
+  },
+  "decision": {
+    "allowed": false,
+    "findings": [
+      {
+        "severity": "CRITICAL",
+        "message": "local rule ban-host *.cloudflare-support-chat.workers.dev matched fleet-local.cloudflare-support-chat.workers.dev — teaching-demo / SIRT account subdomain; do not deploy here"
+      },
+      {
+        "severity": "WARNING",
+        "message": "workers_dev not set (defaults to true) with sensitive bindings, but code enforces auth (bearer-token). Verify auth is active in production."
+      },
+      {
+        "severity": "WARNING",
+        "message": "ai binding \"AI\" on workers.dev URL — protected by code auth"
+      },
+      {
+        "severity": "WARNING",
+        "message": "durable_object_namespace binding \"AGENT\" on workers.dev URL — protected by code auth"
+      }
+    ]
+  },
+  "exposure": {
+    "isPublic": true,
+    "surface": "workers.dev URL",
+    "reason": "workers_dev not set (defaults to true)",
+    "criticalMessage": "workers_dev not set (defaults to true) — Worker will be public with sensitive bindings",
+    "routes": [],
+    "workersDev": true
+  },
+  "bindings": [
+    {
+      "type": "ai",
+      "name": "AI"
+    },
+    {
+      "type": "durable_object_namespace",
+      "name": "AGENT"
+    }
+  ],
+  "auth": {
+    "detected": true,
+    "partial": false,
+    "patterns": [
+      "bearer-token"
+    ],
+    "source": "/Users/jcoeyman/cloudflare/port/fleet/worker.ts"
+  }
+}

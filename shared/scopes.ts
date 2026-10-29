@@ -7,7 +7,10 @@ export const SCOPES: readonly ScopeNote[] = [
   { scope: 'offline_access', why: 'Keep installs working without signing in again' },
   { scope: 'user-details.read', why: 'Show who is signed in' },
   { scope: 'account-settings.read', why: 'List the accounts you can install on' },
-  { scope: 'workers-scripts.edit', why: 'Upload and delete the Workers that make up an install' },
+  {
+    scope: 'workers-scripts.admin',
+    why: 'Upload and delete the Workers that make up an install. Workers Editor cannot upload scripts with an OAuth token; Workers Admin can',
+  },
   { scope: 'containers.write', why: 'Create the shared container pool' },
   { scope: 'artifacts.write', why: 'Create a git repo per agent workspace' },
   { scope: 'workers-kv-storage.write', why: 'Store install state and settings' },

@@ -11,5 +11,5 @@
     "noUncheckedIndexedAccess": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["worker", "shared"]
+  "include": ["worker", "shared", "fleet"]
 }

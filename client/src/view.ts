@@ -218,16 +218,24 @@ const detail = (h: H, entry: Entry): Html =>
           h.div(
             [h.Class('mt-8 flex gap-2')],
             [
-              h.button(
-                [
-                  h.Type('button'),
-                  h.Disabled(entry.readiness !== 'installable'),
-                  h.Class(
-                    'rounded-md bg-accent px-4 py-2 text-sm text-accent-ink disabled:cursor-not-allowed disabled:opacity-40',
+              entry.readiness === 'installable'
+                ? h.a(
+                    [
+                      h.Href('/installs'),
+                      h.Class('rounded-md bg-accent px-4 py-2 text-sm text-accent-ink hover:opacity-90'),
+                    ],
+                    ['Install on my account'],
+                  )
+                : h.button(
+                    [
+                      h.Type('button'),
+                      h.Disabled(true),
+                      h.Class(
+                        'cursor-not-allowed rounded-md bg-accent px-4 py-2 text-sm text-accent-ink opacity-40',
+                      ),
+                    ],
+                    ['Not ready yet'],
                   ),
-                ],
-                ['Preview on my account'],
-              ),
               h.button(
                 [
                   h.Type('button'),

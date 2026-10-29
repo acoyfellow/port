@@ -14,7 +14,7 @@
   },
   "scripts": {
     "dev": "vite build --config client/vite.config.ts && wrangler dev",
-    "build": "vite build --config client/vite.config.ts",
+    "build": "node scripts/bundle-fleet.mjs && vite build --config client/vite.config.ts",
     "typecheck": "tsc -p . && tsc -p tsconfig.client.json",
     "test": "vitest run",
     "lint": "biome check .",
@@ -29,6 +29,7 @@
     "@cloudflare/workers-types": "^5.20261012.1",
     "@foldkit/vite-plugin": "0.28.0",
     "@tailwindcss/vite": "4.3.3",
+    "sucrase": "^3.35.1",
     "tailwindcss": "4.3.3",
     "typescript": "^5.9.3",
     "vite": "8.3.3",
