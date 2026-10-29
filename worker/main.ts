@@ -1,10 +1,12 @@
 import { FLEET } from '../shared/catalog';
+import { ENTRIES } from '../shared/entries/index';
 import { SCOPES } from '../shared/scopes';
 import { type AuthEnv, authRoute, currentUser, grantFor, safeNext, viewerOf } from './auth/routes';
 import type { GrantEnv } from './grant';
 import { installRoute, receiptRoute } from './routes/installs';
 import { accountPage, signInPage } from './ui/auth';
 import { fleetPage, homePage } from './ui/directory';
+import { entryPage } from './ui/entries';
 import { errorPage, notFound } from './ui/parts';
 import { previewRoute } from './ui/preview';
 
@@ -29,6 +31,8 @@ const pageRoute = async (env: Env, request: Request, url: URL): Promise<Response
 
   if (url.pathname === '/') return homePage(viewer);
   if (url.pathname === '/fleet') return fleetPage(viewer);
+  const entry = ENTRIES.find((each) => url.pathname === `/d/${each.slug}`);
+  if (entry !== undefined) return entryPage(viewer, entry);
   if (url.pathname === '/sign-in')
     return viewer === null
       ? signInPage(safeNext(url.searchParams.get('next')))

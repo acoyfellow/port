@@ -1,0 +1,92 @@
+import type { Entry } from '../entry.ts';
+
+export const ENTRY: Entry = {
+  slug: 'skin',
+  mark: 'S',
+  name: 'skin',
+  oneLine: 'A per-user web app that an agent rewrites on request, gated by build, boot, and checks.',
+  stage: 'outlined',
+  shape: '1 user = 1 Body Durable Object = 1 live app version in a Worker Loader isolate.',
+  parts: [
+    {
+      id: 'kernel',
+      label: 'Kernel Worker',
+      detail: 'Fixed Worker. It holds sign-in, routing, the gate, and rollback. The agent cannot edit it.',
+      product: 'worker',
+    },
+    {
+      id: 'agent',
+      label: 'Agent DO',
+      detail:
+        'One SQLite Durable Object per user and conversation. It runs the Pi agent and commits each turn.',
+      product: 'durable-object',
+    },
+    {
+      id: 'body',
+      label: 'Body DO',
+      detail:
+        'One SQLite Durable Object per user. It holds the draft, every version, the live pointer, and app data.',
+      product: 'durable-object',
+    },
+    {
+      id: 'builder',
+      label: 'Builder DO',
+      detail:
+        'One Durable Object per build part. It installs npm packages, bundles server and client, and compiles Tailwind.',
+      product: 'durable-object',
+    },
+    {
+      id: 'loader',
+      label: 'Gate and runtime',
+      detail:
+        'Worker Loader isolate with no network and no secrets. It boots the server and runs the body checks.',
+      product: 'worker-loader',
+    },
+    {
+      id: 'directory',
+      label: 'Directory DO',
+      detail: 'One shared Durable Object that records events and stats per user.',
+      product: 'durable-object',
+    },
+    {
+      id: 'model',
+      label: 'Model',
+      detail:
+        'Workers AI or the user AI Gateway on the signed-in user account, with the user token. No AI binding.',
+      product: 'external',
+    },
+  ],
+  edges: [
+    { from: 'kernel', to: 'agent', label: 'chat' },
+    { from: 'agent', to: 'model', label: 'model call' },
+    { from: 'agent', to: 'body', label: 'write_file, ship' },
+    { from: 'body', to: 'builder', label: 'build version' },
+    { from: 'body', to: 'loader', label: 'boot and check' },
+    { from: 'kernel', to: 'loader', label: 'serve live version' },
+    { from: 'body', to: 'directory', label: 'record event' },
+  ],
+  strengths: [
+    'The kernel never changes at runtime, so a bad version cannot remove the way back.',
+    'A version goes live only after it bundles, boots, and passes its own checks.',
+    'A browser crash guard makes the last good version live again without the user.',
+    'Model calls run on the signed-in user account and token, not on the deployer bill.',
+  ],
+  limits: [
+    'Each build bundles with esbuild-wasm and takes about 10 s of CPU, so the Worker needs a high cpu_ms limit.',
+    'The agent edits only the app body. It has no container, shell, or general computer.',
+    'Sign-in needs a Cloudflare OAuth client, and users must grant account access for model calls.',
+  ],
+  measures: [
+    { label: 'Local e2e', value: '10/10 passed in 141 s', source: 'receipts/e2e-local.json' },
+    { label: 'Deployed e2e', value: '10/10 passed in 63 s', source: 'receipts/e2e-deployed.json' },
+    { label: 'Build CPU per generation', value: 'about 10 s', source: 'wrangler.jsonc' },
+    { label: 'Worker CPU limit', value: '300000 ms', source: 'wrangler.jsonc' },
+  ],
+  install: {
+    status: 'planned',
+    plan: 'An Alchemy v2 (Effect v4) project would create one Worker with nodejs_compat and enable_ctx_exports, a Worker Loader binding, a version metadata binding, and four SQLite Durable Object classes: Agent, Body, Builder, Directory. It sets MODEL and a cpu_ms limit of 300000. It bundles the kernel assets and the seed body source. The hard part is the Cloudflare OAuth app: the user must register a client and set its ID and secret, and set the redirect URL to the route. No containers. No AI binding is needed because users bring their own account.',
+  },
+  evalPlan:
+    'swarm-5 does not fit directly, because the agent edits only its own app body. A fitting eval gives the agent 5 app change requests with hidden story tests placed in the body checks. Port measures how many versions pass the gate on the first ship, ship attempts per task, build and gate time per version, rollbacks, and model tokens. The repo e2e suite (npm run e2e) is a ready baseline for gate correctness.',
+  source: 'https://github.com/acoyfellow/skin',
+};

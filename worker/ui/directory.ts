@@ -1,4 +1,6 @@
 import { DIRECTORY_SLOTS, FLEET } from '../../shared/catalog';
+import { ENTRIES } from '../../shared/entries/index';
+import { entryCard } from './entries';
 import { html } from './html';
 import type { Viewer } from './layout';
 import { linkButton, page } from './parts';
@@ -7,14 +9,6 @@ const CREATED_LABEL: Record<(typeof FLEET.creates)[number], string> = {
   worker: 'One Worker, with a Durable Object and a Worker Loader',
   'ai-gateway': 'One AI Gateway for the model calls',
 };
-
-const fleetCard = () =>
-  html`<a class="card entry" href="/fleet" data-entry="${FLEET.slug}"><div class="entry-top"><div class="entry-icon" aria-hidden="true">${FLEET.mark}</div><h2>${FLEET.name}</h2></div><p>${FLEET.oneLine}</p><div class="chips">${[
-    'Worker',
-    'Durable Object',
-    'Worker Loader',
-    'AI Gateway',
-  ].map((chip) => html`<span class="chip">${chip}</span>`)}</div></a>`;
 
 const skeletonCard = () =>
   html`<div class="card entry skeleton" aria-hidden="true"><div class="entry-top"><div class="entry-icon"></div><div class="bar title"></div></div><div class="bar w80"></div><div class="bar w60"></div><div class="chips"><div class="bar" style="width:72px"></div><div class="bar" style="width:96px"></div></div></div>`;
@@ -37,8 +31,8 @@ export const homePage = (viewer: Viewer) =>
     section: 'home',
     body: html`<section class="hero"><div><h1>Agent infra on your own Cloudflare account.</h1><p>Install it, run an eval against it, then keep it or tear it down. Everything runs on your account and your bill. port only holds the install button.</p><div class="actions">${primary(
       viewer,
-    )}${linkButton('/fleet', { label: 'See the agent fleet', kind: 'ghost' })}</div></div><figure><img src="/fleet.svg" alt="port uploads one Fleet Worker to your account. The Worker uses a Durable Object, a Worker Loader and Workers AI. Model calls go through an AI Gateway."></figure></section><div class="stack"><section><div class="section-head"><h2>Directory</h2><p>More entries are on the way.</p></div><div class="grid">${fleetCard()}${Array.from(
-      { length: DIRECTORY_SLOTS },
+    )}${linkButton('/fleet', { label: 'See the agent fleet', kind: 'ghost' })}</div></div><figure><img src="/fleet.svg" alt="port uploads one Fleet Worker to your account. The Worker uses a Durable Object, a Worker Loader and Workers AI. Model calls go through an AI Gateway."></figure></section><div class="stack"><section><div class="section-head"><h2>Directory</h2><p>Agent infra shapes we found, measured and drew. Installable ones run on your account.</p></div><div class="grid">${ENTRIES.map(entryCard)}${Array.from(
+      { length: Math.max(0, DIRECTORY_SLOTS - ENTRIES.length) },
       skeletonCard,
     )}</div></section><section><div class="section-head"><h2>How it works</h2></div><div class="steps">${STEPS.map(
       ([title, text], index) =>
