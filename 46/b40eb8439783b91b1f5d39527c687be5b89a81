@@ -1,0 +1,47 @@
+.guardrail/deploys/2026-10-29T20-49-49-313Z.json
+  s_231221b99fcbf7::t_06099649e01414 1-53
+package.json
+  s_231221b99fcbf7::t_632ae9ff8d7b5b 16-17
+scripts/gen-entries.mjs
+  s_231221b99fcbf7::t_5cffd2f955de4f 1-15
+shared/entries/chat-ax.ts
+  s_231221b99fcbf7::t_2efce734f1bb8e 1-94
+shared/entries/fleet.ts
+  s_231221b99fcbf7::t_e617170d765dcf 1-62
+shared/entries/index.ts
+  s_231221b99fcbf7::t_9de47a15b765ab 1-22
+shared/entries/skin.ts
+  s_231221b99fcbf7::t_e97daf72bc4359 1-92
+shared/entries/terrarium.ts
+  s_231221b99fcbf7::t_abd5d57ad92ee3 1-81
+shared/entry-diagram.ts
+  s_231221b99fcbf7::t_3d571ee5443e1c 1-101
+shared/entry.ts
+  s_231221b99fcbf7::t_ecced4dfe83b67 1-43
+static/ui.css
+  s_231221b99fcbf7::t_2b0e0198bfcca4 310-319
+test/entries.test.ts
+  s_231221b99fcbf7::t_36a990c523a664 1-63
+worker/main.ts
+  s_231221b99fcbf7::t_43c1d46f4d9395 2,9,34-35
+worker/ui/directory.ts
+  s_231221b99fcbf7::t_e1b7c90103e52f 2-3,34-35
+worker/ui/entries.ts
+  s_231221b99fcbf7::t_afe51e3e418d6d 1-77
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "46b40eb8439783b91b1f5d39527c687be5b89a81",
+  "prompts": {},
+  "sessions": {
+    "s_231221b99fcbf7": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a1176a-4538-7369-8003-75cbe8c7d418",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <jcoeyman@cloudflare.com>"
+    }
+  }
+}
