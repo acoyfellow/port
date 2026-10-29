@@ -1,0 +1,65 @@
+.guardrail/deploys/2026-10-29T20-06-59-369Z.json
+  s_231221b99fcbf7::t_94ff3633d69ec6 4,53
+.guardrail/deploys/2026-10-29T20-06-59-541Z.json
+  s_231221b99fcbf7::t_e27bca65ffc0cc 4,33,49
+.guardrail/deploys/2026-10-29T20-07-19-315Z.json
+  s_231221b99fcbf7::t_6d3106189fbcb6 4,36
+.guardrail/deploys/2026-10-29T20-07-19-486Z.json
+  s_231221b99fcbf7::t_55fd21286f66d3 4,33,49
+.guardrail/deploys/2026-10-29T20-07-32-325Z.json
+  s_231221b99fcbf7::t_407282b30366aa 4,36
+.guardrail/deploys/2026-10-29T20-07-32-488Z.json
+  s_231221b99fcbf7::t_6072ecf334a5cf 4,33,49
+.guardrail/deploys/2026-10-29T20-07-58-493Z.json
+  s_231221b99fcbf7::t_6bab2335bb65f7 4,36
+.guardrail/deploys/2026-10-29T20-07-58-661Z.json
+  s_231221b99fcbf7::t_33663c8ebc63a8 4,33,49
+.guardrail/deploys/2026-10-29T20-08-18-914Z.json
+  s_231221b99fcbf7::t_0236e83521f04d 1-39
+.guardrail/deploys/2026-10-29T20-08-19-075Z.json
+  s_231221b99fcbf7::t_87870abcc43e40 1-53
+.wrangler-fleet.log
+  s_231221b99fcbf7::t_beb39c7f15a59f 90-106
+client/src/message.ts
+  s_231221b99fcbf7::t_df665c35cd1947 2
+client/src/model.ts
+  s_231221b99fcbf7::t_eba791ac8e2144 23,27
+client/src/view.ts
+  s_231221b99fcbf7::t_9638cbcc3d89fa 2-4,8-10,68-70,72-74,76-78,80-82,84-85,87-88,90-92,94-98,100-103,105-106,109-127,131-132
+fleet/worker.ts
+  s_231221b99fcbf7::t_634803d43869be 179-180,251
+proof/teardown.json
+  s_231221b99fcbf7::t_825fcf9ac726e6 17
+scripts/bundle-fleet.mjs
+  s_231221b99fcbf7::t_a98fef2c5f547c 61-74
+shared/catalog.ts
+  s_231221b99fcbf7::t_cfb7482addf545 1-13
+shared/fleet-diagram.ts
+  s_231221b99fcbf7::t_f8449570d9a063 1-200
+shared/fleet-manifest.ts
+  s_231221b99fcbf7::t_1452a27e71adf2 1-29
+test/fleet-diagram.test.ts
+  s_231221b99fcbf7::t_beee5c1e6a068d 1-61
+worker/generated/fleet-bundle.ts
+  s_231221b99fcbf7::t_faa305d00f2322 1,3
+worker/index.ts
+  s_231221b99fcbf7::t_2f1e3c11b4b5d4 1,34
+worker/install.ts
+  s_231221b99fcbf7::t_516bbb250306f6 1,76,100,136
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "3d9e1431873561994d2e8c92dc8899b22e3036a3",
+  "prompts": {},
+  "sessions": {
+    "s_231221b99fcbf7": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a1176a-4538-7369-8003-75cbe8c7d418",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <jcoeyman@cloudflare.com>"
+    }
+  }
+}
