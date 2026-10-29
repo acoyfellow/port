@@ -1,0 +1,31 @@
+{
+  "schema": "guardrail.deploy-receipt.v0",
+  "timestamp": "2026-10-29T11:39:05.491Z",
+  "command": [
+    "guardrail",
+    "receipt",
+    "./.guardrail-staged.18636.wrangler.jsonc"
+  ],
+  "configPath": "./.guardrail-staged.18636.wrangler.jsonc",
+  "decision": {
+    "allowed": true,
+    "findings": []
+  },
+  "exposure": {
+    "isPublic": true,
+    "surface": "custom route port.customer0.dev",
+    "reason": "custom route port.customer0.dev",
+    "criticalMessage": "Worker is attached to custom route port.customer0.dev with sensitive bindings",
+    "routes": [
+      "port.customer0.dev"
+    ],
+    "workersDev": false
+  },
+  "bindings": [],
+  "auth": {
+    "detected": false,
+    "partial": false,
+    "patterns": [],
+    "source": "/Users/jcoeyman/cloudflare/port/worker/index.ts"
+  }
+}
