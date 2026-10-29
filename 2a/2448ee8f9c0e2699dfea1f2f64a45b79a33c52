@@ -1,0 +1,53 @@
+.gitignore
+  s_231221b99fcbf7::t_6bdb8d33bcaac5 1-6
+LICENSE
+  s_231221b99fcbf7::t_dfeff80403a90a 1-9
+README.md
+  s_231221b99fcbf7::t_60598a8dc8d539 1-37
+biome.json
+  s_231221b99fcbf7::t_445ed06a665ca4 1-9
+client/src/entry.ts
+  s_231221b99fcbf7::t_0a75635dfa131a 1-15
+client/src/message.ts
+  s_231221b99fcbf7::t_f313912f690924 1-12
+client/src/model.ts
+  s_231221b99fcbf7::t_04c379e5bdbf21 1-15
+client/src/update.ts
+  s_231221b99fcbf7::t_1daea60298d395 1-18
+client/src/view.ts
+  s_231221b99fcbf7::t_b7fb96b075ea1c 1-222
+client/vite.config.ts
+  s_231221b99fcbf7::t_c2bba674beed29 1-13
+package-lock.json
+  s_231221b99fcbf7::t_eac0212bfd2d7f 1-3941
+package.json
+  s_231221b99fcbf7::t_4ec3b473791aab 1-42
+shared/catalog.ts
+  s_231221b99fcbf7::t_79a002c243441a 1-122
+shared/scopes.ts
+  s_231221b99fcbf7::t_513c31893f7349 1-61
+tsconfig.client.json
+  s_231221b99fcbf7::t_061a39ee0b7026 1-15
+tsconfig.json
+  s_231221b99fcbf7::t_092df84522e1a8 1-15
+worker/index.ts
+  s_231221b99fcbf7::t_a37e60a5de5eea 1-30
+wrangler.jsonc
+  s_231221b99fcbf7::t_569e4abe700f68 1-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "2a2448ee8f9c0e2699dfea1f2f64a45b79a33c52",
+  "prompts": {},
+  "sessions": {
+    "s_231221b99fcbf7": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a1176a-4538-7369-8003-75cbe8c7d418",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <jcoeyman@cloudflare.com>"
+    }
+  }
+}
