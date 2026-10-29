@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+	--color-bg: #ffffff;
+	--color-panel: #fafafa;
+	--color-raised: #f2f2f2;
+	--color-line: #ebebeb;
+	--color-line-strong: #d4d4d4;
+	--color-ink: #171717;
+	--color-dim: #4d4d4d;
+	--color-faint: #737373;
+	--color-accent: #171717;
+	--color-accent-ink: #ffffff;
+	--color-life: #7c3aed;
+	--color-life-soft: #f5f0ff;
+	--color-life-line: #ddd0fb;
+	--color-ok: #107d32;
+	--color-info: #0068d6;
+	--font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+	--font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--color-bg: #0a0a0a;
+		--color-panel: #111111;
+		--color-raised: #1a1a1a;
+		--color-line: #242424;
+		--color-line-strong: #333333;
+		--color-ink: #ededed;
+		--color-dim: #a1a1a1;
+		--color-faint: #8f8f8f;
+		--color-accent: #ededed;
+		--color-accent-ink: #0a0a0a;
+		--color-life: #b79cff;
+		--color-life-soft: #1a1426;
+		--color-life-line: #3a2d5c;
+		--color-ok: #4fd17a;
+		--color-info: #52a8ff;
+	}
+}
+
+@layer base {
+	html,
+	body,
+	#root {
+		@apply min-h-full bg-bg text-ink font-sans antialiased;
+		font-size: 14px;
+		line-height: 1.6;
+	}
+
+	:focus-visible {
+		@apply outline-2 outline-offset-2 outline-info;
+	}
+}

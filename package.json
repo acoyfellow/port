@@ -1,0 +1,42 @@
+{
+  "name": "port",
+  "version": "0.0.1",
+  "description": "Install Cloudflare agent infra on your own account. Preview it, keep it, or tear it down.",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acoyfellow/port.git"
+  },
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "scripts": {
+    "dev": "vite build --config client/vite.config.ts && wrangler dev",
+    "build": "vite build --config client/vite.config.ts",
+    "typecheck": "tsc -p . && tsc -p tsconfig.client.json",
+    "test": "vitest run",
+    "lint": "biome check .",
+    "deploy": "npm run build && wrangler deploy"
+  },
+  "dependencies": {
+    "effect": "4.0.0",
+    "foldkit": "0.169.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.15",
+    "@cloudflare/workers-types": "^5.20261012.1",
+    "@foldkit/vite-plugin": "0.28.0",
+    "@tailwindcss/vite": "4.3.3",
+    "tailwindcss": "4.3.3",
+    "typescript": "^5.9.3",
+    "vite": "8.3.3",
+    "vitest": "^4.0.0",
+    "wrangler": "4.149.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "workerd@1.20261006.1": true
+  }
+}
