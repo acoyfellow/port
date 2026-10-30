@@ -105,5 +105,4 @@ export const ENTRY: Entry = {
   evalPlan:
     'swarm-5 does not fit, because hark is a voice agent, not a coding agent. A fitting eval: deploy to a test stage and run scripts/bench.mjs for end of speech to first audio, p50 and p95, per brain. Then run the e2e scenarios and the text and audio evals in the repo against the live stage, and record pass counts. Optionally give the 5 swarm-5 task prompts by voice to the bench tool and score the hidden tests, to measure code done in the Worker Loader isolate.',
   source: 'https://github.com/acoyfellow/hark',
-  receipt: 'proof/shapes/person-with-computer.json',
 };

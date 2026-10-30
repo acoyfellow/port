@@ -78,5 +78,4 @@ export const ENTRY: Entry = {
   evalPlan:
     'port would send the 5 swarm-5 tasks as 5 background runs, one box each, then grade each answer with hidden tests. It would report passes, verified receipts, cold start time, wall time per run and model cost.',
   source: 'github.com/acoyfellow/terrarium',
-  receipt: 'proof/shapes/sealed-box.json',
 };

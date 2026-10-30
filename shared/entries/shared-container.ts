@@ -82,5 +82,4 @@ export const ENTRY: Entry = {
   evalPlan:
     'Port runs the swarm-5 eval as is: 5 goals (business-days, cart-merge, csv-parse, money-words, sku-glob) in one container, one seat user each, graded by hidden tests. It measures pass count, turns and USD per seat from events.jsonl, and runs isolation-probe.sh to count cross-seat reads and denials. Run it more than once to get a noise band.',
   source: 'gleam-agents: proof/swarm-5, fleet-image, harness/pi',
-  receipt: 'proof/shapes/shared-container.json',
 };

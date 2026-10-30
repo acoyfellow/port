@@ -88,5 +88,4 @@ export const ENTRY: Entry = {
   evalPlan:
     'Port could open one Pi chat per swarm-5 task, send the task prompt over the chat route, and let the agent work in its Sandbox workspace. After the turn ends, port copies the hidden tests into /home/user, runs them with exec, and records pass or fail. It would measure tasks passed out of 5, wall time per turn, cold wake time of the Durable Object and container, and model tokens per task.',
   source: 'https://github.com/acoyfellow/my-ax',
-  receipt: 'proof/shapes/chat-with-sandbox.json',
 };

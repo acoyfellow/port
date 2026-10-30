@@ -90,5 +90,4 @@ export const ENTRY: Entry = {
   evalPlan:
     'swarm-5 does not fit well because chat-ax has no shell or container to run hidden tests. A fitting eval: drive the /mcp endpoint with two test accounts, create an agent, send turns from both, and replay the security boundary attacks. Measure attacks held, turns that resume after a forced restart, and time to first streamed token on Workers AI.',
   source: 'https://github.com/acoyfellow/chat-ax',
-  receipt: 'proof/shapes/agent-room.json',
 };
