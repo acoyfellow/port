@@ -1,0 +1,39 @@
+{
+  "slug": "self-editing-app",
+  "up": {
+    "ok": true,
+    "ms": 7121,
+    "tail": [
+      "[21:55:55.039] INFO (#1): [worker] update",
+      "[21:55:55.039] INFO (#1): [worker/BODY] noop",
+      "[21:55:55.039] INFO (#1): [worker/LOADER] noop",
+      "[21:55:55.039] INFO (#1): ",
+      "[21:55:55.042] INFO (#408): [worker] updating",
+      "[21:55:55.043] INFO (#408): Cloudflare Worker reconcile: starting port-shape-self-editing-app",
+      "[21:55:55.043] INFO (#408): Cloudflare Worker reconcile: durable objects [{\"logicalId\":\"BODY\",\"className\":\"Body\"}]",
+      "[21:55:55.379] INFO (#408): Cloudflare Worker reconcile: existing durable object tags [\"alchemy:dos:BODY=Body\"]",
+      "[21:55:55.379] INFO (#408): Cloudflare Worker reconcile: previous durable object tags [\"alchemy:dos:BODY=Body\"]",
+      "[21:55:55.380] INFO (#408): Cloudflare Worker update: preparing bundle for port-shape-self-editing-app",
+      "[21:55:55.381] INFO (#408): Cloudflare Worker update: uploading script for port-shape-self-editing-app",
+      "[21:55:59.198] INFO (#408): Cloudflare Worker put: durable object reconciliation {\"oldDoClassNameByLogicalId\":{\"BODY\":\"Body\"},\"currentDoClassNameByLogicalId\":{\"BODY\":\"Body\"},\"deletedClasses\":[],\"renamedClasses\":[],\"transferredClasses\":[],\"newSqliteClasses\":[]}",
+      "[21:56:00.559] INFO (#408): [worker] updated — Uploading worker (2.32 KB) ... (5.5s)",
+      "[21:56:00.560] INFO (#512): [worker] updated — Uploading worker (2.32 KB) ... (5.5s)",
+      "[21:56:00.561] INFO (#1): ",
+      "[21:56:00.561] INFO (#1): Done: 1 succeeded (5.5s)",
+      "{",
+      "  url: 'https://port-shape-self-editing-app.coy.workers.dev',",
+      "  worker: 'port-shape-self-editing-app'",
+      "}"
+    ],
+    "at": "2026-10-30T01:56:00.693Z"
+  },
+  "smoke": {
+    "ok": true,
+    "ms": 2566,
+    "tail": [
+      "{\"v1\":{\"shipped\":true,\"version\":1,\"live\":1,\"reason\":\"\"},\"v2\":{\"shipped\":false,\"version\":2,\"live\":1,\"reason\":\"check returned not ok\"},\"v3\":{\"shipped\":false,\"reason\":\"boot failed: SyntaxError: Unexpected end of input\"},\"v4\":{\"shipped\":true,\"version\":4,\"live\":4,\"reason\":\"\"},\"appAfterBad\":{\"live\":1,\"text\":\"hello v1\"},\"app4\":{\"live\":4,\"text\":\"hello v4\"},\"rolled\":{\"live\":1},\"appRolled\":{\"live\":1,\"text\":\"hello v1\"}}",
+      "PROVED Worker Loader gate shipped v1, rejected a failing-check v2 and a non-booting v3 (live stayed v1), shipped v4, and rollback restored v1"
+    ],
+    "at": "2026-10-30T01:56:03.747Z"
+  }
+}

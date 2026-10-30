@@ -1,0 +1,30 @@
+{
+  "slug": "agent-room",
+  "up": {
+    "ok": true,
+    "ms": 13285,
+    "tail": [
+      "[21:54:56.655] INFO (#1): [worker] create",
+      "[21:54:56.655] INFO (#1): [worker/AGENT] create",
+      "[21:54:56.655] INFO (#1): [worker/ROOM] create",
+      "[21:54:56.655] INFO (#1): ",
+      "[21:54:56.658] INFO (#377): [worker] creating",
+      "[21:54:56.659] INFO (#377): Cloudflare Worker reconcile: starting port-shape-agent-room",
+      "[21:54:56.659] INFO (#377): Cloudflare Worker reconcile: durable objects [{\"logicalId\":\"AGENT\",\"className\":\"AgentDO\"},{\"logicalId\":\"ROOM\",\"className\":\"ChatRoomDO\"}]",
+      "[21:54:56.945] INFO (#377): Cloudflare Worker reconcile: existing durable object tags []",
+      "[21:54:56.945] INFO (#377): Cloudflare Worker reconcile: previous durable object tags []",
+      "[21:54:56.945] INFO (#377): Cloudflare Worker create: preparing bundle for port-shape-agent-room",
+      "[21:54:56.976] INFO (#377): Cloudflare Worker create: uploading script for port-shape-agent-room",
+      "[21:55:03.083] INFO (#377): Cloudflare Worker put: durable object reconciliation {\"oldDoClassNameByLogicalId\":{},\"currentDoClassNameByLogicalId\":{\"AGENT\":\"AgentDO\",\"ROOM\":\"ChatRoomDO\"},\"deletedClasses\":[],\"renamedClasses\":[],\"transferredClasses\":[],\"newSqliteClasses\":[\"AgentDO\",\"ChatRoomDO\"]}",
+      "[21:55:06.382] INFO (#377): [worker] created — Enabling workers.dev subdomain... (9.7s)",
+      "[21:55:06.383] INFO (#500): [worker] created — Enabling workers.dev subdomain... (9.7s)",
+      "[21:55:06.386] INFO (#1): ",
+      "[21:55:06.387] INFO (#1): Done: 1 succeeded (9.7s)",
+      "{",
+      "  url: 'https://port-shape-agent-room.coy.workers.dev',",
+      "  worker: 'port-shape-agent-room'",
+      "}"
+    ],
+    "at": "2026-10-30T01:55:06.563Z"
+  }
+}
