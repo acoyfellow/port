@@ -1,0 +1,41 @@
+scripts/gen-entries.mjs
+  s_231221b99fcbf7::t_9f7701708c0857 5-15
+shared/entries/agent-room.ts
+  s_231221b99fcbf7::t_b9471cda268f08 4-6
+shared/entries/chat-with-sandbox.ts
+  s_231221b99fcbf7::t_78c0bf179cc939 4-6
+shared/entries/container-per-thread.ts
+  s_231221b99fcbf7::t_03cb1fc6dbf778 4-6
+shared/entries/durable-session.ts
+  s_231221b99fcbf7::t_6579c81c14493c 4-6
+shared/entries/index.ts
+  s_231221b99fcbf7::t_11ff7e81066de2 2-10,13-21
+shared/entries/isolate-agents.ts
+  s_231221b99fcbf7::t_f3ee1b39ed2ab8 4-6
+shared/entries/person-with-computer.ts
+  s_231221b99fcbf7::t_d521cf9800434d 4-6
+shared/entries/sealed-box.ts
+  s_231221b99fcbf7::t_2d9c2357c11659 4-6
+shared/entries/self-editing-app.ts
+  s_231221b99fcbf7::t_37278f5928029d 4-6
+shared/entries/shared-container.ts
+  s_231221b99fcbf7::t_65b7ebd1556c3d 4-6
+worker/ui/entries.ts
+  s_231221b99fcbf7::t_4b36178acb3ff5 76
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "68cf191d5663875b1e8435407aebb4cd97c3d4d7",
+  "prompts": {},
+  "sessions": {
+    "s_231221b99fcbf7": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a1176a-4538-7369-8003-75cbe8c7d418",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <jcoeyman@cloudflare.com>"
+    }
+  }
+}
