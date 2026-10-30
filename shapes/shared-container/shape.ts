@@ -1,6 +1,6 @@
-import type { Entry } from '../entry.ts';
+import type { Entry } from '../../shared/entry.ts';
 
-export const ENTRY: Entry = {
+export const SHAPE: Entry = {
   slug: 'shared-container',
   mark: 'SC',
   name: 'Shared container, one user per agent',
