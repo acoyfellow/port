@@ -1,0 +1,21 @@
+shared/entries/grounded-bug-arena.ts
+  s_5ddfc8f4108175::t_55cd6285d5df3e 1-50
+shared/entries/index.ts
+  s_5ddfc8f4108175::t_05689d20f2d57a 2-3,5,8,11,13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "155f9e487f5c22d1fb597f601849d74b97dd0531",
+  "prompts": {},
+  "sessions": {
+    "s_5ddfc8f4108175": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a0fc06-d951-77a8-8358-cd5dae6891bd",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <jcoeyman@cloudflare.com>"
+    }
+  }
+}
