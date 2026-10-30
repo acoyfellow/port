@@ -4,7 +4,7 @@ import { installArt, signInArt, teardownArt } from './blueprint';
 import { entryCard } from './entries';
 import { html } from './html';
 import type { Viewer } from './layout';
-import { linkButton, page } from './parts';
+import { cloudflareButton, linkButton, page } from './parts';
 
 const CREATED_LABEL: Record<(typeof FLEET.creates)[number], string> = {
   worker: 'One Worker, with a Durable Object and a Worker Loader',
@@ -15,9 +15,7 @@ const skeletonCard = () =>
   html`<div class="card entry skeleton" aria-hidden="true"><div class="entry-top"><div class="entry-icon"></div><div class="bar title"></div></div><div class="bar w80"></div><div class="bar w60"></div><div class="chips"><div class="bar" style="width:72px"></div><div class="bar" style="width:96px"></div></div></div>`;
 
 const primary = (viewer: Viewer) =>
-  viewer === null
-    ? linkButton('/sign-in', { label: 'Sign in with Cloudflare' })
-    : linkButton('/installs', { label: 'Your installs' });
+  viewer === null ? cloudflareButton('/sign-in') : linkButton('/installs', { label: 'Your installs' });
 
 const STEPS = [
   [

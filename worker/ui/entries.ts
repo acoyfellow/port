@@ -1,5 +1,5 @@
 import type { Entry, Stage } from '../../shared/entry';
-import { entryDiagram } from '../../shared/entry-diagram';
+import { entryDiagram, entryThumbnail } from '../../shared/entry-diagram';
 import { html, raw } from './html';
 import type { Viewer } from './layout';
 import { badge, linkButton, page, pageHead } from './parts';
@@ -33,7 +33,7 @@ const products = (entry: Entry) => [...new Set(entry.parts.map((part) => PRODUCT
 export const entryHref = (entry: Entry) => `/d/${entry.slug}`;
 
 export const entryCard = (entry: Entry) =>
-  html`<a class="card entry" href="${entryHref(entry)}" data-entry="${entry.slug}"><div class="entry-top"><div class="entry-icon" aria-hidden="true">${entry.mark}</div><h2>${entry.name}</h2>${STAGE_BADGE[entry.stage]}</div><p class="shape">${entry.shape}</p><p>${entry.oneLine}</p><div class="chips">${products(
+  html`<a class="card entry" href="${entryHref(entry)}" data-entry="${entry.slug}"><div class="thumb" data-thumb>${raw(entryThumbnail(entry))}</div><div class="entry-top"><div class="entry-icon" aria-hidden="true">${entry.mark}</div><h2>${entry.name}</h2>${STAGE_BADGE[entry.stage]}</div><p class="shape">${entry.shape}</p><p>${entry.oneLine}</p><div class="chips">${products(
     entry,
   ).map((label) => html`<span class="chip">${label}</span>`)}</div></a>`;
 

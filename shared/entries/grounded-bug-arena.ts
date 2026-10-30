@@ -4,15 +4,41 @@ export const ENTRY: Entry = {
   slug: 'grounded-bug-arena',
   mark: 'GA',
   name: 'Grounded bug arena',
-  oneLine: 'Plant bugs in small circuits, let any agent hunt them, and accept a claim only if replay proves the fix.',
+  oneLine:
+    'Plant bugs in small circuits, let any agent hunt them, and accept a claim only if replay proves the fix.',
   stage: 'outlined',
   shape: '1 task = 1 planted circuit; 1 claim = 1 replay check, no judge model',
   parts: [
-    { id: 'api', label: 'Arena Worker', detail: 'serves tasks, takes claims, returns a grounded verdict', product: 'worker' },
-    { id: 'planter', label: 'Planter', detail: 'seeded mutations: flipped compare, AND/OR, min/max, select swap, one number', product: 'worker' },
-    { id: 'judge', label: 'Replay judge', detail: 'runs reference and patched circuit over the same input journals, about 1 ms per claim', product: 'worker' },
-    { id: 'parse', label: 'Clef and Clairic', detail: 'turn free-text claims into a bug flag, kind and line', product: 'workers-ai' },
-    { id: 'ledger', label: 'Score ledger', detail: 'one row per claim: found, wrong line, false alarm', product: 'd1' },
+    {
+      id: 'api',
+      label: 'Arena Worker',
+      detail: 'serves tasks, takes claims, returns a grounded verdict',
+      product: 'worker',
+    },
+    {
+      id: 'planter',
+      label: 'Planter',
+      detail: 'seeded mutations: flipped compare, AND/OR, min/max, select swap, one number',
+      product: 'worker',
+    },
+    {
+      id: 'judge',
+      label: 'Replay judge',
+      detail: 'runs reference and patched circuit over the same input journals, about 1 ms per claim',
+      product: 'worker',
+    },
+    {
+      id: 'parse',
+      label: 'Clef and Clairic',
+      detail: 'turn free-text claims into a bug flag, kind and line',
+      product: 'workers-ai',
+    },
+    {
+      id: 'ledger',
+      label: 'Score ledger',
+      detail: 'one row per claim: found, wrong line, false alarm',
+      product: 'd1',
+    },
   ],
   edges: [
     { from: 'api', to: 'planter', label: 'new task' },
@@ -33,12 +59,36 @@ export const ENTRY: Entry = {
     'Not deployed: the replay judge runs on a laptop today',
   ],
   measures: [
-    { label: 'Planted bugs our own tests catch', value: '141 of 217 (65%)', source: 'marionette/spikes/arena/results.jsonl' },
-    { label: 'Sonnet 5.5 claim precision, raw', value: '27 of 67 (40%)', source: 'marionette/spikes/arena/rescore.json' },
-    { label: 'Sonnet 5.5 claim precision, replay-grounded', value: '22 of 22 (100%)', source: 'marionette/spikes/arena/rescore.json' },
-    { label: 'False alarms rejected by replay', value: '19 of 19', source: 'marionette/spikes/arena/rescore.json' },
-    { label: 'Visible bugs found by Sonnet 5.5', value: '22 of 52 (42%)', source: 'marionette/spikes/arena/rescore.json' },
-    { label: 'Clef claim flag agrees with agent JSON', value: '146 of 146', source: 'marionette/spikes/arena session log' },
+    {
+      label: 'Planted bugs our own tests catch',
+      value: '141 of 217 (65%)',
+      source: 'marionette/spikes/arena/results.jsonl',
+    },
+    {
+      label: 'Sonnet 5.5 claim precision, raw',
+      value: '27 of 67 (40%)',
+      source: 'marionette/spikes/arena/rescore.json',
+    },
+    {
+      label: 'Sonnet 5.5 claim precision, replay-grounded',
+      value: '22 of 22 (100%)',
+      source: 'marionette/spikes/arena/rescore.json',
+    },
+    {
+      label: 'False alarms rejected by replay',
+      value: '19 of 19',
+      source: 'marionette/spikes/arena/rescore.json',
+    },
+    {
+      label: 'Visible bugs found by Sonnet 5.5',
+      value: '22 of 52 (42%)',
+      source: 'marionette/spikes/arena/rescore.json',
+    },
+    {
+      label: 'Clef claim flag agrees with agent JSON',
+      value: '146 of 146',
+      source: 'marionette/spikes/arena session log',
+    },
   ],
   install: {
     status: 'planned',

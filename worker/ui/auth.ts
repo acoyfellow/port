@@ -1,7 +1,16 @@
 import { SCOPES } from '../../shared/scopes';
 import { html } from './html';
 import type { Viewer } from './layout';
-import { copyField, errorPage, linkButton, notice, page, pageHead, postButton } from './parts';
+import {
+  cloudflareButton,
+  copyField,
+  errorPage,
+  linkButton,
+  notice,
+  page,
+  pageHead,
+  postButton,
+} from './parts';
 
 export const signInPage = (next: string) =>
   page({
@@ -11,9 +20,7 @@ export const signInPage = (next: string) =>
     body: html`<div style="max-width:560px;margin:24px auto 0">${pageHead(
       'Sign in with Cloudflare',
       'port asks Cloudflare for the permissions below. Next you pick the one account port may act on. You can sign out at any time, and port forgets your tokens when you do.',
-    )}<div class="stack"><div class="actions">${linkButton(`/oauth/start?next=${encodeURIComponent(next)}`, {
-      label: 'Continue to Cloudflare',
-    })}${linkButton('/oauth/link', { label: 'Use a sign-in link instead', kind: 'ghost' })}</div><details class="card"><summary>The ${
+    )}<div class="stack"><div class="actions">${cloudflareButton(`/oauth/start?next=${encodeURIComponent(next)}`)}${linkButton('/oauth/link', { label: 'Use a sign-in link instead', kind: 'ghost' })}</div><details class="card"><summary>The ${
       SCOPES.length
     } permissions port asks for</summary><table style="margin-top:10px"><tbody>${SCOPES.map(
       (note) => html`<tr><td class="mono">${note.scope}</td><td class="muted">${note.why}</td></tr>`,

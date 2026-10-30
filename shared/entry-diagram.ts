@@ -99,3 +99,53 @@ export const entryDiagram = (entry: Entry) => {
   });
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img" aria-label="${escapeXml(`${entry.name}: ${entry.shape}`)}"><style>${STYLE}</style><defs><marker id="head" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8a7cf0"/></marker></defs>${edges.join('')}${placed.map(box).join('')}</svg>`;
 };
+
+const THUMB_PRODUCT: Readonly<Record<Part['product'], string>> = {
+  worker: 'worker',
+  'durable-object': 'state',
+  workflow: 'state',
+  container: 'box',
+  'worker-loader': 'isolate',
+  'workers-ai': 'model',
+  'ai-gateway': 'model',
+  kv: 'store',
+  d1: 'store',
+  r2: 'store',
+  queue: 'store',
+  browser: 'isolate',
+  access: 'gate',
+  external: 'outside',
+};
+
+const THUMB_STYLE =
+  '.t-grid{stroke:var(--thumb-grid,#e9e3ff);stroke-width:.5}.t-edge{fill:none;stroke:var(--thumb-edge,#b9a8ff);stroke-width:5}.t-box{stroke-width:5;rx:16}.t-box.worker{fill:#f3f0ff;stroke:#7c5cff}.t-box.state{fill:#7c5cff;stroke:#5b3df0}.t-box.box{fill:#ede6ff;stroke:#4c2fd1}.t-box.isolate{fill:#fff;stroke:#a38cff;stroke-dasharray:14 8}.t-box.model{fill:#d9ceff;stroke:#7c5cff}.t-box.store{fill:#fff;stroke:#5b3df0}.t-box.gate{fill:#fff;stroke:#18181b}.t-box.outside{fill:none;stroke:#a1a1a6;stroke-dasharray:10 8}';
+
+export const entryThumbnail = (entry: Entry) => {
+  const placed = place(entry);
+  const byId = new Map(placed.map((each) => [each.part.id, each]));
+  const width = Math.max(...placed.map((each) => each.x + BOX_W), BOX_W) + PAD;
+  const height = Math.max(...placed.map((each) => each.y + BOX_H), BOX_H) + PAD;
+  const grid = Array.from(
+    { length: Math.ceil(width / 40) },
+    (_, index) => `<path class="t-grid" d="M${index * 40} 0V${height}"/>`,
+  )
+    .concat(
+      Array.from(
+        { length: Math.ceil(height / 40) },
+        (_, index) => `<path class="t-grid" d="M0 ${index * 40}H${width}"/>`,
+      ),
+    )
+    .join('');
+  const edges = entry.edges.flatMap((edge) => {
+    const from = byId.get(edge.from);
+    const to = byId.get(edge.to);
+    return from === undefined || to === undefined || from === to
+      ? []
+      : [arrow(from, to).replace('class="edge" marker-end="url(#head)"', 'class="t-edge"')];
+  });
+  const boxes = placed.map(
+    ({ part, x, y }) =>
+      `<rect x="${x + 6}" y="${y + 6}" width="${BOX_W - 12}" height="${BOX_H - 12}" rx="16" class="t-box ${THUMB_PRODUCT[part.product]}"/>`,
+  );
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" class="thumb-svg" role="img" aria-label="${escapeXml(`Diagram: ${entry.shape}`)}"><style>${THUMB_STYLE}</style>${grid}${edges.join('')}${boxes.join('')}</svg>`;
+};

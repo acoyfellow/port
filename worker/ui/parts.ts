@@ -32,6 +32,9 @@ export const postButton = (
 export const linkButton = (href: string, options: Button) =>
   html`<a class="${buttonClass(options)}" href="${href}">${options.label}</a>`;
 
+export const cloudflareButton = (href: string, label = 'Sign in with Cloudflare') =>
+  html`<a class="btn cf" href="${href}" data-sign-in="cloudflare"><img class="cf-mark" src="/brand/cloudflare-cloud.svg" alt="" width="33" height="15"><span>${label}</span></a>`;
+
 export const notice = (tone: 'warn' | 'bad' | 'ok' | 'plain', body: Part) =>
   html`<div class="notice${tone === 'plain' ? '' : ` ${tone}`}" role="${tone === 'bad' ? 'alert' : 'status'}">${body}</div>`;
 
