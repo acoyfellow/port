@@ -1,6 +1,6 @@
-import type { Entry } from '../entry.ts';
+import type { Entry } from '../../shared/entry.ts';
 
-export const ENTRY: Entry = {
+export const SHAPE: Entry = {
   slug: 'durable-session',
   mark: 'DS',
   name: 'Durable Pi session',
@@ -88,5 +88,4 @@ export const ENTRY: Entry = {
   evalPlan:
     'Run swarm-5 with one Durable Object per task. Seed each task repo in Artifacts, send the task, and run the hidden tests on the final commit. Run each task twice: once clean, and once with kills every 9.5 seconds as in npm run kill5. Measure tasks passed, lives used, extra commits from replayed steps, and wall time to the last commit. Node-based test runners need a container, which this shape does not have, so the tests run outside the agent.',
   source: 'https://github.com/acoyfellow/pi-ext-durable',
-  receipt: 'proof/shapes/durable-session.json',
 };

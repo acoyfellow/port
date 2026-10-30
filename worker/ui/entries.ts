@@ -1,6 +1,5 @@
 import type { Entry, Stage } from '../../shared/entry';
 import { entryDiagram } from '../../shared/entry-diagram';
-import { SHAPE_RECEIPTS } from '../../shared/shape-receipts';
 import { html, raw } from './html';
 import type { Viewer } from './layout';
 import { badge, linkButton, page, pageHead } from './parts';
@@ -54,9 +53,9 @@ const measures = (entry: Entry) =>
 const REPO = 'https://github.com/acoyfellow/port/blob/main';
 
 const portBuild = (entry: Entry) => {
-  const receipt = SHAPE_RECEIPTS[entry.slug];
-  if (receipt === undefined || entry.receipt === undefined) return '';
-  return html`<section class="card build"><h2>port build</h2><p>${receipt.proved}</p><dl><div><dt>Deploy</dt><dd>${receipt.seconds.up} s</dd></div><div><dt>Test</dt><dd>${receipt.seconds.smoke} s</dd></div><div><dt>Delete</dt><dd>${receipt.seconds.down} s</dd></div><div><dt>Left after delete</dt><dd>0</dd></div></dl><p class="muted">Run on <code>${receipt.on}</code> on a personal account. <a href="${REPO}/shapes/${entry.slug}">Source</a> · <a href="${REPO}/${entry.receipt}">Receipt</a></p></section>`;
+  const receipt = entry.build;
+  if (receipt === undefined) return '';
+  return html`<section class="card build"><h2>port build</h2><p>${receipt.proved}</p><dl><div><dt>Deploy</dt><dd>${receipt.seconds.up} s</dd></div><div><dt>Test</dt><dd>${receipt.seconds.smoke} s</dd></div><div><dt>Delete</dt><dd>${receipt.seconds.down} s</dd></div><div><dt>Left after delete</dt><dd>0</dd></div></dl><p class="muted">Run on <code>${receipt.on}</code> on a personal account. <a href="${REPO}/shapes/${entry.slug}">Source</a> · <a href="${REPO}/proof/shapes/${entry.slug}.json">Receipt</a></p></section>`;
 };
 
 const installAction = (entry: Entry, viewer: Viewer) =>
@@ -77,7 +76,7 @@ export const entryPage = (viewer: Viewer, entry: Entry) =>
     )}</figure><div class="grid">${list('Strengths', entry.strengths)}${list('Limits', entry.limits)}<section class="card"><h2>Parts</h2><ul class="muted">${entry.parts.map(
       (part) => html`<li><strong>${part.label}</strong> · ${part.detail}</li>`,
     )}</ul></section></div>${measures(entry)}${
-      entry.receipt === undefined
+      entry.build === undefined
         ? html`<div class="grid"><section class="card"><h2>Install ${badge(
             entry.install.status === 'ready' ? 'ok' : 'plain',
             entry.install.status === 'ready'

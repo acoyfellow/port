@@ -145,10 +145,16 @@ const subdomain = async () => (await api('/workers/subdomain')).body.result?.sub
 
 const runStep = (slug, step, sub) => {
   const dir = join(root, 'shapes', slug);
-  if (!existsSync(join(dir, 'package.json'))) throw new Error(`shapes/${slug}/package.json is missing`);
+  if (!existsSync(join(dir, 'alchemy.run.ts'))) throw new Error(`shapes/${slug}/alchemy.run.ts is missing`);
+  const alchemy = join(root, 'shapes', 'node_modules', '.bin', 'alchemy');
+  const command = {
+    up: [alchemy, ['deploy', '--stage', 'shape', '--yes', '--no-input']],
+    smoke: [process.execPath, ['smoke.ts']],
+    down: [alchemy, ['destroy', '--stage', 'shape', '--yes', '--no-input']],
+  }[step];
   const started = Date.now();
   try {
-    const output = execFileSync('npm', ['run', '--silent', step], {
+    const output = execFileSync(command[0], command[1], {
       cwd: dir,
       env: {
         ...process.env,

@@ -40,5 +40,11 @@ export type Entry = {
   readonly install: { readonly status: 'ready' | 'planned' | 'none'; readonly plan: string };
   readonly evalPlan: string;
   readonly source: string;
-  readonly receipt?: string;
+  readonly build?: ShapeBuild;
+};
+
+export type ShapeBuild = {
+  readonly proved: string;
+  readonly seconds: { readonly up: number; readonly smoke: number; readonly down: number };
+  readonly on: string;
 };

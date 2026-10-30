@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { sweepAll } from './sweep.mjs';
 
 const SHAPES = [
+  'isolate-agents',
   'durable-session',
   'agent-room',
   'self-editing-app',
@@ -12,6 +13,9 @@ const SHAPES = [
   'person-with-computer',
   'shared-container',
 ];
+
+const lockFile = join(import.meta.dirname, '..', '..', '.tmp', 'std-lock-at');
+const NOT_BEFORE = existsSync(lockFile) ? Date.parse(readFileSync(lockFile, 'utf8').trim()) : 0;
 
 const dir = import.meta.dirname;
 const disproven = existsSync(join(dir, 'DISPROVEN.json'))
@@ -31,6 +35,8 @@ const verdict = (slug) => {
     Date.parse(receipt.up.at) < Date.parse(receipt.smoke.at) &&
     Date.parse(receipt.smoke.at) < Date.parse(receipt.down.at);
   if (!order) return { slug, ok: false, how: 'up, smoke, down are not in order' };
+  if (Date.parse(receipt.up.at) < NOT_BEFORE)
+    return { slug, ok: false, how: 'receipt is older than the standardization lock' };
   const proves = receipt.smoke.tail.some((line) => line.startsWith('PROVED '));
   if (!proves) return { slug, ok: false, how: 'smoke printed no PROVED line' };
   return { slug, ok: true, how: receipt.smoke.tail.filter((line) => line.startsWith('PROVED ')).join(' | ') };
