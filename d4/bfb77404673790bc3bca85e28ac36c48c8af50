@@ -1,0 +1,35 @@
+shared/entries/grounded-bug-arena.ts
+  s_231221b99fcbf7::t_1d223961c74026 7-8,12-41,62-91
+shared/entries/index.ts
+  s_231221b99fcbf7::t_e5aed7e02dd9a8 1-11,13-117
+shared/entry-diagram.ts
+  s_231221b99fcbf7::t_20ff0e90763af1 102-151
+static/brand/cloudflare-cloud.svg
+  s_231221b99fcbf7::t_ae750f278aeabb 1
+static/ui.css
+  s_231221b99fcbf7::t_3bcf06ef6fcbaa 321-323,325,327,329-330,334-335,340,348-354
+worker/ui/auth.ts
+  s_231221b99fcbf7::t_bf2f1ffafab9da 4-13,23
+worker/ui/directory.ts
+  s_231221b99fcbf7::t_9ee86ebfb3dd21 7,18
+worker/ui/entries.ts
+  s_231221b99fcbf7::t_a1f01af64fac16 2,36
+worker/ui/parts.ts
+  s_231221b99fcbf7::t_38144dc26df7f0 35-37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "d4bfb77404673790bc3bca85e28ac36c48c8af50",
+  "prompts": {},
+  "sessions": {
+    "s_231221b99fcbf7": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a1176a-4538-7369-8003-75cbe8c7d418",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <jcoeyman@cloudflare.com>"
+    }
+  }
+}
