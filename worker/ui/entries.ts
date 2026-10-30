@@ -6,7 +6,7 @@ import type { Viewer } from './layout';
 import { badge, linkButton, page, pageHead } from './parts';
 
 const STAGE_BADGE: Record<Stage, ReturnType<typeof badge> | ''> = {
-  installable: badge('ok', 'Installable'),
+  installable: '',
   verified: '',
   outlined: badge('live', 'Outlined'),
   idea: badge('plain', 'Idea'),
