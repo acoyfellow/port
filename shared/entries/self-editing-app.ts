@@ -1,9 +1,9 @@
 import type { Entry } from '../entry.ts';
 
 export const ENTRY: Entry = {
-  slug: 'skin',
-  mark: 'S',
-  name: 'skin',
+  slug: 'self-editing-app',
+  mark: 'SE',
+  name: 'App the agent rewrites',
   oneLine: 'A per-user web app that an agent rewrites on request, gated by build, boot, and checks.',
   stage: 'outlined',
   shape: '1 user = 1 Body Durable Object = 1 live app version in a Worker Loader isolate.',

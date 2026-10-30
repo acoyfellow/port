@@ -1,9 +1,9 @@
 import type { Entry } from '../entry.ts';
 
 export const ENTRY: Entry = {
-  slug: 'terrarium',
-  mark: 'T',
-  name: 'Terrarium',
+  slug: 'sealed-box',
+  mark: 'SB',
+  name: 'Sealed box per run',
   oneLine: 'Send one task to a sealed cloud box. Get the answer and a receipt that ties it to your task.',
   stage: 'outlined',
   shape: '1 run = 1 Durable Object = 1 sealed container',

@@ -73,5 +73,5 @@ export const entryPage = (viewer: Viewer, entry: Entry) =>
         : entry.install.status === 'planned'
           ? 'Planned'
           : 'Not planned',
-    )}</h2><p class="muted">${entry.install.plan}</p></section><section class="card"><h2>Eval</h2><p class="muted">${entry.evalPlan}</p></section></div><p class="muted">Source: <code>${entry.source}</code></p></div>`,
+    )}</h2><p class="muted">${entry.install.plan}</p></section><section class="card"><h2>Eval</h2><p class="muted">${entry.evalPlan}</p></section></div><p class="muted">Shape first seen in <code>${entry.source}</code>. port installs its own copy of the shape, not that project.</p></div>`,
   });

@@ -1,9 +1,9 @@
 import type { Entry } from '../entry.ts';
 
 export const ENTRY: Entry = {
-  slug: 'coil',
-  mark: 'A',
-  name: 'coil',
+  slug: 'container-per-thread',
+  mark: 'CT',
+  name: 'Container per thread',
   oneLine: 'Agent threads that each own a cloud computer with terminals, Chrome, and a disk.',
   stage: 'outlined',
   shape: '1 thread = 1 agent = 1 container.',

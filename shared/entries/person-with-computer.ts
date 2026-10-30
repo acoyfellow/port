@@ -1,9 +1,9 @@
 import type { Entry } from '../entry.ts';
 
 export const ENTRY: Entry = {
-  slug: 'hark',
-  mark: 'HK',
-  name: 'hark',
+  slug: 'person-with-computer',
+  mark: 'PC',
+  name: 'One agent and one computer per person',
   oneLine:
     'A voice agent that runs on the signed-in user account, with one Durable Object and one container per person.',
   stage: 'outlined',

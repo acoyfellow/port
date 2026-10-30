@@ -1,22 +1,22 @@
 import type { Entry } from '../entry.ts';
-import { ENTRY as entry_chat_ax } from './chat-ax';
-import { ENTRY as entry_coil } from './coil';
-import { ENTRY as entry_fleet } from './fleet';
-import { ENTRY as entry_hark } from './hark';
-import { ENTRY as entry_my_ax } from './my-ax';
-import { ENTRY as entry_pi_durable } from './pi-durable';
-import { ENTRY as entry_skin } from './skin';
-import { ENTRY as entry_swarm_5 } from './swarm-5';
-import { ENTRY as entry_terrarium } from './terrarium';
+import { ENTRY as entry_agent_room } from './agent-room';
+import { ENTRY as entry_chat_with_sandbox } from './chat-with-sandbox';
+import { ENTRY as entry_container_per_thread } from './container-per-thread';
+import { ENTRY as entry_durable_session } from './durable-session';
+import { ENTRY as entry_isolate_agents } from './isolate-agents';
+import { ENTRY as entry_person_with_computer } from './person-with-computer';
+import { ENTRY as entry_sealed_box } from './sealed-box';
+import { ENTRY as entry_self_editing_app } from './self-editing-app';
+import { ENTRY as entry_shared_container } from './shared-container';
 
 export const ENTRIES: readonly Entry[] = [
-  entry_fleet,
-  entry_coil,
-  entry_my_ax,
-  entry_chat_ax,
-  entry_swarm_5,
-  entry_terrarium,
-  entry_hark,
-  entry_skin,
-  entry_pi_durable,
+  entry_isolate_agents,
+  entry_durable_session,
+  entry_chat_with_sandbox,
+  entry_agent_room,
+  entry_container_per_thread,
+  entry_person_with_computer,
+  entry_shared_container,
+  entry_sealed_box,
+  entry_self_editing_app,
 ];

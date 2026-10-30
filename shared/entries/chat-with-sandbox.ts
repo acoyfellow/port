@@ -1,9 +1,9 @@
 import type { Entry } from '../entry.ts';
 
 export const ENTRY: Entry = {
-  slug: 'my-ax',
-  mark: 'B',
-  name: 'My AX',
+  slug: 'chat-with-sandbox',
+  mark: 'CS',
+  name: 'Durable chat with a sandbox',
   oneLine:
     'A single-operator agent behind Access. Each Pi chat is one Durable Object that sleeps between turns.',
   stage: 'outlined',

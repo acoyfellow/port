@@ -1,9 +1,9 @@
 import type { Entry } from '../entry.ts';
 
 export const ENTRY: Entry = {
-  slug: 'fleet',
-  mark: 'F',
-  name: 'Agent fleet',
+  slug: 'isolate-agents',
+  mark: 'DI',
+  name: 'Durable agents, isolate tests',
   oneLine:
     'Coding agents on your own account with no container. port installs it, runs the eval and tears it down.',
   stage: 'installable',

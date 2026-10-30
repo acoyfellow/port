@@ -1,9 +1,9 @@
 import type { Entry } from '../entry.ts';
 
 export const ENTRY: Entry = {
-  slug: 'swarm-5',
-  mark: 'C',
-  name: 'Swarm-5 shared container',
+  slug: 'shared-container',
+  mark: 'SC',
+  name: 'Shared container, one user per agent',
   oneLine: 'Five coding agents share one container. Each agent runs as its own Unix user.',
   stage: 'outlined',
   shape: '1 container = 5 agents = 5 Unix users',

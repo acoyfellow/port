@@ -1,9 +1,9 @@
 import type { Entry } from '../entry.ts';
 
 export const ENTRY: Entry = {
-  slug: 'pi-durable',
-  mark: 'PD',
-  name: 'Pi Durable',
+  slug: 'durable-session',
+  mark: 'DS',
+  name: 'Durable Pi session',
   oneLine: 'A Pi coding agent that lives in a Durable Object and continues after the object is killed.',
   stage: 'outlined',
   shape: '1 conversation = 1 Durable Object = 1 Pi harness in SQLite',

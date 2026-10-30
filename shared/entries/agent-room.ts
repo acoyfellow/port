@@ -1,9 +1,9 @@
 import type { Entry } from '../entry.ts';
 
 export const ENTRY: Entry = {
-  slug: 'chat-ax',
-  mark: 'B',
-  name: 'Chat AX',
+  slug: 'agent-room',
+  mark: 'AR',
+  name: 'Room of durable agents',
   oneLine: 'A shared chat room where a team and a tree of AI agents work together on one Cloudflare account.',
   stage: 'outlined',
   shape: '1 room = 1 ChatRoom Durable Object, 1 agent = 1 Agent Durable Object, no containers.',
