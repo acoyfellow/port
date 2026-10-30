@@ -118,7 +118,7 @@ const runStep = (slug, step, sub) => {
 };
 
 const scrub = (lines) =>
-  lines.map((line) => line.replaceAll(accountId(), '<account>').replace(/[A-Za-z0-9_-]{40,}/g, '<redacted>'));
+  lines.map((line) => line.replaceAll(accountId(), '<account>').replace(/\.[a-z0-9-]+\.workers\.dev/g, '.<subdomain>.workers.dev').replace(/[A-Za-z0-9_-]{40,}/g, '<redacted>'));
 
 const main = async () => {
   if (!process.argv[1]?.endsWith('shape.mjs')) return;

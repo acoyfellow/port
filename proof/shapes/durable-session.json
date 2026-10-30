@@ -21,7 +21,7 @@
       "[21:54:12.277] INFO (#1): ",
       "[21:54:12.277] INFO (#1): Done: 1 succeeded (7.0s)",
       "{",
-      "  url: 'https://port-shape-durable-session.coy.workers.dev',",
+      "  url: 'https://port-shape-durable-session.<subdomain>.workers.dev',",
       "  worker: 'port-shape-durable-session'",
       "}"
     ],

@@ -26,5 +26,21 @@
       "}"
     ],
     "at": "2026-10-30T01:55:06.563Z"
+  },
+  "smoke": {
+    "ok": false,
+    "ms": 61123,
+    "tail": [
+      "file:///Users/jcoeyman/cloudflare/port/shapes/lib.mjs:13",
+      "  throw new Error(`${path} kept failing (${last})`);",
+      "        ^",
+      "",
+      "Error: /post?room=room-1793325315391&agent=agent-1793325315391&sender=alice&text=hello kept failing (TypeError: fetch failed)",
+      "    at getJson (file:///Users/jcoeyman/cloudflare/port/shapes/lib.mjs:13:9)",
+      "    at async file:///Users/jcoeyman/cloudflare/port/shapes/agent-room/smoke.mjs:7:1",
+      "",
+      "Node.js v26.13.0"
+    ],
+    "at": "2026-10-30T01:56:15.653Z"
   }
 }
