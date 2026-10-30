@@ -1,6 +1,6 @@
-import type { Entry } from '../entry.ts';
+import type { Entry } from '../../shared/entry.ts';
 
-export const ENTRY: Entry = {
+export const SHAPE: Entry = {
   slug: 'chat-with-sandbox',
   mark: 'CS',
   name: 'Durable chat with a sandbox',
