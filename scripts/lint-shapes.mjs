@@ -3,6 +3,7 @@ import { join } from 'node:path';
 
 export const SHAPES = [
   'isolate-agents',
+  'self-observe',
   'durable-session',
   'agent-room',
   'self-editing-app',

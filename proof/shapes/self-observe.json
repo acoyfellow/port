@@ -1,0 +1,137 @@
+{
+  "slug": "self-observe",
+  "up": {
+    "ok": true,
+    "ms": 7962,
+    "tail": [
+      "[10:54:32.187] INFO (#1): [worker/FLEET_KEY] noop",
+      "[10:54:32.187] INFO (#1): [worker/GATEWAY] noop",
+      "[10:54:32.187] INFO (#1): [worker/LOADER] noop",
+      "[10:54:32.187] INFO (#1): ",
+      "[10:54:32.190] INFO (#489): [worker] updating",
+      "[10:54:32.190] INFO (#489): Cloudflare Worker reconcile: starting port-shape-self-observe",
+      "[10:54:32.190] INFO (#489): Cloudflare Worker reconcile: durable objects [{\"logicalId\":\"AGENT\",\"className\":\"Agent\"}]",
+      "[10:54:32.896] INFO (#489): Cloudflare Worker reconcile: existing durable object tags [\"alchemy:dos:AGENT=Agent\"]",
+      "[10:54:32.896] INFO (#489): Cloudflare Worker reconcile: previous durable object tags [\"alchemy:dos:AGENT=Agent\"]",
+      "[10:54:32.896] INFO (#489): Cloudflare Worker update: preparing bundle for port-shape-self-observe",
+      "[10:54:32.898] INFO (#489): Cloudflare Worker update: uploading script for port-shape-self-observe",
+      "[10:54:33.495] INFO (#489): Cloudflare Worker put: durable object reconciliation {\"oldDoClassNameByLogicalId\":{\"AGENT\":\"Agent\"},\"currentDoClassNameByLogicalId\":{\"AGENT\":\"Agent\"},\"deletedClasses\":[],\"renamedClasses\":[],\"transferredClasses\":[],\"newSqliteClasses\":[]}",
+      "[10:54:37.615] INFO (#489): [worker] updated \u2014 Reconciling custom domains (1) ... (5.4s)",
+      "[10:54:37.618] INFO (#608): [worker] updated \u2014 Reconciling custom domains (1) ... (5.4s)",
+      "[10:54:37.622] INFO (#1): ",
+      "[10:54:37.622] INFO (#1): Done: 1 succeeded (5.4s)",
+      "{",
+      "  url: 'https://port-shape-self-observe.customer0.dev',",
+      "  worker: 'port-shape-self-observe'",
+      "}"
+    ],
+    "at": "2026-10-30T14:54:37.825Z"
+  },
+  "smoke": {
+    "ok": true,
+    "ms": 5941815,
+    "tail": [
+      "all       money-words    s1 PASS hidden 2/2 turns 16 $0.0477 gov 5 tools {\"list_files\":1,\"read_file\":4,\"write_file\":2,\"run_tests\":3,\"edit_file\":2,\"trace\":1,\"shrink\":1,\"mutate\":2} ",
+      "all       money-words    s2 PASS hidden 2/2 turns 16 $0.0549 gov 8 tools {\"list_files\":1,\"read_file\":4,\"write_file\":2,\"run_tests\":3,\"trace\":3,\"shrink\":2,\"mutate\":2,\"edit_file\":1} ",
+      "all       csv-parse      s0 fail hidden 0/1 turns 3 $0.0343 gov 0 tools {\"list_files\":1,\"read_file\":3} ",
+      "all       csv-parse      s1 PASS hidden 3/3 turns 16 $0.0660 gov 7 tools {\"list_files\":1,\"read_file\":3,\"write_file\":3,\"run_tests\":3,\"shrink\":5,\"trace\":2} ",
+      "spent so far $2.352",
+      "all       sku-glob       s2 fail hidden 0/1 turns 3 $0.0357 gov 0 tools {\"list_files\":1,\"read_file\":2} ",
+      "all       sku-glob       s0 fail hidden 0/1 turns 5 $0.0359 gov 1 tools {\"list_files\":1,\"read_file\":3} ",
+      "all       sku-glob       s1 fail hidden 0/0 turns 13 $0.0364 gov 2 tools {\"list_files\":2,\"read_file\":5,\"write_file\":2,\"run_tests\":2,\"trace\":6} Invalid or unexpected token",
+      "spent so far $2.460",
+      "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510",
+      "\u2502 (index) \u2502 arm        \u2502 seats \u2502 passed \u2502 usd    \u2502 usdPerPass \u2502 turns \u2502 hiddenTests \u2502",
+      "\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524",
+      "\u2502 0       \u2502 'baseline' \u2502 15    \u2502 9      \u2502 0.4706 \u2502 0.0523     \u2502 84    \u2502 21          \u2502",
+      "\u2502 1       \u2502 'shrink'   \u2502 15    \u2502 10     \u2502 0.6962 \u2502 0.0696     \u2502 148   \u2502 24          \u2502",
+      "\u2502 2       \u2502 'mutate'   \u2502 11    \u2502 4      \u2502 0.3107 \u2502 0.0777     \u2502 87    \u2502 9           \u2502",
+      "\u2502 3       \u2502 'governor' \u2502 11    \u2502 8      \u2502 0.3169 \u2502 0.0396     \u2502 70    \u2502 18          \u2502",
+      "\u2502 4       \u2502 'all'      \u2502 15    \u2502 7      \u2502 0.666  \u2502 0.0951     \u2502 179   \u2502 16          \u2502",
+      "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518",
+      "undefined",
+      "PROVED The self-observe shape ran 67 seats on @cf/moonshotai/kimi-k2.6. Each arm used the same tasks and the same turn limit. Hidden tests graded every seat. The spend was $2.460."
+    ],
+    "at": "2026-10-30T16:33:40.151Z"
+  },
+  "down": {
+    "ok": true,
+    "ms": 10600,
+    "tail": [
+      "[12:35:24.226] INFO (#1): Loading stack state",
+      "[12:35:24.228] INFO (#1): Computing plan",
+      "[12:35:24.232] INFO (#1): Plan ready (2.3s)",
+      "[12:35:24.233] INFO (#1): Plan: 2 to delete, 5 binding changes",
+      "[12:35:24.233] INFO (#1): [gateway] delete",
+      "[12:35:24.233] INFO (#1): [worker] delete",
+      "[12:35:24.233] INFO (#1): [worker/AGENT] unbind",
+      "[12:35:24.233] INFO (#1): [worker/AI] unbind",
+      "[12:35:24.233] INFO (#1): [worker/FLEET_KEY] unbind",
+      "[12:35:24.233] INFO (#1): [worker/GATEWAY] unbind",
+      "[12:35:24.233] INFO (#1): [worker/LOADER] unbind",
+      "[12:35:24.233] INFO (#1): ",
+      "[12:35:24.235] INFO (#325): [worker] deleting",
+      "[12:35:24.260] INFO (#325): Cloudflare Worker delete: deleting port-shape-self-observe",
+      "[12:35:24.261] INFO (#327): Cloudflare: using environment variables (CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN) instead of the profile.",
+      "[12:35:25.820] INFO (#325): [worker] deleted (1.6s)",
+      "[12:35:25.820] INFO (#324): [gateway] deleting",
+      "[12:35:29.569] INFO (#324): [gateway] deleted (3.7s)",
+      "[12:35:29.588] INFO (#1): ",
+      "[12:35:29.588] INFO (#1): Done: 2 succeeded (5.4s)"
+    ],
+    "at": "2026-10-30T16:35:32.345Z"
+  },
+  "sweep": {
+    "at": "2026-10-30T16:35:37.079Z",
+    "prefix": "port-shape-self-observe",
+    "leftovers": {},
+    "errors": {}
+  },
+  "eval": {
+    "model": "@cf/moonshotai/kimi-k2.6",
+    "maxTurns": 16,
+    "runs": [
+      ".tmp/self-observe-1793368820297.json",
+      ".tmp/self-observe-1793372079323.json"
+    ],
+    "droppedModelErrors": 28,
+    "byArm": {
+      "baseline": {
+        "seats": 20,
+        "passed": 14,
+        "usd": 0.6163,
+        "per": 0.044,
+        "turns": 6.4
+      },
+      "shrink": {
+        "seats": 29,
+        "passed": 19,
+        "usd": 1.2597,
+        "per": 0.0663,
+        "turns": 9.4
+      },
+      "mutate": {
+        "seats": 20,
+        "passed": 10,
+        "usd": 0.7139,
+        "per": 0.0714,
+        "turns": 8.7
+      },
+      "governor": {
+        "seats": 20,
+        "passed": 17,
+        "usd": 0.5627,
+        "per": 0.0331,
+        "turns": 7.1
+      },
+      "all": {
+        "seats": 24,
+        "passed": 14,
+        "usd": 1.0271,
+        "per": 0.0734,
+        "turns": 12.7
+      }
+    },
+    "spendUsd": 4.24
+  }
+}
