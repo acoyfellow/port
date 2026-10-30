@@ -1,5 +1,6 @@
 import { DIRECTORY_SLOTS, FLEET } from '../../shared/catalog';
 import { ENTRIES } from '../../shared/entries/index';
+import { installArt, signInArt, teardownArt } from './blueprint';
 import { entryCard } from './entries';
 import { html } from './html';
 import type { Viewer } from './layout';
@@ -19,24 +20,39 @@ const primary = (viewer: Viewer) =>
     : linkButton('/installs', { label: 'Your installs' });
 
 const STEPS = [
-  ['Sign in', 'port asks Cloudflare for the permissions an install needs. You pick the account.'],
-  ['Install and run', 'port creates the resources on your account, then runs the eval against them.'],
-  ['Keep it or tear it down', 'Tear down deletes each resource and checks with the API that it is gone.'],
+  [
+    'Sign in',
+    'Sign in with Cloudflare and pick one account. port asks only for the permissions an install uses.',
+    signInArt,
+  ],
+  [
+    'Install and run',
+    'port creates the resources on that account. Then it runs the eval against them.',
+    installArt,
+  ],
+  [
+    'Tear down',
+    'port deletes each resource. Then it asks the Cloudflare API to confirm that 0 are left.',
+    teardownArt,
+  ],
 ] as const;
+
+const howItWorks = html`<section class="blueprint" aria-labelledby="how"><div class="bp-head"><span class="bp-tag">How it works</span><h1 id="how">Agent infra on your own Cloudflare account.</h1><p>Each install runs on your account and your bill.</p></div><ol class="bp-steps">${STEPS.map(
+  ([title, text, art], index) =>
+    html`<li class="bp-step">${art}<div><span class="bp-num">${String(index + 1).padStart(2, '0')}</span><strong>${title}</strong><p>${text}</p></div></li>`,
+)}</ol></section>`;
 
 export const homePage = (viewer: Viewer) =>
   page({
     title: 'Agent infra for your Cloudflare account',
     viewer,
     section: 'home',
-    body: html`<section class="hero"><div><h1>Agent infra on your own Cloudflare account.</h1><p>Install it, run an eval against it, then keep it or tear it down. Everything runs on your account and your bill. port only holds the install button.</p><div class="actions">${primary(
-      viewer,
-    )}${linkButton('/fleet', { label: 'See the agent fleet', kind: 'ghost' })}</div></div><figure><img src="/fleet.svg" alt="port uploads one Fleet Worker to your account. The Worker uses a Durable Object, a Worker Loader and Workers AI. Model calls go through an AI Gateway."></figure></section><div class="stack"><section><div class="section-head"><h2>Directory</h2><p>Agent infra shapes we found, measured and drew. Installable ones run on your account.</p></div><div class="grid">${ENTRIES.map(entryCard)}${Array.from(
+    body: html`${howItWorks}<div class="actions bp-actions">${primary(viewer)}${linkButton('/fleet', {
+      label: 'See the agent fleet',
+      kind: 'ghost',
+    })}</div><section><div class="section-head"><h2>Directory</h2><p>Each shape has a diagram, its parts and what was measured. Most have a port build that was deployed, tested and deleted.</p></div><div class="grid">${ENTRIES.map(entryCard)}${Array.from(
       { length: Math.max(0, DIRECTORY_SLOTS - ENTRIES.length) },
       skeletonCard,
-    )}</div></section><section><div class="section-head"><h2>How it works</h2></div><div class="steps">${STEPS.map(
-      ([title, text], index) =>
-        html`<div class="card step"><span>${index + 1}</span><strong>${title}</strong><p>${text}</p></div>`,
     )}</div></section></div>`,
   });
 

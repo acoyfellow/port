@@ -4,10 +4,9 @@ export const ENTRY: Entry = {
   slug: 'isolate-agents',
   mark: 'DI',
   name: 'Durable agents, isolate tests',
-  oneLine:
-    'Coding agents on your own account with no container. port installs it, runs the eval and tears it down.',
+  oneLine: 'Coding agents with no container. port installs them, runs the eval and tears them down.',
   stage: 'installable',
-  shape: '1 agent = 1 Durable Object; tests run in a fresh Worker Loader isolate',
+  shape: '1 agent = 1 Durable Object; tests run in a new Worker Loader isolate',
   parts: [
     {
       id: 'port',
@@ -39,13 +38,13 @@ export const ENTRY: Entry = {
     { from: 'ai', to: 'gateway' },
   ],
   strengths: [
-    'No container: the agent loop sleeps in a Durable Object while it waits on the model',
-    'Tests run in a fresh isolate per run, so agents cannot read each other',
-    'Install, eval and tear down all run from port on your account',
+    'No container. The agent loop sleeps in a Durable Object while it waits on the model.',
+    'Tests run in a new isolate for each run, so agents cannot read each other.',
+    'port runs the install, the eval and the tear down on your account.',
   ],
   limits: [
-    'No shell, git or browser tools',
-    'A model call with no answer hangs the task; there is no timeout yet',
+    'No shell, git or browser tools.',
+    'A model call with no answer stops the task. There is no timeout yet.',
   ],
   measures: [
     { label: 'swarm-5 hidden tests passed (Kimi K2.7 Code)', value: '4 of 5', source: 'eval.json' },

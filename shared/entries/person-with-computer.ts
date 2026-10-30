@@ -4,10 +4,9 @@ export const ENTRY: Entry = {
   slug: 'person-with-computer',
   mark: 'PC',
   name: 'One agent and one computer per person',
-  oneLine:
-    'A voice agent that runs on the signed-in user account, with one Durable Object and one container per person.',
+  oneLine: 'Each signed-in person gets one voice agent, one Durable Object and one container.',
   stage: 'verified',
-  shape: '1 person = 1 Durable Object = 1 container, with model calls on the user own Workers AI.',
+  shape: "1 person = 1 Durable Object = 1 container; model calls use the person's Workers AI",
   parts: [
     {
       id: 'worker',

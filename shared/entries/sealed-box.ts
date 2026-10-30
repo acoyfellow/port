@@ -4,9 +4,9 @@ export const ENTRY: Entry = {
   slug: 'sealed-box',
   mark: 'SB',
   name: 'Sealed box per run',
-  oneLine: 'Send one task to a sealed cloud box. Get the answer and a receipt that ties it to your task.',
+  oneLine: 'Send one task to a container with internet off. Get the answer and a receipt tied to that task.',
   stage: 'verified',
-  shape: '1 run = 1 Durable Object = 1 sealed container',
+  shape: '1 run = 1 Durable Object = 1 container with internet off',
   parts: [
     {
       id: 'control',
@@ -48,15 +48,15 @@ export const ENTRY: Entry = {
     { from: 'run', to: 'store', label: 'logs, receipt' },
   ],
   strengths: [
-    'The box has internet off; only the model host is allowed',
-    'A run counts as done only if the agent echoes the run ID, task fingerprint and nonce',
-    'Per-user budget caps active runs, runs per minute and runs per day',
+    'The box has internet off. It can reach only the model host.',
+    'A run is done only when the agent echoes the run ID, the task fingerprint and the nonce.',
+    'A budget for each user limits active runs, runs per minute and runs per day.',
   ],
   limits: [
-    'Verified means the answer came from your task, not that it is right',
-    'Cloud runs cannot see your files; the task text is all the agent gets',
-    'The first run waits on a container cold start of one to three minutes',
-    'At most 20 boxes at once in the default config',
+    'A verified answer came from your task. It can still be wrong.',
+    'The agent cannot see your files. It gets only the task text.',
+    'The first run waits 1 to 3 minutes for the container to start.',
+    'The default config allows 20 boxes at once.',
   ],
   measures: [
     { label: 'Max boxes at once', value: '20', source: 'wrangler.jsonc' },

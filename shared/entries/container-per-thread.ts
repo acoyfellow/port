@@ -4,9 +4,9 @@ export const ENTRY: Entry = {
   slug: 'container-per-thread',
   mark: 'CT',
   name: 'Container per thread',
-  oneLine: 'Agent threads that each own a cloud computer with terminals, Chrome, and a disk.',
+  oneLine: 'Each agent thread has its own container with a terminal, Chrome and a disk.',
   stage: 'verified',
-  shape: '1 thread = 1 agent = 1 container.',
+  shape: '1 thread = 1 agent = 1 container',
   parts: [
     {
       id: 'worker',
@@ -68,8 +68,8 @@ export const ENTRY: Entry = {
   limits: [
     'A resumed computer gets its disk back but not its processes.',
     'Agent commands stop after 120 seconds.',
-    'Computers have internet access, so coil is not a sandbox for hostile code.',
-    'Snapshots are kept because the container binding has no delete call yet.',
+    'The containers have internet access, so do not run hostile code in them.',
+    'Disk snapshots stay after a thread ends, because the container binding has no delete call yet.',
   ],
   measures: [
     {

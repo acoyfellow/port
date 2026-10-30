@@ -4,7 +4,7 @@ export const ENTRY: Entry = {
   slug: 'shared-container',
   mark: 'SC',
   name: 'Shared container, one user per agent',
-  oneLine: 'Five coding agents share one container. Each agent runs as its own Unix user.',
+  oneLine: '5 coding agents share one container. Each agent runs as its own Unix user.',
   stage: 'verified',
   shape: '1 container = 5 agents = 5 Unix users',
   parts: [
@@ -55,12 +55,12 @@ export const ENTRY: Entry = {
     { from: 'grader', to: 'runner', label: 'receipt' },
   ],
   strengths: [
-    'Five agents share one container, so one image and one boot serve all seats.',
+    '5 agents share one container, so all seats use one image and one boot.',
     'Unix users isolate seats: 0 cross-seat reads in 15 probes, with 260 denials.',
     'Each seat has full tools: gh, cf, Chromium, pi and three skills.',
   ],
   limits: [
-    'Mean cost was 0.593 USD per seat, over the 0.2252 USD limit, so the claim is disproven.',
+    'Mean cost was 0.593 USD per seat. The target was 0.2252 USD, so the run missed it.',
     'Concurrent adduser once gave two seats the same uid and leaked a session. A flock fixed it.',
     'max_turns is not enforced by run-seat, so seats ran up to 35 turns.',
     'Proven only in local Docker on a 4-CPU laptop VM, one run per attempt.',

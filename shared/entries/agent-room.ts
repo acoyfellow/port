@@ -4,9 +4,9 @@ export const ENTRY: Entry = {
   slug: 'agent-room',
   mark: 'AR',
   name: 'Room of durable agents',
-  oneLine: 'A shared chat room where a team and a tree of AI agents work together on one Cloudflare account.',
+  oneLine: 'People and AI agents share one chat room. Each agent is its own Durable Object.',
   stage: 'verified',
-  shape: '1 room = 1 ChatRoom Durable Object, 1 agent = 1 Agent Durable Object, no containers.',
+  shape: '1 room = 1 room Durable Object; 1 agent = 1 agent Durable Object; no containers',
   parts: [
     {
       id: 'worker',
@@ -70,7 +70,6 @@ export const ENTRY: Entry = {
     'No container or sandbox. Agents cannot run arbitrary shell code.',
     'Setup must create an Access application. A deploy button alone leaves the URL open, so the README says not to use one.',
     'Tools come only from MCP connectors that each person adds.',
-    'Differs from my-ax: my-ax is one user with containers, sandboxes, Browser Rendering, Worker Loader and D1. chat-ax is many people in one room with Durable Objects only.',
   ],
   measures: [
     {

@@ -153,7 +153,7 @@ a.entry:hover { border-color: var(--line-strong); }
 
 .entry-top { display: flex; align-items: center; gap: 12px; }
 
-.entry-icon { width: 36px; height: 36px; border-radius: 9px; background: var(--brand-soft); border: 1px solid var(--brand-line); display: grid; place-items: center; color: var(--brand); font-weight: 700; }
+.entry-icon { flex: 0 0 36px; width: 36px; height: 36px; aspect-ratio: 1; font-size: 13px; letter-spacing: .02em; border-radius: 9px; background: var(--brand-soft); border: 1px solid var(--brand-line); display: grid; place-items: center; color: var(--brand); font-weight: 700; }
 
 .entry p { color: var(--dim); }
 
@@ -317,3 +317,31 @@ pre { background: var(--raised); padding: 12px; border-radius: 8px; overflow: au
 .diagram figcaption { font-family: var(--mono); font-size: 12.5px; color: var(--dim); margin-bottom: 12px; }
 
 .diagram svg { display: block; max-width: 100%; height: auto; }
+
+.blueprint { --bp-ink: #cfe3ff; --bp-amber: #ffb547; position: relative; margin: 24px 0 20px; padding: 36px 32px 28px; border-radius: 14px; color: var(--bp-ink); background: #0b2a5e; overflow: hidden; isolation: isolate; }
+.blueprint::before { content: ''; position: absolute; inset: 0; z-index: -1; background: url('/blueprint.jpg') center / 720px auto repeat; opacity: .28; mix-blend-mode: luminosity; }
+.blueprint::after { content: ''; position: absolute; inset: 0; z-index: -1; background: radial-gradient(120% 90% at 85% 0%, rgba(255, 181, 71, .16), transparent 55%), linear-gradient(180deg, rgba(8, 26, 60, .2), rgba(8, 26, 60, .85)); }
+.bp-head { max-width: 640px; }
+.bp-tag { display: inline-block; font: 500 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--bp-amber); border: 1px solid rgba(255, 181, 71, .4); padding: 5px 8px; border-radius: 4px; }
+.blueprint h1 { color: #fff; font-size: 38px; line-height: 1.1; letter-spacing: -0.02em; margin-top: 14px; }
+.bp-head p { color: #a9c4ee; margin-top: 10px; font-size: 16px; }
+.bp-steps { list-style: none; margin: 28px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.bp-step { border: 1px solid rgba(207, 227, 255, .22); border-radius: 10px; background: rgba(6, 22, 52, .55); backdrop-filter: blur(2px); padding: 14px; }
+.bp-art { display: block; width: 100%; height: auto; aspect-ratio: 240 / 150; color: var(--bp-ink); border-bottom: 1px dashed rgba(207, 227, 255, .22); padding-bottom: 10px; margin-bottom: 12px; }
+.bp-line { fill: none; stroke: var(--bp-ink); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+.bp-amber { fill: none; stroke: var(--bp-amber); stroke-width: 1.6; }
+.bp-amber circle { fill: var(--bp-amber); stroke: none; }
+.bp-dim path, .bp-call path { fill: none; stroke: #7fa6dd; stroke-width: .7; }
+.bp-dim text, .bp-call text { fill: #9fbbe6; font: 8px var(--mono); letter-spacing: .04em; }
+.bp-call circle { fill: var(--bp-amber); }
+.bp-big { fill: var(--bp-amber); stroke: none; font: 600 26px var(--mono); }
+.bp-num { display: block; font: 500 11px var(--mono); color: var(--bp-amber); letter-spacing: .1em; }
+.bp-step strong { display: block; color: #fff; font-size: 16px; margin-top: 4px; }
+.bp-step p { color: #a9c4ee; margin-top: 4px; }
+.bp-actions { margin-bottom: 36px; }
+.build { border-color: var(--brand-line); margin-bottom: 16px; }
+.build p { margin-top: 6px; }
+.build dl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 14px 0; }
+.build dt { font-size: 12px; color: var(--dim); }
+.build dd { margin: 2px 0 0; font: 600 18px var(--mono); }
+@media (max-width: 860px) { .bp-steps { grid-template-columns: 1fr; } .blueprint { padding: 24px 18px; } .blueprint h1 { font-size: 30px; } .build dl { grid-template-columns: repeat(2, 1fr); } }

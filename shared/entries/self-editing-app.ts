@@ -4,9 +4,10 @@ export const ENTRY: Entry = {
   slug: 'self-editing-app',
   mark: 'SE',
   name: 'App the agent rewrites',
-  oneLine: 'A per-user web app that an agent rewrites on request, gated by build, boot, and checks.',
+  oneLine:
+    'An agent rewrites a web app for one user. A new version goes live only if it builds, boots and passes checks.',
   stage: 'verified',
-  shape: '1 user = 1 Body Durable Object = 1 live app version in a Worker Loader isolate.',
+  shape: '1 user = 1 Durable Object = 1 live app version in a Worker Loader isolate',
   parts: [
     {
       id: 'kernel',

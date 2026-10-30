@@ -4,9 +4,9 @@ export const ENTRY: Entry = {
   slug: 'durable-session',
   mark: 'DS',
   name: 'Durable Pi session',
-  oneLine: 'A Pi coding agent that lives in a Durable Object and continues after the object is killed.',
+  oneLine: 'A Pi coding agent in a Durable Object. The session continues after the object restarts.',
   stage: 'verified',
-  shape: '1 conversation = 1 Durable Object = 1 Pi harness in SQLite',
+  shape: '1 conversation = 1 Durable Object with the Pi session in SQLite',
   parts: [
     {
       id: 'worker',

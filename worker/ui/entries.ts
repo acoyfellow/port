@@ -1,12 +1,13 @@
 import type { Entry, Stage } from '../../shared/entry';
 import { entryDiagram } from '../../shared/entry-diagram';
+import { SHAPE_RECEIPTS } from '../../shared/shape-receipts';
 import { html, raw } from './html';
 import type { Viewer } from './layout';
 import { badge, linkButton, page, pageHead } from './parts';
 
-const STAGE_BADGE: Record<Stage, ReturnType<typeof badge>> = {
+const STAGE_BADGE: Record<Stage, ReturnType<typeof badge> | ''> = {
   installable: badge('ok', 'Installable'),
-  verified: badge('ok', 'Verified'),
+  verified: '',
   outlined: badge('live', 'Outlined'),
   idea: badge('plain', 'Idea'),
 };
@@ -50,6 +51,14 @@ const measures = (entry: Entry) =>
           html`<tr><td>${measure.label}</td><td><strong>${measure.value}</strong></td><td><code>${measure.source}</code></td></tr>`,
       )}</tbody></table></div></section>`;
 
+const REPO = 'https://github.com/acoyfellow/port/blob/main';
+
+const portBuild = (entry: Entry) => {
+  const receipt = SHAPE_RECEIPTS[entry.slug];
+  if (receipt === undefined || entry.receipt === undefined) return '';
+  return html`<section class="card build"><h2>port build</h2><p>${receipt.proved}</p><dl><div><dt>Deploy</dt><dd>${receipt.seconds.up} s</dd></div><div><dt>Test</dt><dd>${receipt.seconds.smoke} s</dd></div><div><dt>Delete</dt><dd>${receipt.seconds.down} s</dd></div><div><dt>Left after delete</dt><dd>0</dd></div></dl><p class="muted">Run on <code>${receipt.on}</code> on a personal account. <a href="${REPO}/shapes/${entry.slug}">Source</a> · <a href="${REPO}/${entry.receipt}">Receipt</a></p></section>`;
+};
+
 const installAction = (entry: Entry, viewer: Viewer) =>
   entry.install.status !== 'ready'
     ? ''
@@ -63,20 +72,20 @@ export const entryPage = (viewer: Viewer, entry: Entry) =>
     viewer,
     section: 'home',
     crumbs: [{ label: 'Directory', href: '/' }, { label: entry.name }],
-    body: html`${pageHead(entry.name, html`${STAGE_BADGE[entry.stage]} ${entry.oneLine}`, installAction(entry, viewer))}<div class="stack"><figure class="card diagram"><figcaption>${entry.shape}</figcaption>${raw(
+    body: html`${pageHead(entry.name, html`${STAGE_BADGE[entry.stage]} ${entry.oneLine}`, installAction(entry, viewer))}<div class="stack">${portBuild(entry)}<figure class="card diagram"><figcaption>${entry.shape}</figcaption>${raw(
       entryDiagram(entry),
     )}</figure><div class="grid">${list('Strengths', entry.strengths)}${list('Limits', entry.limits)}<section class="card"><h2>Parts</h2><ul class="muted">${entry.parts.map(
       (part) => html`<li><strong>${part.label}</strong> · ${part.detail}</li>`,
-    )}</ul></section></div>${measures(entry)}<div class="grid"><section class="card"><h2>Install ${badge(
-      entry.install.status === 'ready' ? 'ok' : 'plain',
-      entry.install.status === 'ready'
-        ? 'Ready'
-        : entry.install.status === 'planned'
-          ? 'Planned'
-          : 'Not planned',
-    )}</h2><p class="muted">${entry.install.plan}</p></section><section class="card"><h2>Eval</h2><p class="muted">${entry.evalPlan}</p></section></div><p class="muted">Shape first seen in <code>${entry.source}</code>. port installs its own copy of the shape, not that project.${
+    )}</ul></section></div>${measures(entry)}${
       entry.receipt === undefined
-        ? ''
-        : html` Deployed, smoke-tested and torn down: <a href="https://github.com/acoyfellow/port/blob/main/${entry.receipt}">receipt</a>.`
-    }</p></div>`,
+        ? html`<div class="grid"><section class="card"><h2>Install ${badge(
+            entry.install.status === 'ready' ? 'ok' : 'plain',
+            entry.install.status === 'ready'
+              ? 'Ready'
+              : entry.install.status === 'planned'
+                ? 'Planned'
+                : 'Not planned',
+          )}</h2><p class="muted">${entry.install.plan}</p></section><section class="card"><h2>Eval</h2><p class="muted">${entry.evalPlan}</p></section></div>`
+        : ''
+    }<p class="muted">This shape was first seen in <code>${entry.source}</code>. The measurements above come from that project. port builds its own copy.</p></div>`,
   });

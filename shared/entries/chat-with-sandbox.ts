@@ -4,10 +4,9 @@ export const ENTRY: Entry = {
   slug: 'chat-with-sandbox',
   mark: 'CS',
   name: 'Durable chat with a sandbox',
-  oneLine:
-    'A single-operator agent behind Access. Each Pi chat is one Durable Object that sleeps between turns.',
+  oneLine: 'One operator chats with a Pi agent. Each chat has a Durable Object and a container workspace.',
   stage: 'verified',
-  shape: '1 chat = 1 PiChatAgent Durable Object = 1 Sandbox container workspace',
+  shape: '1 chat = 1 Durable Object = 1 sandbox container',
   parts: [
     {
       id: 'worker',
