@@ -1,0 +1,72 @@
+{
+  "slug": "chat-with-sandbox",
+  "up": {
+    "ok": true,
+    "ms": 50442,
+    "tail": [
+      "[21:58:37.158] INFO (#380): Cloudflare Worker reconcile: durable objects [{\"logicalId\":\"CHAT\",\"className\":\"Chat\"}]",
+      "[21:58:37.159] INFO (#381): [Chat] creating",
+      "[21:58:37.159] INFO (#381): Cloudflare Container reconcile: starting port-shape-chat-with-sandbox-box",
+      "[21:58:37.470] INFO (#380): Cloudflare Worker reconcile: existing durable object tags [\"alchemy:dos:CHAT=Chat\"]",
+      "[21:58:37.470] INFO (#380): Cloudflare Worker reconcile: previous durable object tags [\"alchemy:dos:CHAT=Chat\"]",
+      "[21:58:37.471] INFO (#380): Cloudflare Worker create: preparing bundle for port-shape-chat-with-sandbox",
+      "[21:58:37.504] INFO (#380): Cloudflare Worker create: uploading script for port-shape-chat-with-sandbox",
+      "[21:58:38.193] INFO (#381): Cloudflare Container reconcile: recreating port-shape-chat-with-sandbox-box to attach durable object binding",
+      "[21:58:38.193] INFO (#381): [Chat] Recreating container application port-shape-chat-with-sandbox-box with durable object binding...",
+      "[21:58:39.675] INFO (#381): Cloudflare Container create: creating application port-shape-chat-with-sandbox-box",
+      "[21:58:39.675] INFO (#381): [Chat] Creating container application port-shape-chat-with-sandbox-box...",
+      "[21:58:41.055] INFO (#380): Cloudflare Worker put: durable object reconciliation {\"oldDoClassNameByLogicalId\":{\"CHAT\":\"Chat\"},\"currentDoClassNameByLogicalId\":{\"CHAT\":\"Chat\"},\"deletedClasses\":[],\"renamedClasses\":[],\"transferredClasses\":[],\"newSqliteClasses\":[]}",
+      "[21:58:42.530] INFO (#671): [Chat] created (45.6s)",
+      "[21:58:42.530] INFO (#672): [worker] created — Enabling workers.dev subdomain... (45.6s)",
+      "[21:58:42.531] INFO (#1): ",
+      "[21:58:42.531] INFO (#1): Done: 2 succeeded (45.6s)",
+      "{",
+      "  url: 'https://port-shape-chat-with-sandbox.<subdomain>.workers.dev',",
+      "  worker: 'port-shape-chat-with-sandbox'",
+      "}"
+    ],
+    "at": "2026-10-30T01:58:42.790Z"
+  },
+  "smoke": {
+    "ok": true,
+    "ms": 77940,
+    "tail": [
+      "{\"bootA\":\"a9c59ab9\",\"bootB\":\"5de1473f\",\"noteA\":\"alpha\",\"noteB\":\"\",\"turnsA\":2,\"turnsB\":1}",
+      "PROVED chat A wrote /home/user/note.txt in its own container and kept 2 DO turns; chat B got a different container with no note and 1 turn"
+    ],
+    "at": "2026-10-30T02:00:04.525Z"
+  },
+  "down": {
+    "ok": true,
+    "ms": 3900,
+    "tail": [
+      "[22:00:09.778] INFO (#1): Importing stack module",
+      "[22:00:10.601] INFO (#1): Resolving stack services",
+      "[22:00:10.611] INFO (#1): Loading stack state",
+      "[22:00:10.612] INFO (#1): Computing plan",
+      "[22:00:10.615] INFO (#1): Plan ready (837ms)",
+      "[22:00:10.616] INFO (#1): Plan: 2 to delete, 2 binding changes",
+      "[22:00:10.616] INFO (#1): [Chat] delete",
+      "[22:00:10.616] INFO (#1): [Chat/CHAT] unbind",
+      "[22:00:10.616] INFO (#1): [worker] delete",
+      "[22:00:10.616] INFO (#1): [worker/CHAT] unbind",
+      "[22:00:10.617] INFO (#1): ",
+      "[22:00:10.620] INFO (#321): [Chat] deleting",
+      "[22:00:10.621] INFO (#322): [worker] deleting",
+      "[22:00:10.638] INFO (#321): Cloudflare Container delete: deleting port-shape-chat-with-sandbox-box",
+      "[22:00:10.639] INFO (#323): Cloudflare: using environment variables (CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN) instead of the profile.",
+      "[22:00:10.646] INFO (#322): Cloudflare Worker delete: deleting port-shape-chat-with-sandbox",
+      "[22:00:12.078] INFO (#321): [Chat] deleted (1.5s)",
+      "[22:00:12.170] INFO (#322): [worker] deleted (1.5s)",
+      "[22:00:12.171] INFO (#1): ",
+      "[22:00:12.171] INFO (#1): Done: 2 succeeded (1.6s)"
+    ],
+    "at": "2026-10-30T02:00:12.412Z"
+  },
+  "sweep": {
+    "at": "2026-10-30T02:00:32.863Z",
+    "prefix": "port-shape-chat-with-sandbox",
+    "leftovers": {},
+    "errors": {}
+  }
+}

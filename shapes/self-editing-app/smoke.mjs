@@ -25,9 +25,24 @@ const appRolled = await getJson(base, `/app?u=${user}`);
 
 prove(
   'Worker Loader gate shipped v1, rejected a failing-check v2 and a non-booting v3 (live stayed v1), shipped v4, and rollback restored v1',
-  v1.shipped && app1.text === 'hello v1' &&
-    !v2.shipped && !v3.shipped && appAfterBad.live === 1 && appAfterBad.text === 'hello v1' &&
-    v4.shipped && app4.text === 'hello v4' &&
-    rolled.live === 1 && appRolled.text === 'hello v1',
-  { v1, v2, v3: { shipped: v3.shipped, reason: v3.reason.slice(0, 60) }, v4, appAfterBad, app4, rolled, appRolled },
+  v1.shipped &&
+    app1.text === 'hello v1' &&
+    !v2.shipped &&
+    !v3.shipped &&
+    appAfterBad.live === 1 &&
+    appAfterBad.text === 'hello v1' &&
+    v4.shipped &&
+    app4.text === 'hello v4' &&
+    rolled.live === 1 &&
+    appRolled.text === 'hello v1',
+  {
+    v1,
+    v2,
+    v3: { shipped: v3.shipped, reason: v3.reason.slice(0, 60) },
+    v4,
+    appAfterBad,
+    app4,
+    rolled,
+    appRolled,
+  },
 );

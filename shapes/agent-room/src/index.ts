@@ -6,12 +6,20 @@ type Env = {
 };
 
 type Message = { readonly n: number; readonly sender: string; readonly text: string };
-type Turn = { readonly n: number; readonly room: string; readonly sender: string; readonly text: string; readonly reply: string };
+type Turn = {
+  readonly n: number;
+  readonly room: string;
+  readonly sender: string;
+  readonly text: string;
+  readonly reply: string;
+};
 
 export class ChatRoomDO extends DurableObject<Env> {
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
-    ctx.storage.sql.exec('CREATE TABLE IF NOT EXISTS messages (n INTEGER PRIMARY KEY, sender TEXT, text TEXT)');
+    ctx.storage.sql.exec(
+      'CREATE TABLE IF NOT EXISTS messages (n INTEGER PRIMARY KEY, sender TEXT, text TEXT)',
+    );
   }
 
   private append(sender: string, text: string): void {
@@ -54,7 +62,9 @@ export class AgentDO extends DurableObject<Env> {
   }
 
   read(): { readonly boot: string; readonly turns: readonly Turn[] } {
-    const turns = this.ctx.storage.sql.exec<Turn>('SELECT n, room, sender, text, reply FROM turns ORDER BY n').toArray();
+    const turns = this.ctx.storage.sql
+      .exec<Turn>('SELECT n, room, sender, text, reply FROM turns ORDER BY n')
+      .toArray();
     return { boot: this.boot, turns };
   }
 

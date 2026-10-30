@@ -1,0 +1,23 @@
+#!/bin/sh
+echo "Content-Type: application/json"
+echo ""
+run=$(cat /proc/sys/kernel/random/uuid)
+agents=""
+for n in 1 2 3 4 5; do
+  out=$(su -s /bin/sh agent$n -c "umask 077; echo $run-agent$n > /home/agent$n/secret; printf '%s %s %s %s' \$(id -un) \$(id -u) \$(cat /proc/sys/kernel/random/boot_id) \$(stat -c %a /home/agent$n/secret)")
+  set -- $out
+  agents="$agents{\"user\":\"$1\",\"uid\":$2,\"boot\":\"$3\",\"mode\":\"$4\"},"
+done
+probes=""
+for a in 1 2 3 4 5; do
+  for b in 1 2 3 4 5; do
+    [ $a = $b ] && continue
+    if su -s /bin/sh agent$a -c "cat /home/agent$b/secret" >/dev/null 2>/tmp/err; then r=read; else r=$(grep -q 'Permission denied' /tmp/err && echo denied || echo other); fi
+    probes="$probes{\"from\":\"agent$a\",\"to\":\"agent$b\",\"result\":\"$r\"},"
+  done
+done
+own=0
+for n in 1 2 3 4 5; do
+  [ "$(su -s /bin/sh agent$n -c "cat /home/agent$n/secret")" = "$run-agent$n" ] && own=$((own+1))
+done
+echo "{\"run\":\"$run\",\"host\":\"$(hostname)\",\"own\":$own,\"agents\":[${agents%,}],\"probes\":[${probes%,}]}"

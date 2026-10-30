@@ -1,0 +1,64 @@
+{
+  "slug": "sealed-box",
+  "up": {
+    "ok": true,
+    "ms": 22500,
+    "tail": [
+      "[22:31:44.306] INFO (#372): Cloudflare Worker reconcile: durable objects [{\"logicalId\":\"BOX\",\"className\":\"Box\"}]",
+      "[22:31:44.307] INFO (#373): [Box] creating",
+      "[22:31:44.307] INFO (#373): Cloudflare Container reconcile: starting port-shape-sealed-box-box",
+      "[22:31:44.614] INFO (#372): Cloudflare Worker reconcile: existing durable object tags [\"alchemy:dos:BOX=Box\"]",
+      "[22:31:44.614] INFO (#372): Cloudflare Worker reconcile: previous durable object tags [\"alchemy:dos:BOX=Box\"]",
+      "[22:31:44.615] INFO (#372): Cloudflare Worker create: preparing bundle for port-shape-sealed-box",
+      "[22:31:44.670] INFO (#372): Cloudflare Worker create: uploading script for port-shape-sealed-box",
+      "[22:31:45.360] INFO (#373): Cloudflare Container reconcile: recreating port-shape-sealed-box-box to attach durable object binding",
+      "[22:31:45.360] INFO (#373): [Box] Recreating container application port-shape-sealed-box-box with durable object binding...",
+      "[22:31:48.384] INFO (#373): Cloudflare Container create: creating application port-shape-sealed-box-box",
+      "[22:31:48.384] INFO (#373): [Box] Creating container application port-shape-sealed-box-box...",
+      "[22:31:48.452] INFO (#372): Cloudflare Worker put: durable object reconciliation {\"oldDoClassNameByLogicalId\":{\"BOX\":\"Box\"},\"currentDoClassNameByLogicalId\":{\"BOX\":\"Box\"},\"deletedClasses\":[],\"renamedClasses\":[],\"transferredClasses\":[],\"newSqliteClasses\":[]}",
+      "[22:31:51.662] INFO (#565): [worker] created — Enabling workers.dev subdomain... (19.9s)",
+      "[22:31:51.662] INFO (#566): [Box] created (19.9s)",
+      "[22:31:51.662] INFO (#1): ",
+      "[22:31:51.662] INFO (#1): Done: 2 succeeded (19.9s)",
+      "{",
+      "  url: 'https://port-shape-sealed-box.<subdomain>.workers.dev',",
+      "  worker: 'port-shape-sealed-box'",
+      "}"
+    ],
+    "at": "2026-10-30T02:31:51.843Z"
+  },
+  "down": {
+    "ok": true,
+    "ms": 3194,
+    "tail": [
+      "[22:48:27.919] INFO (#1): Importing stack module",
+      "[22:48:28.710] INFO (#1): Resolving stack services",
+      "[22:48:28.723] INFO (#1): Loading stack state",
+      "[22:48:28.725] INFO (#1): Computing plan",
+      "[22:48:28.728] INFO (#1): Plan ready (809ms)",
+      "[22:48:28.729] INFO (#1): Plan: 2 to delete, 2 binding changes",
+      "[22:48:28.729] INFO (#1): [Box] delete",
+      "[22:48:28.729] INFO (#1): [Box/BOX] unbind",
+      "[22:48:28.729] INFO (#1): [worker] delete",
+      "[22:48:28.729] INFO (#1): [worker/BOX] unbind",
+      "[22:48:28.729] INFO (#1): ",
+      "[22:48:28.731] INFO (#321): [Box] deleting",
+      "[22:48:28.731] INFO (#322): [worker] deleting",
+      "[22:48:28.732] INFO (#322): Cloudflare Worker delete: deleting port-shape-sealed-box",
+      "[22:48:28.733] INFO (#323): Cloudflare: using environment variables (CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN) instead of the profile.",
+      "[22:48:28.739] INFO (#321): Cloudflare Container delete: deleting port-shape-sealed-box-box",
+      "[22:48:29.506] INFO (#322): [worker] deleted (775ms)",
+      "[22:48:29.764] INFO (#321): [Box] deleted (1.0s)",
+      "[22:48:29.765] INFO (#1): ",
+      "[22:48:29.765] INFO (#1): Done: 2 succeeded (1.0s)",
+      "removed registry images: port-shape-sealed-box-box"
+    ],
+    "at": "2026-10-30T02:49:00.838Z"
+  },
+  "sweep": {
+    "at": "2026-10-30T02:14:56.012Z",
+    "prefix": "port-shape-sealed-box",
+    "leftovers": {},
+    "errors": {}
+  }
+}
