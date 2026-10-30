@@ -8,34 +8,40 @@ const root = join(import.meta.dirname, '..');
 const receipts = join(root, 'proof', 'shapes');
 const PREFIX = 'port-shape-';
 
+const PROFILE = process.env.SHAPE_PROFILE ?? 'customer0';
+const profileFile = join(homedir(), '.alchemy', 'profiles', PROFILE, 'cloudflare.json');
+
+const profileValues = () => {
+  if (!existsSync(profileFile))
+    throw new Error(`No alchemy profile ${PROFILE}. Run: npx alchemy profile edit --profile ${PROFILE}`);
+  return JSON.parse(readFileSync(profileFile, 'utf8')).values ?? {};
+};
+
+const refreshProfile = () =>
+  execFileSync(
+    join(root, 'shapes', 'node_modules', '.bin', 'alchemy'),
+    ['profile', 'refresh', '--profile', PROFILE, '--no-input'],
+    {
+      cwd: root,
+      stdio: 'ignore',
+    },
+  );
+
 const accountId = () => {
-  const fromEnv = process.env.SHAPE_ACCOUNT_ID;
-  if (fromEnv) return fromEnv;
-  const file = join(root, '.tmp', 'personal-account');
-  if (!existsSync(file)) throw new Error('Set SHAPE_ACCOUNT_ID or write .tmp/personal-account');
-  return readFileSync(file, 'utf8').trim();
+  const value = profileValues().accountId;
+  if (typeof value !== 'string' || value === '') throw new Error(`alchemy profile ${PROFILE} has no account`);
+  return value;
 };
 
 const token = () => {
   const fromEnv = process.env.CLOUDFLARE_API_TOKEN;
   if (fromEnv) return fromEnv;
-  const tokenFile = join(root, '.tmp', 'personal-token');
-  if (existsSync(tokenFile)) return readFileSync(tokenFile, 'utf8').trim();
-  const config = readFileSync(
-    [
-      join(homedir(), '.wrangler/config/default.toml'),
-      join(homedir(), 'Library/Preferences/.wrangler/config/default.toml'),
-    ].find(existsSync) ?? '',
-    'utf8',
-  );
-  const match = /oauth_token = "([^"]+)"/.exec(config);
-  if (match === null) throw new Error('No wrangler OAuth token. Run npx wrangler login.');
-  const expiry = /expiration_time = "([^"]+)"/.exec(config);
-  if (expiry !== null && Date.parse(expiry[1]) < Date.now() + 60_000) {
-    execFileSync('npx', ['wrangler', 'whoami'], { cwd: root, stdio: 'ignore' });
-    return token();
-  }
-  return match[1];
+  if (typeof profileValues().expires !== 'number' || profileValues().expires < Date.now() + 120_000)
+    refreshProfile();
+  const access = profileValues().access;
+  if (typeof access !== 'string' || access === '')
+    throw new Error(`alchemy profile ${PROFILE} has no access token`);
+  return access;
 };
 
 const api = async (path, init = {}) => {
@@ -79,6 +85,7 @@ const KINDS = {
   'ai-gateway': async () => listed('/ai-gateway/gateways?per_page=100', asIs, 'id'),
   container: async () => listed('/containers/applications', asIs),
   workflow: async () => listed('/workflows?per_page=100', asIs),
+  'custom-domain': async () => listed('/workers/domains', asIs, 'hostname'),
   'registry-image': async () => {
     const basic = await registryBasic(['pull']);
     const repositories = new Set();

@@ -79,7 +79,8 @@ const checkWorkspace = () => {
   const problems = [];
   for (const slug of readdirSync(shapes)) {
     const dir = join(shapes, slug);
-    if (!statSync(dir).isDirectory() || slug === 'kit' || slug === 'node_modules') continue;
+    if (!statSync(dir).isDirectory() || slug === 'kit' || slug === 'node_modules' || slug.startsWith('.'))
+      continue;
     if (!SHAPES.includes(slug)) problems.push(`shapes/${slug} is not a known shape`);
     for (const name of ['package.json', 'package-lock.json', 'node_modules', 'smoke.mjs'])
       if (existsSync(join(dir, name)))

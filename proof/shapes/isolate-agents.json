@@ -1,0 +1,72 @@
+{
+  "slug": "isolate-agents",
+  "up": {
+    "ok": true,
+    "ms": 13062,
+    "tail": [
+      "[07:05:46.005] INFO (#405): [gateway] creating",
+      "[07:05:50.804] INFO (#406): [worker] creating",
+      "[07:05:50.805] INFO (#405): [gateway] created (4.8s)",
+      "[07:05:50.805] INFO (#406): Cloudflare Worker read: checking port-shape-isolate-agents",
+      "[07:05:51.462] INFO (#406): Cloudflare Worker reconcile: starting port-shape-isolate-agents",
+      "[07:05:51.462] INFO (#406): Cloudflare Worker reconcile: durable objects [{\"logicalId\":\"AGENT\",\"className\":\"Agent\"}]",
+      "[07:05:51.669] INFO (#406): Cloudflare Worker reconcile: existing durable object tags []",
+      "[07:05:51.669] INFO (#406): Cloudflare Worker reconcile: previous durable object tags []",
+      "[07:05:51.669] INFO (#406): Cloudflare Worker create: preparing bundle for port-shape-isolate-agents",
+      "[07:05:51.762] INFO (#406): Cloudflare Worker create: uploading script for port-shape-isolate-agents",
+      "[07:05:52.450] INFO (#406): Cloudflare Worker put: durable object reconciliation {\"oldDoClassNameByLogicalId\":{},\"currentDoClassNameByLogicalId\":{\"AGENT\":\"Agent\"},\"deletedClasses\":[],\"renamedClasses\":[],\"transferredClasses\":[],\"newSqliteClasses\":[\"Agent\"]}",
+      "[07:05:56.439] INFO (#406): [worker] created — Reconciling custom domains (1) ... (5.6s)",
+      "[07:05:56.441] INFO (#560): [gateway] created (10.4s)",
+      "[07:05:56.441] INFO (#561): [worker] created — Reconciling custom domains (1) ... (5.6s)",
+      "[07:05:56.446] INFO (#1): ",
+      "[07:05:56.446] INFO (#1): Done: 2 succeeded (10.4s)",
+      "{",
+      "  url: 'https://port-shape-isolate-agents.customer0.dev',",
+      "  worker: 'port-shape-isolate-agents'",
+      "}"
+    ],
+    "at": "2026-10-30T11:05:56.619Z"
+  },
+  "down": {
+    "ok": true,
+    "ms": 7579,
+    "tail": [
+      "[07:09:03.124] INFO (#1): Loading stack state",
+      "[07:09:03.129] INFO (#1): Computing plan",
+      "[07:09:03.132] INFO (#1): Plan ready (1.5s)",
+      "[07:09:03.133] INFO (#1): Plan: 2 to delete, 5 binding changes",
+      "[07:09:03.133] INFO (#1): [gateway] delete",
+      "[07:09:03.133] INFO (#1): [worker] delete",
+      "[07:09:03.133] INFO (#1): [worker/AGENT] unbind",
+      "[07:09:03.133] INFO (#1): [worker/AI] unbind",
+      "[07:09:03.133] INFO (#1): [worker/FLEET_KEY] unbind",
+      "[07:09:03.133] INFO (#1): [worker/GATEWAY] unbind",
+      "[07:09:03.133] INFO (#1): [worker/LOADER] unbind",
+      "[07:09:03.133] INFO (#1): ",
+      "[07:09:03.135] INFO (#325): [worker] deleting",
+      "[07:09:03.136] INFO (#325): Cloudflare Worker delete: deleting port-shape-isolate-agents",
+      "[07:09:03.137] INFO (#327): Cloudflare: using environment variables (CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN) instead of the profile.",
+      "[07:09:04.525] INFO (#325): [worker] deleted (1.4s)",
+      "[07:09:04.525] INFO (#324): [gateway] deleting",
+      "[07:09:07.597] INFO (#324): [gateway] deleted (3.1s)",
+      "[07:09:07.601] INFO (#1): ",
+      "[07:09:07.601] INFO (#1): Done: 2 succeeded (4.5s)"
+    ],
+    "at": "2026-10-30T11:09:08.823Z"
+  },
+  "sweep": {
+    "at": "2026-10-30T10:56:39.117Z",
+    "prefix": "port-shape-isolate-agents",
+    "leftovers": {},
+    "errors": {}
+  },
+  "smoke": {
+    "ok": true,
+    "ms": 180310,
+    "tail": [
+      "{\"gateway\":\"port-shape-isolate-agents\",\"seed\":\"23/23\",\"networkBlocked\":true,\"state\":\"done\",\"turns\":6,\"usd\":0.02251946,\"hidden\":{\"passed\":2,\"total\":2}}",
+      "PROVED The seed tests passed in a Worker Loader isolate (23 of 23). A test that called the internet failed, because the isolate has no outbound network. One agent in a Durable Object ran 6 turns through the AI Gateway, changed files 2 times and was graded by hidden tests."
+    ],
+    "at": "2026-10-30T11:08:59.765Z"
+  }
+}

@@ -2,70 +2,68 @@
   "slug": "agent-room",
   "up": {
     "ok": true,
-    "ms": 11186,
+    "ms": 7493,
     "tail": [
-      "[06:01:14.785] INFO (#1): [worker] create",
-      "[06:01:14.785] INFO (#1): [worker/AGENT] create",
-      "[06:01:14.785] INFO (#1): [worker/ROOM] create",
-      "[06:01:14.785] INFO (#1): ",
-      "[06:01:14.790] INFO (#372): [worker] creating",
-      "[06:01:14.790] INFO (#372): Cloudflare Worker reconcile: starting port-shape-agent-room",
-      "[06:01:14.791] INFO (#372): Cloudflare Worker reconcile: durable objects [{\"logicalId\":\"AGENT\",\"className\":\"AgentDO\"},{\"logicalId\":\"ROOM\",\"className\":\"ChatRoomDO\"}]",
-      "[06:01:15.157] INFO (#372): Cloudflare Worker reconcile: existing durable object tags []",
-      "[06:01:15.157] INFO (#372): Cloudflare Worker reconcile: previous durable object tags []",
-      "[06:01:15.158] INFO (#372): Cloudflare Worker create: preparing bundle for port-shape-agent-room",
-      "[06:01:15.213] INFO (#372): Cloudflare Worker create: uploading script for port-shape-agent-room",
-      "[06:01:19.879] INFO (#372): Cloudflare Worker put: durable object reconciliation {\"oldDoClassNameByLogicalId\":{},\"currentDoClassNameByLogicalId\":{\"AGENT\":\"AgentDO\",\"ROOM\":\"ChatRoomDO\"},\"deletedClasses\":[],\"renamedClasses\":[],\"transferredClasses\":[],\"newSqliteClasses\":[\"AgentDO\",\"ChatRoomDO\"]}",
-      "[06:01:22.495] INFO (#372): [worker] created — Enabling workers.dev subdomain... (7.7s)",
-      "[06:01:22.496] INFO (#487): [worker] created — Enabling workers.dev subdomain... (7.7s)",
-      "[06:01:22.497] INFO (#1): ",
-      "[06:01:22.497] INFO (#1): Done: 1 succeeded (7.7s)",
+      "[07:06:33.830] INFO (#1): [worker] create",
+      "[07:06:33.830] INFO (#1): [worker/AGENT] create",
+      "[07:06:33.830] INFO (#1): [worker/ROOM] create",
+      "[07:06:33.830] INFO (#1): ",
+      "[07:06:33.837] INFO (#373): [worker] creating",
+      "[07:06:33.838] INFO (#373): Cloudflare Worker reconcile: starting port-shape-agent-room",
+      "[07:06:33.838] INFO (#373): Cloudflare Worker reconcile: durable objects [{\"logicalId\":\"AGENT\",\"className\":\"AgentDO\"},{\"logicalId\":\"ROOM\",\"className\":\"ChatRoomDO\"}]",
+      "[07:06:34.066] INFO (#373): Cloudflare Worker reconcile: existing durable object tags []",
+      "[07:06:34.066] INFO (#373): Cloudflare Worker reconcile: previous durable object tags []",
+      "[07:06:34.068] INFO (#373): Cloudflare Worker create: preparing bundle for port-shape-agent-room",
+      "[07:06:34.118] INFO (#373): Cloudflare Worker create: uploading script for port-shape-agent-room",
+      "[07:06:35.121] INFO (#373): Cloudflare Worker put: durable object reconciliation {\"oldDoClassNameByLogicalId\":{},\"currentDoClassNameByLogicalId\":{\"AGENT\":\"AgentDO\",\"ROOM\":\"ChatRoomDO\"},\"deletedClasses\":[],\"renamedClasses\":[],\"transferredClasses\":[],\"newSqliteClasses\":[\"AgentDO\",\"ChatRoomDO\"]}",
+      "[07:06:38.218] INFO (#373): [worker] created — Reconciling custom domains (1) ... (4.4s)",
+      "[07:06:38.220] INFO (#466): [worker] created — Reconciling custom domains (1) ... (4.4s)",
+      "[07:06:38.221] INFO (#1): ",
+      "[07:06:38.222] INFO (#1): Done: 1 succeeded (4.4s)",
       "{",
-      "  url: 'https://port-shape-agent-room.<subdomain>.workers.dev',",
+      "  url: 'https://port-shape-agent-room.customer0.dev',",
       "  worker: 'port-shape-agent-room'",
       "}"
     ],
-    "at": "2026-10-30T10:01:22.693Z"
+    "at": "2026-10-30T11:06:38.415Z"
   },
   "smoke": {
     "ok": true,
-    "ms": 2190,
+    "ms": 8770,
     "tail": [
-      "{\"before\":\"ed022608\",\"after\":\"431cc7e0\",\"senders\":\"alice,bob\",\"roomSenders\":\"alice,agent:agent-1793354483138,bob,agent:agent-1793354483138\"}",
+      "{\"before\":\"5d1c0edf\",\"after\":\"ad1453c7\",\"senders\":\"alice,bob\",\"roomSenders\":\"alice,agent:agent-1793358399777,bob,agent:agent-1793358399777\"}",
       "PROVED ChatRoomDO sent 2 turns from alice and bob to a separate AgentDO. The AgentDO kept both turns and their senders after a forced restart. The boot ID changed. The room holds 4 messages."
     ],
-    "at": "2026-10-30T10:01:25.184Z"
+    "at": "2026-10-30T11:06:48.118Z"
   },
   "down": {
     "ok": true,
-    "ms": 3660,
+    "ms": 4062,
     "tail": [
-      "[06:01:26.905] INFO (#1): Destroy · shape",
-      "[06:01:26.906] INFO (#1): Importing stack module",
-      "[06:01:28.062] INFO (#1): Resolving stack services",
-      "[06:01:28.084] INFO (#1): Loading stack state",
-      "[06:01:28.089] INFO (#1): Computing plan",
-      "[06:01:28.092] INFO (#1): Plan ready (1.2s)",
-      "[06:01:28.093] INFO (#1): Plan: 1 to delete, 2 binding changes",
-      "[06:01:28.094] INFO (#1): [worker] delete",
-      "[06:01:28.094] INFO (#1): [worker/AGENT] unbind",
-      "[06:01:28.094] INFO (#1): [worker/ROOM] unbind",
-      "[06:01:28.094] INFO (#1): ",
-      "[06:01:28.096] INFO (#321): [worker] deleting",
-      "[06:01:28.097] INFO (#321): Cloudflare Worker delete: deleting port-shape-agent-room",
-      "[06:01:28.098] INFO (#322): Cloudflare: using environment variables (CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN) instead of the profile.",
-      "[06:01:29.029] INFO (#321): [worker] deleted (933ms)",
-      "[06:01:29.032] INFO (#1): ",
-      "[06:01:29.033] INFO (#1): Done: 1 succeeded (938ms)"
+      "[07:06:50.455] INFO (#1): Destroy · shape",
+      "[07:06:50.455] INFO (#1): Importing stack module",
+      "[07:06:51.712] INFO (#1): Resolving stack services",
+      "[07:06:51.731] INFO (#1): Loading stack state",
+      "[07:06:51.736] INFO (#1): Computing plan",
+      "[07:06:51.739] INFO (#1): Plan ready (1.3s)",
+      "[07:06:51.740] INFO (#1): Plan: 1 to delete, 2 binding changes",
+      "[07:06:51.740] INFO (#1): [worker] delete",
+      "[07:06:51.741] INFO (#1): [worker/AGENT] unbind",
+      "[07:06:51.741] INFO (#1): [worker/ROOM] unbind",
+      "[07:06:51.741] INFO (#1): ",
+      "[07:06:51.743] INFO (#321): [worker] deleting",
+      "[07:06:51.746] INFO (#321): Cloudflare Worker delete: deleting port-shape-agent-room",
+      "[07:06:51.747] INFO (#322): Cloudflare: using environment variables (CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN) instead of the profile.",
+      "[07:06:52.764] INFO (#321): [worker] deleted (1.0s)",
+      "[07:06:52.767] INFO (#1): ",
+      "[07:06:52.767] INFO (#1): Done: 1 succeeded (1.0s)"
     ],
-    "at": "2026-10-30T10:01:45.619Z"
+    "at": "2026-10-30T11:06:54.059Z"
   },
   "sweep": {
-    "at": "2026-10-30T10:02:03.741Z",
+    "at": "2026-10-30T11:06:57.885Z",
     "prefix": "port-shape-agent-room",
     "leftovers": {},
-    "errors": {
-      "ai-gateway": "Error: /ai-gateway/gateways?per_page=100: HTTP 403 [{\"code\":10000,\"message\":\"Authentication error\",\"documentation_url\":\"https://developers.cloudflare.com/api/resources/ai_gateway\"}]"
-    }
+    "errors": {}
   }
 }

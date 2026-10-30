@@ -9,6 +9,8 @@ export const PREFIX = 'port-shape-';
 export const workerName = (slug: string) => `${PREFIX}${slug}`;
 export const containerName = (slug: string, part: string) => `${PREFIX}${slug}-${part}`;
 export const gatewayName = (slug: string) => `${PREFIX}${slug}`;
+export const SHAPE_ZONE = 'customer0.dev';
+export const shapeHost = (slug: string) => `${PREFIX}${slug}.${SHAPE_ZONE}`;
 
 export const durableObject = <Shape>(className: string) => Cloudflare.DurableObject<Shape>(className);
 
@@ -49,8 +51,10 @@ export const shapeStack = <const Env extends Cloudflare.WorkerBindingProps>(
         options.gateway === undefined
           ? {}
           : {
-              [options.gateway.binding]: (yield* Cloudflare.AI.Gateway('gateway', { id: gatewayName(slug) }))
-                .gatewayId,
+              [options.gateway.binding]: (yield* Cloudflare.AI.Gateway('gateway', {
+                id: gatewayName(slug),
+                authentication: true,
+              })).gatewayId,
             };
       const secret =
         options.secret === undefined ? {} : { [options.secret.binding]: secretValue(options.secret.env) };
@@ -58,7 +62,8 @@ export const shapeStack = <const Env extends Cloudflare.WorkerBindingProps>(
         name: workerName(slug),
         main: './src/index.ts',
         compatibility: { date: COMPATIBILITY_DATE },
-        workersDev: true,
+        workersDev: false,
+        domain: shapeHost(slug),
         env: { ...env, ...gateway, ...secret },
       });
       return { url: worker.url, worker: worker.workerName };

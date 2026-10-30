@@ -1,5 +1,5 @@
 import * as Schema from 'effect/Schema';
-import { client, prove, shapeUrl } from '../kit/smoke.ts';
+import { client, prove } from '../kit/smoke.ts';
 
 const Home = Schema.Struct({ shape: Schema.String });
 const Ship = Schema.Struct({
@@ -12,7 +12,6 @@ const App = Schema.Struct({ live: Schema.Number, text: Schema.String });
 const Rollback = Schema.Struct({ live: Schema.Number });
 
 const api = client('self-editing-app');
-const base = shapeUrl('self-editing-app');
 const user = `smoke-${Date.now()}`;
 
 await api.get('/', Home);
@@ -21,8 +20,8 @@ const app = (text: string, check: string) =>
   `export default { async fetch(req) { const p = new URL(req.url).pathname; if (p === '/__check') return Response.json({ ok: ${check} }); return new Response(${JSON.stringify(text)}); } };`;
 
 const ship = async (source: string) => {
-  const response = await fetch(`${base}/ship?u=${user}`, { method: 'POST', body: source });
-  return Schema.decodeUnknownSync(Ship)(await response.json());
+  const reply = await api.raw('POST', `/ship?u=${user}`, source);
+  return Schema.decodeUnknownSync(Ship)(reply.json);
 };
 
 const v1 = await ship(app('hello v1', 'true'));

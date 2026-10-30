@@ -35,7 +35,7 @@ const api = client('isolate-agents', { bearer: shapeKey() });
 const seed = walk(join(evals, 'seed'));
 const visible = Object.keys(seed).filter((path) => /^test\/[^/]+\.test\.ts$/.test(path));
 
-const health = await api.get('/health', Health);
+const health = await api.get('/health', Health, { tries: 150 });
 const seedRun = await api.post('/selftest', Results, { body: { files: seed, tests: visible } });
 const probe = {
   ...seed,
