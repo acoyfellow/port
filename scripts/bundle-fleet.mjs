@@ -22,7 +22,7 @@ const walk = (dir) => {
 };
 
 const bundle = await build({
-  entryPoints: [join(root, 'fleet/worker.ts')],
+  entryPoints: [join(root, 'shapes', 'isolate-agents', 'src', 'index.ts')],
   bundle: true,
   format: 'esm',
   platform: 'neutral',

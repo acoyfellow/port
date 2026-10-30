@@ -1,6 +1,6 @@
-import type { Entry } from '../entry.ts';
+import type { Entry } from '../../shared/entry.ts';
 
-export const ENTRY: Entry = {
+export const SHAPE: Entry = {
   slug: 'isolate-agents',
   mark: 'DI',
   name: 'Durable agents, isolate tests',
@@ -57,5 +57,5 @@ export const ENTRY: Entry = {
   },
   evalPlan:
     'swarm-5: 5 agents work on 5 tasks at the same time; port grades each with hidden tests and reports passes, turns, cost and time.',
-  source: 'github.com/acoyfellow/port (fleet/)',
+  source: 'github.com/acoyfellow/port (shapes/isolate-agents)',
 };

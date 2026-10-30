@@ -46,11 +46,12 @@ const checkShape = (slug) => {
   const stack = read(dir, 'alchemy.run.ts');
   if (!stack.includes("from '../kit/stack.ts'"))
     problems.push('alchemy.run.ts does not use shapes/kit/stack.ts');
-  if (!stack.includes(`shapeStack('${slug}'`))
+  if (!new RegExp(`shapeStack\\(\\s*'${slug}'`).test(stack))
     problems.push(`alchemy.run.ts does not call shapeStack('${slug}', …)`);
   const smoke = read(dir, 'smoke.ts');
   if (!smoke.includes("from '../kit/smoke.ts'")) problems.push('smoke.ts does not use shapes/kit/smoke.ts');
-  if (!smoke.includes(`client('${slug}')`)) problems.push(`smoke.ts does not call client('${slug}')`);
+  if (!new RegExp(`client\\(\\s*'${slug}'`).test(smoke))
+    problems.push(`smoke.ts does not call client('${slug}')`);
   if (!smoke.includes('prove(')) problems.push('smoke.ts never calls prove');
   for (const [file, text] of [
     ['alchemy.run.ts', stack],

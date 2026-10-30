@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
     "target": "es2023",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "strict": true,
     "noEmit": true,
     "skipLibCheck": true,
     "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true,
-    "types": ["node"],
+    "types": ["node", "@cloudflare/workers-types"],
     "lib": ["es2023", "dom"]
   },
-  "include": ["*.ts"]
+  "include": ["kit/*.ts", "*/alchemy.run.ts", "*/smoke.ts"]
 }

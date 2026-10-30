@@ -4,6 +4,7 @@
   "type": "module",
   "dependencies": {
     "alchemy": "2.0.0-beta.83",
-    "effect": "4.0.0"
+    "effect": "4.0.0",
+    "sucrase": "3.35.1"
   }
 }

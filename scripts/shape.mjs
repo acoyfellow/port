@@ -1,4 +1,5 @@
 import { execFileSync } from 'node:child_process';
+import { randomBytes } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
@@ -18,6 +19,8 @@ const accountId = () => {
 const token = () => {
   const fromEnv = process.env.CLOUDFLARE_API_TOKEN;
   if (fromEnv) return fromEnv;
+  const tokenFile = join(root, '.tmp', 'personal-token');
+  if (existsSync(tokenFile)) return readFileSync(tokenFile, 'utf8').trim();
   const config = readFileSync(
     [
       join(homedir(), '.wrangler/config/default.toml'),
@@ -46,8 +49,15 @@ const api = async (path, init = {}) => {
   return { status: response.status, body };
 };
 
-const names = (result, key = 'name') =>
-  (Array.isArray(result) ? result : []).map((item) => item[key] ?? item.id ?? item.title).filter(Boolean);
+const listed = async (path, pick, key = 'name') => {
+  const { status, body } = await api(path);
+  if (status < 200 || status > 299 || body.success === false)
+    throw new Error(`${path}: HTTP ${status} ${JSON.stringify(body.errors ?? []).slice(0, 160)}`);
+  const result = pick(body.result);
+  if (!Array.isArray(result)) throw new Error(`${path}: no list in the response`);
+  return result.map((item) => item[key] ?? item.id ?? item.title).filter(Boolean);
+};
+const asIs = (result) => result;
 
 const registryBasic = async (permissions) => {
   const minted = await api('/containers/registries/registry.cloudflare.com/credentials', {
@@ -60,16 +70,15 @@ const registryBasic = async (permissions) => {
 };
 
 const KINDS = {
-  worker: async () => names((await api('/workers/scripts')).body.result, 'id'),
-  'do-namespace': async () =>
-    names((await api('/workers/durable_objects/namespaces?per_page=1000')).body.result),
-  kv: async () => names((await api('/storage/kv/namespaces?per_page=100')).body.result, 'title'),
-  d1: async () => names((await api('/d1/database?per_page=100')).body.result),
-  r2: async () => names((await api('/r2/buckets')).body.result?.buckets),
-  queue: async () => names((await api('/queues')).body.result, 'queue_name'),
-  'ai-gateway': async () => names((await api('/ai-gateway/gateways?per_page=100')).body.result, 'id'),
-  container: async () => names((await api('/containers/applications')).body.result),
-  workflow: async () => names((await api('/workflows?per_page=100')).body.result),
+  worker: async () => listed('/workers/scripts', asIs, 'id'),
+  'do-namespace': async () => listed('/workers/durable_objects/namespaces?per_page=1000', asIs),
+  kv: async () => listed('/storage/kv/namespaces?per_page=100', asIs, 'title'),
+  d1: async () => listed('/d1/database?per_page=100', asIs),
+  r2: async () => listed('/r2/buckets', (result) => result?.buckets),
+  queue: async () => listed('/queues', asIs, 'queue_name'),
+  'ai-gateway': async () => listed('/ai-gateway/gateways?per_page=100', asIs, 'id'),
+  container: async () => listed('/containers/applications', asIs),
+  workflow: async () => listed('/workflows?per_page=100', asIs),
   'registry-image': async () => {
     const basic = await registryBasic(['pull']);
     const repositories = new Set();
@@ -143,6 +152,15 @@ export const purgeImages = async (slug) => {
 
 const subdomain = async () => (await api('/workers/subdomain')).body.result?.subdomain ?? '';
 
+const shapeKey = (slug) => {
+  const file = join(root, '.tmp', `shape-key-${slug}`);
+  if (!existsSync(file)) {
+    mkdirSync(join(root, '.tmp'), { recursive: true });
+    writeFileSync(file, randomBytes(24).toString('hex'), { mode: 0o600 });
+  }
+  return readFileSync(file, 'utf8').trim();
+};
+
 const runStep = (slug, step, sub) => {
   const dir = join(root, 'shapes', slug);
   if (!existsSync(join(dir, 'alchemy.run.ts'))) throw new Error(`shapes/${slug}/alchemy.run.ts is missing`);
@@ -162,6 +180,7 @@ const runStep = (slug, step, sub) => {
         CLOUDFLARE_API_TOKEN: token(),
         SHAPE_SLUG: slug,
         SHAPE_SUBDOMAIN: sub,
+        SHAPE_KEY: shapeKey(slug),
       },
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'pipe'],
