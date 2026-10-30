@@ -5,7 +5,7 @@ export const ENTRY: Entry = {
   mark: 'AR',
   name: 'Room of durable agents',
   oneLine: 'A shared chat room where a team and a tree of AI agents work together on one Cloudflare account.',
-  stage: 'outlined',
+  stage: 'verified',
   shape: '1 room = 1 ChatRoom Durable Object, 1 agent = 1 Agent Durable Object, no containers.',
   parts: [
     {
@@ -91,4 +91,5 @@ export const ENTRY: Entry = {
   evalPlan:
     'swarm-5 does not fit well because chat-ax has no shell or container to run hidden tests. A fitting eval: drive the /mcp endpoint with two test accounts, create an agent, send turns from both, and replay the security boundary attacks. Measure attacks held, turns that resume after a forced restart, and time to first streamed token on Workers AI.',
   source: 'https://github.com/acoyfellow/chat-ax',
+  receipt: 'proof/shapes/agent-room.json',
 };

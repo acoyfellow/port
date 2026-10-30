@@ -5,7 +5,7 @@ export const ENTRY: Entry = {
   mark: 'SE',
   name: 'App the agent rewrites',
   oneLine: 'A per-user web app that an agent rewrites on request, gated by build, boot, and checks.',
-  stage: 'outlined',
+  stage: 'verified',
   shape: '1 user = 1 Body Durable Object = 1 live app version in a Worker Loader isolate.',
   parts: [
     {
@@ -89,4 +89,5 @@ export const ENTRY: Entry = {
   evalPlan:
     'swarm-5 does not fit directly, because the agent edits only its own app body. A fitting eval gives the agent 5 app change requests with hidden story tests placed in the body checks. Port measures how many versions pass the gate on the first ship, ship attempts per task, build and gate time per version, rollbacks, and model tokens. The repo e2e suite (npm run e2e) is a ready baseline for gate correctness.',
   source: 'https://github.com/acoyfellow/skin',
+  receipt: 'proof/shapes/self-editing-app.json',
 };

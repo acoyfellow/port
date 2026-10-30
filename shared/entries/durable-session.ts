@@ -5,7 +5,7 @@ export const ENTRY: Entry = {
   mark: 'DS',
   name: 'Durable Pi session',
   oneLine: 'A Pi coding agent that lives in a Durable Object and continues after the object is killed.',
-  stage: 'outlined',
+  stage: 'verified',
   shape: '1 conversation = 1 Durable Object = 1 Pi harness in SQLite',
   parts: [
     {
@@ -88,4 +88,5 @@ export const ENTRY: Entry = {
   evalPlan:
     'Run swarm-5 with one Durable Object per task. Seed each task repo in Artifacts, send the task, and run the hidden tests on the final commit. Run each task twice: once clean, and once with kills every 9.5 seconds as in npm run kill5. Measure tasks passed, lives used, extra commits from replayed steps, and wall time to the last commit. Node-based test runners need a container, which this shape does not have, so the tests run outside the agent.',
   source: 'https://github.com/acoyfellow/pi-ext-durable',
+  receipt: 'proof/shapes/durable-session.json',
 };

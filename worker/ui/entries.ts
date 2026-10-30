@@ -6,6 +6,7 @@ import { badge, linkButton, page, pageHead } from './parts';
 
 const STAGE_BADGE: Record<Stage, ReturnType<typeof badge>> = {
   installable: badge('ok', 'Installable'),
+  verified: badge('ok', 'Verified'),
   outlined: badge('live', 'Outlined'),
   idea: badge('plain', 'Idea'),
 };
@@ -73,5 +74,9 @@ export const entryPage = (viewer: Viewer, entry: Entry) =>
         : entry.install.status === 'planned'
           ? 'Planned'
           : 'Not planned',
-    )}</h2><p class="muted">${entry.install.plan}</p></section><section class="card"><h2>Eval</h2><p class="muted">${entry.evalPlan}</p></section></div><p class="muted">Shape first seen in <code>${entry.source}</code>. port installs its own copy of the shape, not that project.</p></div>`,
+    )}</h2><p class="muted">${entry.install.plan}</p></section><section class="card"><h2>Eval</h2><p class="muted">${entry.evalPlan}</p></section></div><p class="muted">Shape first seen in <code>${entry.source}</code>. port installs its own copy of the shape, not that project.${
+      entry.receipt === undefined
+        ? ''
+        : html` Deployed, smoke-tested and torn down: <a href="https://github.com/acoyfellow/port/blob/main/${entry.receipt}">receipt</a>.`
+    }</p></div>`,
   });

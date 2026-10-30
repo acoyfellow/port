@@ -1,4 +1,4 @@
-export type Stage = 'installable' | 'outlined' | 'idea';
+export type Stage = 'installable' | 'verified' | 'outlined' | 'idea';
 
 export type Part = {
   readonly id: string;
@@ -40,4 +40,5 @@ export type Entry = {
   readonly install: { readonly status: 'ready' | 'planned' | 'none'; readonly plan: string };
   readonly evalPlan: string;
   readonly source: string;
+  readonly receipt?: string;
 };

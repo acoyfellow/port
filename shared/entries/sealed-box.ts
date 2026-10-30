@@ -5,7 +5,7 @@ export const ENTRY: Entry = {
   mark: 'SB',
   name: 'Sealed box per run',
   oneLine: 'Send one task to a sealed cloud box. Get the answer and a receipt that ties it to your task.',
-  stage: 'outlined',
+  stage: 'verified',
   shape: '1 run = 1 Durable Object = 1 sealed container',
   parts: [
     {
@@ -78,4 +78,5 @@ export const ENTRY: Entry = {
   evalPlan:
     'port would send the 5 swarm-5 tasks as 5 background runs, one box each, then grade each answer with hidden tests. It would report passes, verified receipts, cold start time, wall time per run and model cost.',
   source: 'github.com/acoyfellow/terrarium',
+  receipt: 'proof/shapes/sealed-box.json',
 };

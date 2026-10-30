@@ -1,5 +1,6 @@
-FROM alpine:3.20
+FROM busybox:1.36
 COPY cgi-bin /www/cgi-bin
-RUN chmod +x /www/cgi-bin/fs && mkdir -p /disk
+COPY start.sh /start.sh
+RUN chmod +x /www/cgi-bin/fs /start.sh && mkdir -p /disk
 EXPOSE 8080
-CMD ["httpd", "-f", "-p", "8080", "-h", "/www"]
+CMD ["/start.sh"]

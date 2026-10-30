@@ -1,4 +1,4 @@
-FROM alpine:3.20
+FROM busybox:1.36
 COPY cgi-bin /www/cgi-bin
 RUN chmod +x /www/cgi-bin/run
 EXPOSE 8080

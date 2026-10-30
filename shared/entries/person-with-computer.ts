@@ -6,7 +6,7 @@ export const ENTRY: Entry = {
   name: 'One agent and one computer per person',
   oneLine:
     'A voice agent that runs on the signed-in user account, with one Durable Object and one container per person.',
-  stage: 'outlined',
+  stage: 'verified',
   shape: '1 person = 1 Durable Object = 1 container, with model calls on the user own Workers AI.',
   parts: [
     {
@@ -106,4 +106,5 @@ export const ENTRY: Entry = {
   evalPlan:
     'swarm-5 does not fit, because hark is a voice agent, not a coding agent. A fitting eval: deploy to a test stage and run scripts/bench.mjs for end of speech to first audio, p50 and p95, per brain. Then run the e2e scenarios and the text and audio evals in the repo against the live stage, and record pass counts. Optionally give the 5 swarm-5 task prompts by voice to the bench tool and score the hidden tests, to measure code done in the Worker Loader isolate.',
   source: 'https://github.com/acoyfellow/hark',
+  receipt: 'proof/shapes/person-with-computer.json',
 };
