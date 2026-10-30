@@ -106,7 +106,9 @@ export class Hark extends DurableObject<Env> {
 }
 
 const cookieOf = (request: Request) =>
-  /(?:^|;\s*)hark=([^;]+)/.exec(request.headers.get('cookie') ?? '')?.[1] ?? '';
+  /(?:^|;\s*)hark=([^;]+)/.exec(request.headers.get('cookie') ?? '')?.[1] ??
+  /^Bearer (.+)$/.exec(request.headers.get('authorization') ?? '')?.[1] ??
+  '';
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -118,7 +120,7 @@ export default {
         url.searchParams.get('token') ?? '',
       );
       return Response.json(
-        { signedIn: true },
+        { signedIn: true, cookie },
         { headers: { 'set-cookie': `hark=${cookie}; HttpOnly; Secure; Path=/` } },
       );
     }

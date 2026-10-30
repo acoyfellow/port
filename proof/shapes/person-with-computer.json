@@ -2,71 +2,74 @@
   "slug": "person-with-computer",
   "up": {
     "ok": true,
-    "ms": 22864,
+    "ms": 22089,
     "tail": [
-      "[22:02:20.089] INFO (#406): Cloudflare Worker reconcile: durable objects [{\"logicalId\":\"DIRECTORY\",\"className\":\"Directory\"},{\"logicalId\":\"HARK\",\"className\":\"Hark\"}]",
-      "[22:02:20.090] INFO (#407): [Hark] creating",
-      "[22:02:20.090] INFO (#407): Cloudflare Container reconcile: starting <redacted>",
-      "[22:02:20.355] INFO (#406): Cloudflare Worker reconcile: existing durable object tags [\"alchemy:dos:DIRECTORY=Directory;HARK=Hark\"]",
-      "[22:02:20.355] INFO (#406): Cloudflare Worker reconcile: previous durable object tags [\"alchemy:dos:DIRECTORY=Directory;HARK=Hark\"]",
-      "[22:02:20.356] INFO (#406): Cloudflare Worker create: preparing bundle for port-shape-person-with-computer",
-      "[22:02:20.394] INFO (#406): Cloudflare Worker create: uploading script for port-shape-person-with-computer",
-      "[22:02:21.034] INFO (#407): Cloudflare Container reconcile: recreating <redacted> to attach durable object binding",
-      "[22:02:21.034] INFO (#407): [Hark] Recreating container application <redacted> with durable object binding...",
-      "[22:02:22.653] INFO (#407): Cloudflare Container create: creating application <redacted>",
-      "[22:02:22.653] INFO (#407): [Hark] Creating container application <redacted>...",
-      "[22:02:24.821] INFO (#406): Cloudflare Worker put: durable object reconciliation {\"oldDoClassNameByLogicalId\":{\"DIRECTORY\":\"Directory\",\"HARK\":\"Hark\"},\"currentDoClassNameByLogicalId\":{\"DIRECTORY\":\"Directory\",\"HARK\":\"Hark\"},\"deletedClasses\":[],\"renamedClasses\":[],\"transferredClasses\":[],\"newSqliteClasses\":[]}",
-      "[22:02:26.820] INFO (#608): [Hark] created (19.2s)",
-      "[22:02:26.820] INFO (#609): [worker] created — Enabling workers.dev subdomain... (19.2s)",
-      "[22:02:26.821] INFO (#1): ",
-      "[22:02:26.821] INFO (#1): Done: 2 succeeded (19.2s)",
+      "[06:19:27.935] INFO (#401): Cloudflare Worker reconcile: durable objects [{\"logicalId\":\"DIRECTORY\",\"className\":\"Directory\"},{\"logicalId\":\"HARK\",\"className\":\"Hark\"}]",
+      "[06:19:27.936] INFO (#402): [Hark] creating",
+      "[06:19:27.936] INFO (#402): Cloudflare Container reconcile: starting port-shape-person-with-computer-hark",
+      "[06:19:28.204] INFO (#401): Cloudflare Worker reconcile: existing durable object tags [\"alchemy:dos:DIRECTORY=Directory;HARK=Hark\"]",
+      "[06:19:28.204] INFO (#401): Cloudflare Worker reconcile: previous durable object tags [\"alchemy:dos:DIRECTORY=Directory;HARK=Hark\"]",
+      "[06:19:28.204] INFO (#401): Cloudflare Worker create: preparing bundle for port-shape-person-with-computer",
+      "[06:19:28.295] INFO (#401): Cloudflare Worker create: uploading script for port-shape-person-with-computer",
+      "[06:19:28.772] INFO (#402): Cloudflare Container reconcile: recreating port-shape-person-with-computer-hark to attach durable object binding",
+      "[06:19:28.772] INFO (#402): [Hark] Recreating container application port-shape-person-with-computer-hark with durable object binding...",
+      "[06:19:30.121] INFO (#402): Cloudflare Container create: creating application port-shape-person-with-computer-hark",
+      "[06:19:30.121] INFO (#402): [Hark] Creating container application port-shape-person-with-computer-hark...",
+      "[06:19:32.626] INFO (#401): Cloudflare Worker put: durable object reconciliation {\"oldDoClassNameByLogicalId\":{\"DIRECTORY\":\"Directory\",\"HARK\":\"Hark\"},\"currentDoClassNameByLogicalId\":{\"DIRECTORY\":\"Directory\",\"HARK\":\"Hark\"},\"deletedClasses\":[],\"renamedClasses\":[],\"transferredClasses\":[],\"newSqliteClasses\":[]}",
+      "[06:19:34.171] INFO (#602): [Hark] created (18.6s)",
+      "[06:19:34.171] INFO (#603): [worker] created — Enabling workers.dev subdomain... (18.6s)",
+      "[06:19:34.175] INFO (#1): ",
+      "[06:19:34.175] INFO (#1): Done: 2 succeeded (18.6s)",
       "{",
       "  url: 'https://port-shape-person-with-computer.<subdomain>.workers.dev',",
       "  worker: 'port-shape-person-with-computer'",
       "}"
     ],
-    "at": "2026-10-30T02:02:27.014Z"
+    "at": "2026-10-30T10:19:34.325Z"
   },
   "smoke": {
     "ok": true,
-    "ms": 95407,
+    "ms": 16089,
     "tail": [
-      "{\"bootA\":\"b4aec788\",\"bootB\":\"623fd4e1\",\"noteA\":\"alpha\",\"noteB\":\"\",\"messages\":24,\"first\":7,\"hasToken\":true,\"forged\":401,\"leaked\":false}",
-      "PROVED two signed-in people each got their own Hark DO and container (alice note=alpha, bob empty, different boots); Directory kept the token server-side behind a signed cookie (forged cookie 401); 30 messages trimmed to the last 24"
+      "{\"bootA\":\"c9f151fb\",\"bootB\":\"7103c1de\",\"noteA\":\"alpha\",\"noteB\":\"\",\"messages\":24,\"first\":7,\"hasToken\":true,\"forged\":\"Error: GET /look kept failing: HTTP 401\",\"leaked\":false}",
+      "PROVED Two signed-in people each got their own Hark Durable Object and container. Alice saw her note alpha. Bob saw an empty note. The two boot IDs were different. Directory kept the token on the server. The client got only a signed cookie. A forged cookie got 401. The Hark object trimmed 30 messages to the last 24."
     ],
-    "at": "2026-10-30T02:06:09.488Z"
+    "at": "2026-10-30T10:19:50.947Z"
   },
   "down": {
     "ok": true,
-    "ms": 5344,
+    "ms": 2887,
     "tail": [
-      "[22:06:17.005] INFO (#1): Resolving stack services",
-      "[22:06:17.024] INFO (#1): Loading stack state",
-      "[22:06:17.026] INFO (#1): Computing plan",
-      "[22:06:17.029] INFO (#1): Plan ready (1.5s)",
-      "[22:06:17.030] INFO (#1): Plan: 2 to delete, 3 binding changes",
-      "[22:06:17.030] INFO (#1): [Hark] delete",
-      "[22:06:17.030] INFO (#1): [Hark/HARK] unbind",
-      "[22:06:17.030] INFO (#1): [worker] delete",
-      "[22:06:17.030] INFO (#1): [worker/DIRECTORY] unbind",
-      "[22:06:17.030] INFO (#1): [worker/HARK] unbind",
-      "[22:06:17.030] INFO (#1): ",
-      "[22:06:17.032] INFO (#324): [Hark] deleting",
-      "[22:06:17.033] INFO (#325): [worker] deleting",
-      "[22:06:17.036] INFO (#324): Cloudflare Container delete: deleting <redacted>",
-      "[22:06:17.036] INFO (#326): Cloudflare: using environment variables (CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN) instead of the profile.",
-      "[22:06:17.038] INFO (#325): Cloudflare Worker delete: deleting port-shape-person-with-computer",
-      "[22:06:18.304] INFO (#324): [Hark] deleted (1.3s)",
-      "[22:06:18.795] INFO (#325): [worker] deleted (1.8s)",
-      "[22:06:18.797] INFO (#1): ",
-      "[22:06:18.797] INFO (#1): Done: 2 succeeded (1.8s)"
+      "[06:19:53.128] INFO (#1): Resolving stack services",
+      "[06:19:53.142] INFO (#1): Loading stack state",
+      "[06:19:53.143] INFO (#1): Computing plan",
+      "[06:19:53.146] INFO (#1): Plan ready (836ms)",
+      "[06:19:53.147] INFO (#1): Plan: 2 to delete, 3 binding changes",
+      "[06:19:53.147] INFO (#1): [Hark] delete",
+      "[06:19:53.147] INFO (#1): [Hark/HARK] unbind",
+      "[06:19:53.147] INFO (#1): [worker] delete",
+      "[06:19:53.147] INFO (#1): [worker/DIRECTORY] unbind",
+      "[06:19:53.147] INFO (#1): [worker/HARK] unbind",
+      "[06:19:53.147] INFO (#1): ",
+      "[06:19:53.149] INFO (#321): [Hark] deleting",
+      "[06:19:53.150] INFO (#322): [worker] deleting",
+      "[06:19:53.151] INFO (#322): Cloudflare Worker delete: deleting port-shape-person-with-computer",
+      "[06:19:53.152] INFO (#323): Cloudflare: using environment variables (CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN) instead of the profile.",
+      "[06:19:53.159] INFO (#321): Cloudflare Container delete: deleting port-shape-person-with-computer-hark",
+      "[06:19:53.887] INFO (#322): [worker] deleted (737ms)",
+      "[06:19:54.088] INFO (#321): [Hark] deleted (939ms)",
+      "[06:19:54.090] INFO (#1): ",
+      "[06:19:54.090] INFO (#1): Done: 2 succeeded (943ms)",
+      "removed registry images: port-shape-person-with-computer-hark"
     ],
-    "at": "2026-10-30T02:06:18.978Z"
+    "at": "2026-10-30T10:20:18.205Z"
   },
   "sweep": {
-    "at": "2026-10-30T02:06:27.714Z",
+    "at": "2026-10-30T10:20:35.157Z",
     "prefix": "port-shape-person-with-computer",
     "leftovers": {},
-    "errors": {}
+    "errors": {
+      "ai-gateway": "Error: /ai-gateway/gateways?per_page=100: HTTP 403 [{\"code\":10000,\"message\":\"Authentication error\",\"documentation_url\":\"https://developers.cloudflare.com/api/resources/ai_gateway\"}]"
+    }
   }
 }
