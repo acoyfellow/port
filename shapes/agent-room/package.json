@@ -1,0 +1,14 @@
+{
+  "name": "port-shape-agent-room",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "up": "alchemy deploy --stage shape --yes --no-input",
+    "smoke": "node smoke.mjs",
+    "down": "alchemy destroy --stage shape --yes --no-input"
+  },
+  "dependencies": {
+    "alchemy": "2.0.0-beta.83",
+    "effect": "4.0.0"
+  }
+}
