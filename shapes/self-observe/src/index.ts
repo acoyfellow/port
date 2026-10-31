@@ -1,7 +1,17 @@
 import { DurableObject } from 'cloudflare:workers';
 import { transform } from 'sucrase';
 import { type Block, callModel, costOf, type Message, type ModelEnv, type Tool, type ToolUse } from './model';
-import { type Arm, ARMS, armHas, govern, mutantsOf, probeMain, shrinkBody, type TurnRecord, traceBody } from './observe';
+import {
+  type Arm,
+  ARMS,
+  armHas,
+  govern,
+  mutantsOf,
+  probeMain,
+  shrinkBody,
+  type TurnRecord,
+  traceBody,
+} from './observe';
 
 type Env = ModelEnv & {
   readonly AGENT: DurableObjectNamespace<Agent>;
@@ -135,7 +145,9 @@ const runIsolate = async (env: Env, modules: Record<string, string>, main: strin
   }));
   const response = await Promise.race([
     worker.getEntrypoint().fetch('https://probe.fleet/'),
-    new Promise<Response>((resolve) => setTimeout(() => resolve(Response.json({ error: 'timed out after 10 s' })), 10_000)),
+    new Promise<Response>((resolve) =>
+      setTimeout(() => resolve(Response.json({ error: 'timed out after 10 s' })), 10_000),
+    ),
   ]);
   return response.json();
 };
@@ -174,7 +186,12 @@ const runTests = async (env: Env, files: Files, pick: (path: string) => boolean)
     const message = String(error instanceof Error ? error.message : error).slice(0, 300);
     return [
       ...errors,
-      { name: 'run', file: testFiles.join(', '), ok: false, error: `the tests did not finish: ${message}. Your code is too slow or loops forever on some input.` },
+      {
+        name: 'run',
+        file: testFiles.join(', '),
+        ok: false,
+        error: `the tests did not finish: ${message}. Your code is too slow or loops forever on some input.`,
+      },
     ];
   }
 };
@@ -222,13 +239,19 @@ const OBSERVE_TOOLS: Record<'shrink' | 'trace' | 'mutate', Tool> = {
       'Check a property of one exported function against 200 random inputs. On failure, returns the SMALLEST failing input, the error and the output for it. property is a JS arrow (fn, input) => boolean that calls fn. generator is a JS arrow (gen) => input using gen.int(lo,hi), gen.str(n), gen.array(make,n), gen.pick(xs), gen.bool().',
     input_schema: {
       type: 'object',
-      properties: { path: { type: 'string' }, export: { type: 'string' }, property: { type: 'string' }, generator: { type: 'string' } },
+      properties: {
+        path: { type: 'string' },
+        export: { type: 'string' },
+        property: { type: 'string' },
+        generator: { type: 'string' },
+      },
       required: ['path', 'export', 'property', 'generator'],
     },
   },
   trace: {
     name: 'trace',
-    description: 'Call one exported function with the given arguments in a sandbox and return the output or the error. args is a JS array literal, e.g. [money(150, "USD")]; money is not in scope, so build plain objects.',
+    description:
+      'Call one exported function with the given arguments in a sandbox and return the output or the error. args is a JS array literal, e.g. [money(150, "USD")]; money is not in scope, so build plain objects.',
     input_schema: {
       type: 'object',
       properties: { path: { type: 'string' }, export: { type: 'string' }, args: { type: 'string' } },
@@ -237,7 +260,8 @@ const OBSERVE_TOOLS: Record<'shrink' | 'trace' | 'mutate', Tool> = {
   },
   mutate: {
     name: 'mutate',
-    description: 'Mutation test one source file: make up to 30 small changes (flip a compare, swap && and ||, nudge a number), run your tests on each, and list the changes your tests do NOT catch. A surviving change means a missing test.',
+    description:
+      'Mutation test one source file: make up to 30 small changes (flip a compare, swap && and ||, nudge a number), run your tests on each, and list the changes your tests do NOT catch. A surviving change means a missing test.',
     input_schema: { type: 'object', properties: { path: { type: 'string' } }, required: ['path'] },
   },
 };
@@ -254,9 +278,16 @@ const SYSTEM =
 
 const systemFor = (arm: Arm) => {
   const extra: string[] = [];
-  if (armHas(arm, 'shrink')) extra.push('Before you finish, use shrink on each function you wrote with a property from the task, and use trace to see what a function really returns. Fix every failure shrink finds.');
-  if (armHas(arm, 'mutate')) extra.push('When your tests pass, run mutate on each source file you changed and add a test for each change it says your tests do not catch.');
-  if (armHas(arm, 'governor')) extra.push('A governor watches your loop and may add a line that starts with "governor:". Follow it.');
+  if (armHas(arm, 'shrink'))
+    extra.push(
+      'Before you finish, use shrink on each function you wrote with a property from the task, and use trace to see what a function really returns. Fix every failure shrink finds.',
+    );
+  if (armHas(arm, 'mutate'))
+    extra.push(
+      'When your tests pass, run mutate on each source file you changed and add a test for each change it says your tests do not catch.',
+    );
+  if (armHas(arm, 'governor'))
+    extra.push('A governor watches your loop and may add a line that starts with "governor:". Follow it.');
   return extra.length ? `${SYSTEM}\n\n${extra.join('\n')}` : SYSTEM;
 };
 
@@ -389,8 +420,15 @@ export class Agent extends DurableObject<Env> {
     if (name === 'shrink' || name === 'trace') {
       const target = path.replace(/\.ts$/, '.js');
       const { modules, errors } = compileAll(files);
-      if (errors.length > 0) return { content: `compile error: ${errors.map((e) => `${e.file}: ${e.error}`).join('\n')}`, error: true };
-      const body = name === 'shrink' ? shrinkBody(text(input.property), text(input.generator), 200) : traceBody(text(input.args) || '[]');
+      if (errors.length > 0)
+        return {
+          content: `compile error: ${errors.map((e) => `${e.file}: ${e.error}`).join('\n')}`,
+          error: true,
+        };
+      const body =
+        name === 'shrink'
+          ? shrinkBody(text(input.property), text(input.generator), 200)
+          : traceBody(text(input.args) || '[]');
       const result = await runIsolate(this.env, modules, probeMain(target, text(input.export), body));
       return { content: JSON.stringify(result).slice(0, 2500), error: false };
     }
@@ -398,12 +436,14 @@ export class Agent extends DurableObject<Env> {
       const source = files[path];
       if (source === undefined) return { content: `No file ${path}`, error: true };
       const baseline = await runTests(this.env, files, isVisibleTest);
-      if (baseline.some((r) => !r.ok)) return { content: 'fix the failing tests first: mutate needs a green baseline', error: true };
+      if (baseline.some((r) => !r.ok))
+        return { content: 'fix the failing tests first: mutate needs a green baseline', error: true };
       const mutants = mutantsOf(source, 30);
       const survivors: string[] = [];
       for (const mutant of mutants) {
         const results = await runTests(this.env, { ...files, [path]: mutant.source }, isVisibleTest);
-        if (results.every((r) => r.ok)) survivors.push(`line ${mutant.line}: \`${mutant.from}\` → \`${mutant.to}\``);
+        if (results.every((r) => r.ok))
+          survivors.push(`line ${mutant.line}: \`${mutant.from}\` → \`${mutant.to}\``);
       }
       return {
         content: `${mutants.length - survivors.length}/${mutants.length} changes caught by your tests.${survivors.length ? `\nNOT caught (add a test that fails on each):\n${survivors.slice(0, 12).join('\n')}` : ''}`,
@@ -417,7 +457,9 @@ export class Agent extends DurableObject<Env> {
     const messages: Message[] = [{ role: 'user', content: job.prompt }];
 
     while (outcome.turns < job.maxTurns) {
-      const reply = await callWithRetry(() => callModel(this.env, job.model, systemFor(outcome.arm), toolsFor(outcome.arm), messages));
+      const reply = await callWithRetry(() =>
+        callModel(this.env, job.model, systemFor(outcome.arm), toolsFor(outcome.arm), messages),
+      );
       outcome.turns += 1;
       outcome.inputTokens += reply.usage.input;
       outcome.outputTokens += reply.usage.output;
@@ -435,7 +477,11 @@ export class Agent extends DurableObject<Env> {
       if (calls.length === 0) {
         if (outcome.arm !== 'grounded' || !job.check || outcome.checks >= 2) break;
         const files = await this.files();
-        const results = await runTests(this.env, { ...files, ...job.check.files }, (path) => path === job.check?.entry);
+        const results = await runTests(
+          this.env,
+          { ...files, ...job.check.files },
+          (path) => path === job.check?.entry,
+        );
         const failed = results.find((result) => !result.ok);
         if (!failed) break;
         outcome.checks += 1;

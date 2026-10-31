@@ -4,7 +4,8 @@ export const SHAPE: Entry = {
   slug: 'self-observe',
   mark: 'SO',
   name: 'Agents that watch themselves',
-  oneLine: 'The isolate-agents fleet with tools for self-observation: shrink, trace, mutate and a loop governor. Five arms, one eval.',
+  oneLine:
+    'The isolate-agents fleet with tools for self-observation: shrink, trace, mutate and a loop governor. Five arms, one eval.',
   stage: 'outlined',
   shape: '1 agent = 1 Durable Object; tests run in a new Worker Loader isolate',
   parts: [
@@ -52,14 +53,46 @@ export const SHAPE: Entry = {
     'A model call with no answer stops the task. There is no timeout yet.',
   ],
   measures: [
-    { label: 'Governor arm: hidden tests passed, Kimi K2.6', value: '17 of 20 (85%), $0.033 per pass', source: 'proof/shapes/self-observe.json' },
-    { label: 'Baseline arm: hidden tests passed', value: '14 of 20 (70%), $0.044 per pass', source: 'proof/shapes/self-observe.json' },
-    { label: 'Shrink and trace arm', value: '19 of 29 (66%), $0.066 per pass', source: 'proof/shapes/self-observe.json' },
-    { label: 'Mutate arm', value: '10 of 20 (50%), $0.071 per pass', source: 'proof/shapes/self-observe.json' },
-    { label: 'All tools', value: '14 of 24 (58%), $0.073 per pass', source: 'proof/shapes/self-observe.json' },
-    { label: 'Model spend, 141 seats over two runs', value: '$4.24', source: 'proof/shapes/self-observe.json' },
-    { label: 'Grounded arm vs baseline, hard-5, 60 seats each: verdict KILL', value: '39 of 60 (65%) at $0.096 per pass vs 36 of 60 (60%) at $0.066 per pass, 1.47x cost', source: 'proof/self-observe/grounded-hard5.json' },
-    { label: 'Grounded arm on the two tasks baseline almost never solves', value: 'sku-glob 1 of 11 vs 0 of 11, csv-parse 2 of 11 vs 1 of 11', source: 'proof/self-observe/grounded-hard5.json' },
+    {
+      label: 'Governor arm: hidden tests passed, Kimi K2.6',
+      value: '17 of 20 (85%), $0.033 per pass',
+      source: 'proof/shapes/self-observe.json',
+    },
+    {
+      label: 'Baseline arm: hidden tests passed',
+      value: '14 of 20 (70%), $0.044 per pass',
+      source: 'proof/shapes/self-observe.json',
+    },
+    {
+      label: 'Shrink and trace arm',
+      value: '19 of 29 (66%), $0.066 per pass',
+      source: 'proof/shapes/self-observe.json',
+    },
+    {
+      label: 'Mutate arm',
+      value: '10 of 20 (50%), $0.071 per pass',
+      source: 'proof/shapes/self-observe.json',
+    },
+    {
+      label: 'All tools',
+      value: '14 of 24 (58%), $0.073 per pass',
+      source: 'proof/shapes/self-observe.json',
+    },
+    {
+      label: 'Model spend, 141 seats over two runs',
+      value: '$4.24',
+      source: 'proof/shapes/self-observe.json',
+    },
+    {
+      label: 'Grounded arm vs baseline, hard-5, 60 seats each: verdict KILL',
+      value: '39 of 60 (65%) at $0.096 per pass vs 36 of 60 (60%) at $0.066 per pass, 1.47x cost',
+      source: 'proof/self-observe/grounded-hard5.json',
+    },
+    {
+      label: 'Grounded arm on the two tasks baseline almost never solves',
+      value: 'sku-glob 1 of 11 vs 0 of 11, csv-parse 2 of 11 vs 1 of 11',
+      source: 'proof/self-observe/grounded-hard5.json',
+    },
   ],
   install: {
     status: 'ready',

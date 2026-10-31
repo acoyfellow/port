@@ -52,10 +52,29 @@ const stamp = resumeStamp ? Number(resumeStamp) : Date.now();
 const tmpDir = join(import.meta.dirname, '..', '..', '.tmp');
 const partialPath = join(tmpDir, `self-observe-${stamp}-partial.json`);
 writeFileSync(join(tmpDir, 'self-observe-current-stamp'), String(stamp));
-const interleaved = tasks.flatMap((task) => Array.from({ length: seeds }, (_, s) => arms.map((arm) => ({ arm, task, s, agent: `eval-${stamp}-${arm}-${task}-${s}` })))).flat();
-const jobs = resumeStamp ? arms.flatMap((arm) => tasks.flatMap((task) => Array.from({ length: seeds }, (_, s) => ({ arm, task, s, agent: `eval-${stamp}-${arm}-${task}-${s}` })))) : interleaved;
+const interleaved = tasks
+  .flatMap((task) =>
+    Array.from({ length: seeds }, (_, s) =>
+      arms.map((arm) => ({ arm, task, s, agent: `eval-${stamp}-${arm}-${task}-${s}` })),
+    ),
+  )
+  .flat();
+const jobs = resumeStamp
+  ? arms.flatMap((arm) =>
+      tasks.flatMap((task) =>
+        Array.from({ length: seeds }, (_, s) => ({
+          arm,
+          task,
+          s,
+          agent: `eval-${stamp}-${arm}-${task}-${s}`,
+        })),
+      ),
+    )
+  : interleaved;
 
-const results: (Outcome & { seed: number })[] = existsSync(partialPath) ? JSON.parse(readFileSync(partialPath, 'utf8')) : [];
+const results: (Outcome & { seed: number })[] = existsSync(partialPath)
+  ? JSON.parse(readFileSync(partialPath, 'utf8'))
+  : [];
 const finished = new Set(results.map((r) => `${r.arm}-${r.task}-${r.seed}`));
 let spent = results.reduce((a, r) => a + r.usd, 0);
 const poolSize = Number(process.env.BATCH ?? 6);
@@ -69,13 +88,21 @@ const start = (job: (typeof jobs)[number]) =>
       hidden: {
         entry: `test/hidden/${job.task}.test.ts`,
         files: {
-          [`test/hidden/${job.task}.test.ts`]: readFileSync(join(evals, 'tasks', job.task, `${job.task}.test.ts`), 'utf8'),
+          [`test/hidden/${job.task}.test.ts`]: readFileSync(
+            join(evals, 'tasks', job.task, `${job.task}.test.ts`),
+            'utf8',
+          ),
           'test/hidden/fixtures.ts': readFileSync(fixtures, 'utf8'),
         },
       },
       check: {
         entry: `test/check/${job.task}.test.ts`,
-        files: { [`test/check/${job.task}.test.ts`]: readFileSync(join(evals, 'tasks', job.task, 'check.test.ts'), 'utf8') },
+        files: {
+          [`test/check/${job.task}.test.ts`]: readFileSync(
+            join(evals, 'tasks', job.task, 'check.test.ts'),
+            'utf8',
+          ),
+        },
       },
       model,
       maxTurns,
@@ -107,7 +134,9 @@ while ((waiting.length > 0 || live.size > 0) && Date.now() < deadline) {
     spent += outcome.usd;
     results.push({ ...outcome, seed: job.s });
     writeFileSync(partialPath, JSON.stringify(results));
-    console.log(`${job.arm.padEnd(9)} ${job.task.padEnd(14)} s${job.s} ${outcome.passed ? 'PASS' : 'fail'} checks ${outcome.checks ?? 0} turns ${outcome.turns} $${outcome.usd.toFixed(4)} ${outcome.error ?? ''}`);
+    console.log(
+      `${job.arm.padEnd(9)} ${job.task.padEnd(14)} s${job.s} ${outcome.passed ? 'PASS' : 'fail'} checks ${outcome.checks ?? 0} turns ${outcome.turns} $${outcome.usd.toFixed(4)} ${outcome.error ?? ''}`,
+    );
   }
 }
 
@@ -115,10 +144,21 @@ const byArm = arms.map((arm) => {
   const rows = results.filter((r) => r.arm === arm);
   const passed = rows.filter((r) => r.passed).length;
   const usd = rows.reduce((a, r) => a + r.usd, 0);
-  return { arm, seats: rows.length, passed, usd: Number(usd.toFixed(4)), usdPerPass: passed ? Number((usd / passed).toFixed(4)) : null, turns: rows.reduce((a, r) => a + r.turns, 0), hiddenTests: rows.reduce((a, r) => a + (r.hidden?.passed ?? 0), 0) };
+  return {
+    arm,
+    seats: rows.length,
+    passed,
+    usd: Number(usd.toFixed(4)),
+    usdPerPass: passed ? Number((usd / passed).toFixed(4)) : null,
+    turns: rows.reduce((a, r) => a + r.turns, 0),
+    hiddenTests: rows.reduce((a, r) => a + (r.hidden?.passed ?? 0), 0),
+  };
 });
 mkdirSync(join(import.meta.dirname, '..', '..', '.tmp'), { recursive: true });
-writeFileSync(join(import.meta.dirname, '..', '..', '.tmp', `self-observe-${stamp}.json`), JSON.stringify({ suite, model, maxTurns, seeds, byArm, results, endedAt: Date.now() }, null, 1));
+writeFileSync(
+  join(import.meta.dirname, '..', '..', '.tmp', `self-observe-${stamp}.json`),
+  JSON.stringify({ suite, model, maxTurns, seeds, byArm, results, endedAt: Date.now() }, null, 1),
+);
 console.table(byArm);
 
 prove(
