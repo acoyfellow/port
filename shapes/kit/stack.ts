@@ -18,13 +18,20 @@ export const workerLoader = (binding: string) => Cloudflare.WorkerLoader(binding
 
 export const workersAi = (binding: string) => Cloudflare.Workers.AI(binding);
 
-export const container = <Shape>(slug: string, className: string) =>
+export const PI_BOX = `${import.meta.dirname}/box`;
+
+export const container = <Shape>(
+  slug: string,
+  className: string,
+  options: { readonly dockerfile?: string; readonly instanceType?: 'lite' | 'basic' | 'standard-1' } = {},
+) =>
   Cloudflare.Container<Shape>(className, {
     name: containerName(slug, className.toLowerCase()),
     className,
-    context: './box',
+    context: PI_BOX,
+    ...(options.dockerfile === undefined ? {} : { dockerfile: `${PI_BOX}/${options.dockerfile}` }),
     maxInstances: 2,
-    instanceType: 'lite',
+    instanceType: options.instanceType ?? 'basic',
   });
 
 export type ShapeOptions = {

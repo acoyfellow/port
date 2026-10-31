@@ -1,7 +1,0 @@
-#!/bin/sh
-task="$HTTP_X_TASK"
-answer=$(printf %s "$task" | rev)
-fingerprint=$(printf %s "$task" | sha256sum | cut -d' ' -f1)
-if wget -q -T 4 -O /dev/null http://1.1.1.1/ 2>/dev/null; then internet=true; else internet=false; fi
-printf 'Content-Type: application/json\r\n\r\n'
-printf '{"answer":"%s","run":"%s","fingerprint":"%s","nonce":"%s","internet":%s}' "$answer" "$HTTP_X_RUN" "$fingerprint" "$HTTP_X_NONCE" "$internet"

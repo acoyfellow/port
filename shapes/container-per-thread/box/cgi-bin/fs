@@ -1,6 +1,0 @@
-#!/bin/sh
-if [ "$HTTP_X_OP" = "write" ]; then printf %s "$HTTP_X_THREAD" > "/disk/$HTTP_X_THREAD.txt"; fi
-files=$(ls /disk | tr '\n' ' ')
-boot=$(cat /disk/.boot)
-printf 'Content-Type: application/json\r\n\r\n'
-printf '{"thread":"%s","host":"%s","files":"%s"}' "$HTTP_X_THREAD" "$boot" "$files"

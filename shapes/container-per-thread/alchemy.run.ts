@@ -1,6 +1,8 @@
-import { container, shapeStack } from '../kit/stack.ts';
+import { container, shapeStack, workersAi } from '../kit/stack.ts';
 import type { Thread } from './src/index.ts';
 
-export default shapeStack('container-per-thread', {
-  THREAD: container<Thread>('container-per-thread', 'Thread'),
-});
+export default shapeStack(
+  'container-per-thread',
+  { THREAD: container<Thread>('container-per-thread', 'Thread'), AI: workersAi('AI') },
+  { gateway: { binding: 'GATEWAY' } },
+);

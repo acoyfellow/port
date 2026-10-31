@@ -27,7 +27,7 @@ const refreshProfile = () =>
     },
   );
 
-const accountId = () => {
+export const accountId = () => {
   const value = profileValues().accountId;
   if (typeof value !== 'string' || value === '') throw new Error(`alchemy profile ${PROFILE} has no account`);
   return value;
@@ -65,7 +65,7 @@ const listed = async (path, pick, key = 'name') => {
 };
 const asIs = (result) => result;
 
-const registryBasic = async (permissions) => {
+export const registryBasic = async (permissions) => {
   const minted = await api('/containers/registries/registry.cloudflare.com/credentials', {
     method: 'POST',
     body: JSON.stringify({ expiration_minutes: 5, permissions }),
@@ -94,7 +94,8 @@ const KINDS = {
       const response = await fetch(next, { headers: { authorization: `Basic ${basic}` } });
       if (!response.ok) throw new Error(`registry catalog: HTTP ${response.status}`);
       const catalog = await response.json();
-      for (const repository of Object.keys(catalog.repositories ?? {})) repositories.add(repository);
+      for (const [repository, tags] of Object.entries(catalog.repositories ?? {}))
+        if (tags.some((tag) => !tag.startsWith('sha256:'))) repositories.add(repository);
       const link = /<?([^>;]+)>?;\s*rel="?next/.exec(response.headers.get('link') ?? '');
       next = link === null ? null : link[1];
     }
@@ -143,7 +144,12 @@ export const purgeImages = async (slug) => {
     });
     const tags = listed.ok ? ((await listed.json()).tags ?? []) : [];
     for (const tag of tags) {
-      await fetch(`${base}/${image}/manifests/${tag}`, {
+      const head = await fetch(`${base}/${image}/manifests/${tag}`, {
+        method: 'HEAD',
+        headers: { authorization: `Basic ${basic}`, accept },
+      });
+      const digest = head.headers.get('docker-content-digest') ?? tag;
+      await fetch(`${base}/${image}/manifests/${digest}`, {
         method: 'DELETE',
         headers: { authorization: `Basic ${basic}`, accept },
       });

@@ -107,6 +107,8 @@ const lastText = (messages: readonly { role: string; content: unknown }[]) => {
   return '';
 };
 
+export type Probe = { readonly facts: Record<string, string | number | boolean> };
+
 export type AgentShape<Env extends AgentEnv> = {
   readonly name: string;
   readonly instructions: string;
@@ -116,6 +118,32 @@ export type AgentShape<Env extends AgentEnv> = {
     conversationId: string,
   ) => ExecutionEnv | undefined;
   readonly extensions?: (env: Env) => readonly Extension[];
+  readonly probe?: (env: Env, ctx: DurableObjectState) => Promise<Probe>;
+};
+
+const WORKSPACE_LIMIT = 200;
+
+const workspaceOf = async (env: ExecutionEnv | undefined) => {
+  const files: Record<string, string> = {};
+  if (env === undefined) return files;
+  const walk = async (dir: string) => {
+    const listing = await env.listDir(dir, context);
+    if (!listing.ok) return;
+    for (const entry of listing.value) {
+      if (
+        Object.keys(files).length >= WORKSPACE_LIMIT ||
+        entry.name === 'node_modules' ||
+        entry.name.startsWith('.')
+      )
+        continue;
+      if (entry.kind === 'directory') await walk(entry.path);
+      if (entry.kind !== 'file') continue;
+      const text = await env.readTextFile(entry.path, context);
+      if (text.ok) files[entry.path.slice(env.cwd.length + 1)] = text.value;
+    }
+  };
+  await walk(env.cwd);
+  return files;
 };
 
 export const piAgent = <Env extends AgentEnv>(shape: AgentShape<Env>) =>
@@ -222,5 +250,13 @@ export const piAgent = <Env extends AgentEnv>(shape: AgentShape<Env>) =>
 
     async restart() {
       this.ctx.abort('restart on purpose');
+    }
+
+    async workspace() {
+      return workspaceOf(shape.environment(this.env, this.ctx, 'workspace'));
+    }
+
+    async probe() {
+      return shape.probe === undefined ? { facts: {} } : shape.probe(this.env, this.ctx);
     }
   };
