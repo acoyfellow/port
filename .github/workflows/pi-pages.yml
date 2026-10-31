@@ -1,8 +1,6 @@
 name: pi-pages
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
 jobs:
   pages:
     runs-on: ubuntu-latest
@@ -11,5 +9,4 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Prod shape pages show the Pi logo and tech section
-        run: node --input-type=module -e "$(sed -n '/^const checkProdPages/,/^};/p' proof/pi/check.mjs | sed 's/^const checkProdPages = /const run = /'); const shapes = (await import('node:fs')).readdirSync('shapes').filter((n) => (await import('node:fs')).existsSync('shapes/' + n + '/shape.ts'));"
+      - run: node proof/pi/pages.mjs

@@ -1,11 +1,11 @@
 import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { missingPiPages } from './pages.mjs';
 
 const root = join(import.meta.dirname, '..', '..');
 const shapesDir = join(root, 'shapes');
 const DAY_MS = 24 * 60 * 60 * 1000;
-const SITE = 'https://port.customer0.dev';
 const WORKFLOW = 'pi-pages.yml';
 
 const shapes = readdirSync(shapesDir).filter((name) => existsSync(join(shapesDir, name, 'shape.ts')));
@@ -80,24 +80,6 @@ run('port tests', 'npx', ['vitest', 'run'], root);
 run('lint', 'npx', ['biome', 'check', '.'], root);
 run('shapes typecheck', 'npx', ['tsc', '--noEmit', '-p', 'tsconfig.json'], shapesDir);
 
-const checkProdPages = async () => {
-  const missing = [];
-  for (const slug of shapes) {
-    const response = await fetch(`${SITE}/d/${slug}`);
-    const page = await response.text();
-    const ok =
-      response.ok &&
-      page.includes('src="/pi-logo.svg"') &&
-      page.includes('href="https://pi.dev"') &&
-      page.includes('Runs on') &&
-      page.includes('pi-durable 1.4.0');
-    if (!ok) missing.push(`${slug} (HTTP ${response.status})`);
-  }
-  const logo = await fetch(`${SITE}/pi-logo.svg`);
-  if (!logo.ok) missing.push(`pi-logo.svg (HTTP ${logo.status})`);
-  return missing;
-};
-
 const latestGithubRun = () => {
   const result = spawnSync(
     'gh',
@@ -110,7 +92,7 @@ const latestGithubRun = () => {
 };
 
 if (process.env.PORT_PROD === '1') {
-  const missing = await checkProdPages();
+  const missing = await missingPiPages(shapes);
   check(
     'prod pages',
     missing.length === 0,
