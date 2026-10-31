@@ -6,6 +6,7 @@ import type { GrantEnv } from './grant';
 import { installRoute, receiptRoute } from './routes/installs';
 import { accountPage, signInPage } from './ui/auth';
 import { fleetPage, homePage } from './ui/directory';
+import { sortOf } from './ui/directory-table';
 import { entryPage } from './ui/entries';
 import { errorPage, notFound } from './ui/parts';
 import { previewRoute } from './ui/preview';
@@ -29,7 +30,7 @@ const pageRoute = async (env: Env, request: Request, url: URL): Promise<Response
   const user = await currentUser(env, request);
   const viewer = await viewerOf(env, user);
 
-  if (url.pathname === '/') return homePage(viewer);
+  if (url.pathname === '/') return homePage(viewer, sortOf(url.searchParams));
   if (url.pathname === '/fleet') return fleetPage(viewer);
   const entry = ENTRIES.find((each) => url.pathname === `/d/${each.slug}`);
   if (entry !== undefined) return entryPage(viewer, entry);

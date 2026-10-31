@@ -1,7 +1,7 @@
-import { DIRECTORY_SLOTS, FLEET } from '../../shared/catalog';
+import { FLEET } from '../../shared/catalog';
 import { ENTRIES } from '../../shared/entries/index';
 import { installArt, signInArt, teardownArt } from './blueprint';
-import { entryCard } from './entries';
+import { directoryTable, type Sort } from './directory-table';
 import { html } from './html';
 import type { Viewer } from './layout';
 import { cloudflareButton, linkButton, page } from './parts';
@@ -10,9 +10,6 @@ const CREATED_LABEL: Record<(typeof FLEET.creates)[number], string> = {
   worker: 'One Worker, with a Durable Object and a Worker Loader',
   'ai-gateway': 'One AI Gateway for the model calls',
 };
-
-const skeletonCard = () =>
-  html`<div class="card entry skeleton" aria-hidden="true"><div class="entry-top"><div class="entry-icon"></div><div class="bar title"></div></div><div class="bar w80"></div><div class="bar w60"></div><div class="chips"><div class="bar" style="width:72px"></div><div class="bar" style="width:96px"></div></div></div>`;
 
 const primary = (viewer: Viewer) =>
   viewer === null ? cloudflareButton('/sign-in') : linkButton('/installs', { label: 'Your installs' });
@@ -40,7 +37,7 @@ const howItWorks = html`<section class="blueprint" aria-labelledby="how"><div cl
     html`<li class="bp-step">${art}<div><span class="bp-num">${String(index + 1).padStart(2, '0')}</span><strong>${title}</strong><p>${text}</p></div></li>`,
 )}</ol></section>`;
 
-export const homePage = (viewer: Viewer) =>
+export const homePage = (viewer: Viewer, sort: Sort = { key: '', dir: 'asc' }) =>
   page({
     title: 'Agent infra for your Cloudflare account',
     viewer,
@@ -48,10 +45,7 @@ export const homePage = (viewer: Viewer) =>
     body: html`${howItWorks}<div class="actions bp-actions">${primary(viewer)}${linkButton('/fleet', {
       label: 'See the agent fleet',
       kind: 'ghost',
-    })}</div><section><div class="section-head"><h2>Directory</h2><p>Each shape has a diagram, its parts and what was measured. Most have a port build that was deployed, tested and deleted.</p></div><div class="grid">${ENTRIES.map(entryCard)}${Array.from(
-      { length: Math.max(0, DIRECTORY_SLOTS - ENTRIES.length) },
-      skeletonCard,
-    )}</div></section></div>`,
+    })}</div><section id="directory"><div class="section-head"><div><h2>Directory</h2><p>Every shape runs stock Pi. Click a column to sort. Cost and time come from each shape’s last Pi run, which was deployed, tested and deleted.</p></div></div>${directoryTable(ENTRIES, sort)}</section></div>`,
   });
 
 export const fleetPage = (viewer: Viewer) =>

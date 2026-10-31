@@ -65,6 +65,13 @@ export const SHAPE: Entry = {
   },
   tools:
     'in memory inside the same Durable Object that holds the session; transcript and files share one SQLite database. No container.',
+  traits: {
+    runsIn: 'Durable Object',
+    isolation: 'One DO per session',
+    internet: 'none',
+    state: 'DO SQLite',
+    startup: 'instant',
+  },
   evalPlan:
     'Run swarm-5 with one Durable Object per task. Seed each task repo in Artifacts, send the task, and run the hidden tests on the final commit. Run each task twice: once clean, and once with kills every 9.5 seconds as in npm run kill5. Measure tasks passed, lives used, extra commits from replayed steps, and wall time to the last commit. Node-based test runners need a container, which this shape does not have, so the tests run outside the agent.',
   source: 'https://github.com/acoyfellow/pi-ext-durable',

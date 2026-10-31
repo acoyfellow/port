@@ -77,6 +77,13 @@ export const SHAPE: Entry = {
   },
   tools:
     'in this thread’s own container. A small server in the container runs Pi’s Node tool environment; the Durable Object forwards each tool call to it.',
+  traits: {
+    runsIn: 'Container per thread',
+    isolation: 'Container per thread',
+    internet: 'on',
+    state: 'DO SQLite + disk',
+    startup: 'container',
+  },
   evalPlan:
     'Port can run swarm-5 by creating 5 threads through POST /api/threads/:name/messages with wait true, one task per thread. Each thread writes code in its own container, then port copies the files out with thread_read_file and runs the hidden tests outside. Measure pass count, wall time per seat, model time vs tool time, cold start of the container, and cost per seat.',
   source: 'https://github.com/acoyfellow/coil',

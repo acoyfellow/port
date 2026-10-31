@@ -83,6 +83,13 @@ export const SHAPE: Entry = {
   },
   tools:
     'in memory in the Durable Object, plus a ship_app tool that boots the new app version in a fresh Worker Loader isolate and makes it live only if its check passes.',
+  traits: {
+    runsIn: 'Durable Object + isolates',
+    isolation: 'Isolate per app version',
+    internet: 'off',
+    state: 'DO SQLite',
+    startup: 'instant',
+  },
   evalPlan:
     'swarm-5 does not fit directly, because the agent edits only its own app body. A fitting eval gives the agent 5 app change requests with hidden story tests placed in the body checks. Port measures how many versions pass the gate on the first ship, ship attempts per task, build and gate time per version, rollbacks, and model tokens. The repo e2e suite (npm run e2e) is a ready baseline for gate correctness.',
   source: 'https://github.com/acoyfellow/skin',

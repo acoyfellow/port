@@ -63,6 +63,13 @@ export const SHAPE: Entry = {
     plan: 'An Alchemy v2 project would create one Worker with static assets, five SQLite Durable Object classes, one Workflow, one KV namespace, one R2 bucket and a Workers AI binding. The hard part is the container: the image must be built and pushed from Dockerfile.pi, and the first start is slow. Login needs Cloudflare Access or an OAuth app in front of the Worker, which port cannot create for the user without extra steps.',
   },
   tools: 'in a container with internet off. Model calls leave from the Durable Object, never from the box.',
+  traits: {
+    runsIn: 'Container per run',
+    isolation: 'Container per run',
+    internet: 'off',
+    state: 'DO SQLite + disk',
+    startup: 'container',
+  },
   evalPlan:
     'port would send the 5 swarm-5 tasks as 5 background runs, one box each, then grade each answer with hidden tests. It would report passes, verified receipts, cold start time, wall time per run and model cost.',
   source: 'github.com/acoyfellow/terrarium',

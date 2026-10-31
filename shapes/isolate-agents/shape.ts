@@ -52,6 +52,13 @@ export const SHAPE: Entry = {
   },
   tools:
     'in memory inside the agent’s Durable Object; files are stored in its SQLite, and node --test runs in a fresh Worker Loader isolate with no internet.',
+  traits: {
+    runsIn: 'Durable Object + isolates',
+    isolation: 'Isolate per test run',
+    internet: 'off',
+    state: 'DO SQLite',
+    startup: 'instant',
+  },
   evalPlan:
     'swarm-5: 5 agents work on 5 tasks at the same time; port grades each with hidden tests and reports passes, turns, cost and time.',
   source: 'github.com/acoyfellow/port (shapes/isolate-agents)',

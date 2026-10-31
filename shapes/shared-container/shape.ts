@@ -69,6 +69,13 @@ export const SHAPE: Entry = {
     status: 'planned',
     plan: 'An Alchemy v2 (Effect v4) project would build fleet-image/Dockerfile and deploy it as a Cloudflare Container behind a Worker and a Durable Object that starts the run. The image must include seat-user.sh and the sudoers file. The model API key must be a Worker secret passed to the container. Hard parts: the container (image size with Chromium and Erlang, sudo and adduser inside it) and secrets. gh and cf sign-in need a user token or OAuth app; that was not tested.',
   },
+  traits: {
+    runsIn: 'One shared container',
+    isolation: 'Unix user per agent',
+    internet: 'on',
+    state: 'DO SQLite + disk',
+    startup: 'container',
+  },
   evalPlan:
     'Port runs the swarm-5 eval as is: 5 goals (business-days, cart-merge, csv-parse, money-words, sku-glob) in one container, one seat user each, graded by hidden tests. It measures pass count, turns and USD per seat from events.jsonl, and runs isolation-probe.sh to count cross-seat reads and denials. Run it more than once to get a noise band.',
   source: 'gleam-agents: proof/swarm-5, fleet-image, harness/pi',

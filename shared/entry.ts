@@ -39,6 +39,7 @@ export type Entry = {
   readonly source: string;
   readonly build?: ShapeBuild;
   readonly tools?: string;
+  readonly traits?: Traits;
 };
 
 export type ShapeBuild = {
@@ -49,4 +50,12 @@ export type ShapeBuild = {
   readonly seconds: number;
   readonly resumed: boolean;
   readonly on: string;
+};
+
+export type Traits = {
+  readonly runsIn: string;
+  readonly isolation: string;
+  readonly internet: 'off' | 'on' | 'none';
+  readonly state: string;
+  readonly startup: 'instant' | 'container';
 };

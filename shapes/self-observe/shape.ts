@@ -54,6 +54,13 @@ export const SHAPE: Entry = {
   },
   tools:
     'in memory in the Durable Object, like isolate-agents, plus three Pi tools, shrink, trace and mutate, that run the agent’s code in fresh Worker Loader isolates.',
+  traits: {
+    runsIn: 'Durable Object + isolates',
+    isolation: 'Isolate per tool call',
+    internet: 'off',
+    state: 'DO SQLite',
+    startup: 'instant',
+  },
   evalPlan:
     'swarm-5: 5 agents work on 5 tasks at the same time; port grades each with hidden tests and reports passes, turns, cost and time.',
   source: 'github.com/acoyfellow/port (shapes/isolate-agents)',
