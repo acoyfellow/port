@@ -1,17 +1,15 @@
 import { DurableObject } from 'cloudflare:workers';
+import { type AgentEnv, piAgent } from '../../kit/agent.ts';
+import { boxBoot, containerEnv } from '../../kit/container-env.ts';
+import { piRouter } from '../../kit/router.ts';
 
-type Env = {
+type Env = AgentEnv & {
   readonly DIRECTORY: DurableObjectNamespace<Directory>;
-  readonly HARK: DurableObjectNamespace<Hark>;
+  readonly PERSON: DurableObjectNamespace<Person>;
 };
 
-type Box = { readonly boot: string; readonly note: string };
-
-type Message = { readonly n: number; readonly text: string };
-
-const KEEP = 24;
-
-const pause = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+const COMPUTER = { internet: false } as const;
+const PERSON_NAME = /^[a-z0-9-]{1,64}$/;
 
 const hex = (bytes: ArrayBuffer) =>
   [...new Uint8Array(bytes)].map((b) => b.toString(16).padStart(2, '0')).join('');
@@ -23,7 +21,7 @@ export class Directory extends DurableObject<Env> {
     ctx.storage.sql.exec('CREATE TABLE IF NOT EXISTS keys (id INTEGER PRIMARY KEY, secret TEXT)');
   }
 
-  private async sign(person: string): Promise<string> {
+  async #sign(person: string) {
     const rows = this.ctx.storage.sql
       .exec<{ secret: string }>('SELECT secret FROM keys WHERE id = 1')
       .toArray();
@@ -39,104 +37,52 @@ export class Directory extends DurableObject<Env> {
     return hex(await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(person)));
   }
 
-  async grant(person: string, token: string): Promise<string> {
+  async grant(person: string, token: string) {
     this.ctx.storage.sql.exec('INSERT OR REPLACE INTO grants (person, token) VALUES (?, ?)', person, token);
-    return `${person}.${await this.sign(person)}`;
+    return `${person}.${await this.#sign(person)}`;
   }
 
-  async verify(cookie: string): Promise<string | null> {
+  async verify(cookie: string) {
     const [person = '', signature = ''] = cookie.split('.');
-    return person !== '' && signature === (await this.sign(person)) ? person : null;
+    return person !== '' && signature === (await this.#sign(person)) ? person : null;
   }
 
-  token(person: string): string {
-    const rows = this.ctx.storage.sql
-      .exec<{ token: string }>('SELECT token FROM grants WHERE person = ?', person)
-      .toArray();
-    return rows[0]?.token ?? '';
+  holds(person: string) {
+    return this.ctx.storage.sql.exec('SELECT 1 FROM grants WHERE person = ?', person).toArray().length > 0;
   }
 }
 
-export class Hark extends DurableObject<Env> {
-  constructor(ctx: DurableObjectState, env: Env) {
-    super(ctx, env);
-    ctx.storage.sql.exec('CREATE TABLE IF NOT EXISTS messages (n INTEGER PRIMARY KEY, text TEXT)');
-  }
-
-  private async computer(path: string): Promise<Box> {
-    const container = this.ctx.container;
-    if (container === undefined) throw new Error('no container binding');
-    if (!container.running) container.start({ enableInternet: false });
-    let last = '';
-    for (let attempt = 0; attempt < 60; attempt++) {
-      try {
-        const response = await container.getTcpPort(8080).fetch(`http://computer${path}`);
-        if (response.ok) {
-          const box: Box = await response.json();
-          return box;
-        }
-        last = String(response.status);
-      } catch (error) {
-        last = String(error);
-      }
-      await pause(1000);
-    }
-    throw new Error(`computer never answered: ${last}`);
-  }
-
-  async say(person: string, text: string, write: boolean) {
-    const token = await this.env.DIRECTORY.get(this.env.DIRECTORY.idFromName('directory')).token(person);
-    const next =
-      (this.ctx.storage.sql.exec<{ n: number | null }>('SELECT MAX(n) AS n FROM messages').one().n ?? 0) + 1;
-    this.ctx.storage.sql.exec('INSERT INTO messages (n, text) VALUES (?, ?)', next, text);
-    this.ctx.storage.sql.exec('DELETE FROM messages WHERE n <= ?', next - KEEP);
-    const messages = this.ctx.storage.sql.exec<Message>('SELECT n, text FROM messages ORDER BY n').toArray();
-    const box = write ? await this.computer(`/write?text=${encodeURIComponent(text)}`) : null;
-    return { person, hasToken: token !== '', messages: messages.length, first: messages[0]?.n ?? 0, box };
-  }
-
-  async look(): Promise<Box> {
-    return this.computer('/read');
-  }
-
-  async stop(): Promise<void> {
-    const container = this.ctx.container;
-    if (container !== undefined && container.running) await container.destroy();
-  }
-}
+export class Person extends piAgent<Env>({
+  name: 'person-with-computer',
+  instructions:
+    'You are the personal agent of one signed-in person. You have their own computer: a shell, Python and Node in /workspace, no internet. Do the work with the tools, check it, then reply in one short sentence.',
+  environment: (_env, ctx) => containerEnv(ctx, `person:${ctx.id.toString()}`, COMPUTER),
+  probe: async (_env, ctx) => ({ facts: { boot: await boxBoot(ctx, COMPUTER) } }),
+}) {}
 
 const cookieOf = (request: Request) =>
-  /(?:^|;\s*)hark=([^;]+)/.exec(request.headers.get('cookie') ?? '')?.[1] ??
+  /(?:^|;\s*)person=([^;]+)/.exec(request.headers.get('cookie') ?? '')?.[1] ??
   /^Bearer (.+)$/.exec(request.headers.get('authorization') ?? '')?.[1] ??
   '';
 
-export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+const directoryOf = (env: Env) => env.DIRECTORY.get(env.DIRECTORY.idFromName('directory'));
+
+export default piRouter<Env>({
+  shape: 'person-with-computer',
+  agent: (env, name) => env.PERSON.get(env.PERSON.idFromName(name)),
+  gateway: (env) => env.GATEWAY,
+  identify: (request, env) => directoryOf(env).verify(cookieOf(request)),
+  extra: async (request, env) => {
     const url = new URL(request.url);
-    const directory = env.DIRECTORY.get(env.DIRECTORY.idFromName('directory'));
-    if (url.pathname === '/signin') {
-      const cookie = await directory.grant(
-        url.searchParams.get('p') ?? '',
-        url.searchParams.get('token') ?? '',
-      );
-      return Response.json(
-        { signedIn: true, cookie },
-        { headers: { 'set-cookie': `hark=${cookie}; HttpOnly; Secure; Path=/` } },
-      );
-    }
-    const person = await directory.verify(cookieOf(request));
-    if (person === null) return Response.json({ error: 'not signed in' }, { status: 401 });
-    const hark = env.HARK.get(env.HARK.idFromName(person));
-    if (url.pathname === '/say') {
-      return Response.json(
-        await hark.say(person, url.searchParams.get('text') ?? '', url.searchParams.has('write')),
-      );
-    }
-    if (url.pathname === '/look') return Response.json(await hark.look());
-    if (url.pathname === '/stop') {
-      await hark.stop();
-      return Response.json({ stopped: true });
-    }
-    return new Response('person-with-computer shape');
+    if (url.pathname !== '/signin') return undefined;
+    const person = url.searchParams.get('p') ?? '';
+    const token = url.searchParams.get('token') ?? '';
+    if (!PERSON_NAME.test(person) || token === '')
+      return Response.json({ error: 'p and token are required' }, { status: 400 });
+    const cookie = await directoryOf(env).grant(person, token);
+    return Response.json(
+      { signedIn: true, cookie, held: await directoryOf(env).holds(person) },
+      { headers: { 'set-cookie': `person=${cookie}; HttpOnly; Secure; Path=/` } },
+    );
   },
-} satisfies ExportedHandler<Env>;
+});

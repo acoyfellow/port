@@ -1,0 +1,14 @@
+{
+  "slug": "sealed-box",
+  "at": "2026-10-31T12:13:39.459Z",
+  "agent": "pi-durable",
+  "task": "wrote and checked fizzbuzz.py and NOTES.md",
+  "passed": true,
+  "restarted": true,
+  "resumed": true,
+  "usd": 0.0031159,
+  "tokens": 5551,
+  "seconds": 149,
+  "infrastructure": "The tools ran in a container with internet off: a fetch from inside the box was blocked. Model calls left from the Durable Object, not the box.",
+  "infrastructureOk": true
+}

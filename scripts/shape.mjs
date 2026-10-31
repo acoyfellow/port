@@ -144,12 +144,7 @@ export const purgeImages = async (slug) => {
     });
     const tags = listed.ok ? ((await listed.json()).tags ?? []) : [];
     for (const tag of tags) {
-      const head = await fetch(`${base}/${image}/manifests/${tag}`, {
-        method: 'HEAD',
-        headers: { authorization: `Basic ${basic}`, accept },
-      });
-      const digest = head.headers.get('docker-content-digest') ?? tag;
-      await fetch(`${base}/${image}/manifests/${digest}`, {
+      await fetch(`${base}/${image}/manifests/${tag}`, {
         method: 'DELETE',
         headers: { authorization: `Basic ${basic}`, accept },
       });

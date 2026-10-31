@@ -1,7 +1,8 @@
-import { durableObject, shapeStack } from '../kit/stack.ts';
-import type { AgentDO, ChatRoomDO } from './src/index.ts';
+import { durableObject, shapeStack, workersAi } from '../kit/stack.ts';
+import type { Room, RoomAgent } from './src/index.ts';
 
-export default shapeStack('agent-room', {
-  ROOM: durableObject<ChatRoomDO>('ChatRoomDO'),
-  AGENT: durableObject<AgentDO>('AgentDO'),
-});
+export default shapeStack(
+  'agent-room',
+  { ROOM: durableObject<Room>('Room'), AGENT: durableObject<RoomAgent>('RoomAgent'), AI: workersAi('AI') },
+  { gateway: { binding: 'GATEWAY' } },
+);

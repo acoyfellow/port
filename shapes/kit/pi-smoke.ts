@@ -30,7 +30,7 @@ export type PiTask = {
 export type PiSmoke = {
   readonly slug: string;
   readonly task: PiTask;
-  readonly bearer?: string;
+  readonly bearer?: string | (() => Promise<string>);
   readonly infrastructure: (probe: Record<string, unknown>) => {
     readonly ok: boolean;
     readonly claim: string;
@@ -55,7 +55,8 @@ export type PiReceipt = {
 };
 
 export const runPiSmoke = async (smoke: PiSmoke) => {
-  const api = client(smoke.slug, smoke.bearer === undefined ? undefined : { bearer: smoke.bearer });
+  const bearer = typeof smoke.bearer === 'function' ? await smoke.bearer() : smoke.bearer;
+  const api = client(smoke.slug, bearer === undefined ? undefined : { bearer });
   const started = Date.now();
   const health = await api.get('/health', Health, { tries: 150 });
   const agent = `smoke-${Date.now()}`;

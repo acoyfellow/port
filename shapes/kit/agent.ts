@@ -117,7 +117,7 @@ export type AgentShape<Env extends AgentEnv> = {
     ctx: DurableObjectState,
     conversationId: string,
   ) => ExecutionEnv | undefined;
-  readonly extensions?: (env: Env) => readonly Extension[];
+  readonly extensions?: (env: Env, ctx: DurableObjectState) => readonly Extension[];
   readonly probe?: (env: Env, ctx: DurableObjectState) => Promise<Probe>;
 };
 
@@ -167,7 +167,7 @@ export const piAgent = <Env extends AgentEnv>(shape: AgentShape<Env>) =>
             sections: [section('preamble', () => shape.instructions, { tag: false })],
           }),
         );
-        for (const extension of shape.extensions?.(env) ?? []) registry.install(extension);
+        for (const extension of shape.extensions?.(env, ctx) ?? []) registry.install(extension);
         this.#harness = await Harness.open(
           await openDurableObjectSqliteStorage(ctx.storage),
           {

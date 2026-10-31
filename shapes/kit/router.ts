@@ -13,6 +13,8 @@ export type RouterOptions<Env> = {
   readonly agent: (env: Env, name: string) => RoutedAgent;
   readonly key?: (env: Env) => string;
   readonly gateway: (env: Env) => string;
+  readonly identify?: (request: Request, env: Env) => Promise<string | null>;
+  readonly extra?: (request: Request, env: Env) => Promise<Response | undefined>;
 };
 
 const json = (body: unknown, status = 200) => Response.json(body, { status });
@@ -32,7 +34,12 @@ export const piRouter = <Env>(options: RouterOptions<Env>): ExportedHandler<Env>
     const url = new URL(request.url);
     if (url.pathname === '/health')
       return json({ ok: true, shape: options.shape, agent: 'pi-durable', gateway: options.gateway(env) });
-    const name = url.searchParams.get('agent') ?? '';
+    const extra = await options.extra?.(request, env);
+    if (extra !== undefined) return extra;
+    const identified =
+      options.identify === undefined ? url.searchParams.get('agent') : await options.identify(request, env);
+    if (identified === null) return json({ error: 'not signed in' }, 401);
+    const name = identified ?? '';
     if (!NAME.test(name)) return json({ error: 'agent must match [a-z0-9-]{1,64}' }, 400);
     const agent = options.agent(env, name);
     const requestId = `run:${name}`;

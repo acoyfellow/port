@@ -1,20 +1,17 @@
 import { DurableObject } from 'cloudflare:workers';
+import { Type } from '@earendil-works/pi-ai';
+import { defineExtension, defineTool } from '@earendil-works/pi-durable';
+import { type AgentEnv, piAgent } from '../../kit/agent.ts';
+import { piRouter } from '../../kit/router.ts';
 
-type Env = {
-  readonly ROOM: DurableObjectNamespace<ChatRoomDO>;
-  readonly AGENT: DurableObjectNamespace<AgentDO>;
+type Env = AgentEnv & {
+  readonly ROOM: DurableObjectNamespace<Room>;
+  readonly AGENT: DurableObjectNamespace<RoomAgent>;
 };
 
-type Message = { readonly n: number; readonly sender: string; readonly text: string };
-type Turn = {
-  readonly n: number;
-  readonly room: string;
-  readonly sender: string;
-  readonly text: string;
-  readonly reply: string;
-};
+const ROOM_NAME = 'lobby';
 
-export class ChatRoomDO extends DurableObject<Env> {
+export class Room extends DurableObject<Env> {
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
     ctx.storage.sql.exec(
@@ -22,78 +19,77 @@ export class ChatRoomDO extends DurableObject<Env> {
     );
   }
 
-  private append(sender: string, text: string): void {
+  post(sender: string, text: string) {
     this.ctx.storage.sql.exec('INSERT INTO messages (sender, text) VALUES (?, ?)', sender, text);
+    return this.ctx.storage.sql.exec<{ n: number }>('SELECT MAX(n) AS n FROM messages').one().n;
   }
 
-  async post(room: string, agent: string, sender: string, text: string): Promise<Turn> {
-    this.append(sender, text);
-    const turn = await this.env.AGENT.get(this.env.AGENT.idFromName(agent)).turn(room, sender, text);
-    this.append(`agent:${agent}`, turn.reply);
-    return turn;
-  }
-
-  messages(): readonly Message[] {
-    return this.ctx.storage.sql.exec<Message>('SELECT n, sender, text FROM messages ORDER BY n').toArray();
-  }
-}
-
-export class AgentDO extends DurableObject<Env> {
-  private readonly boot = crypto.randomUUID();
-
-  constructor(ctx: DurableObjectState, env: Env) {
-    super(ctx, env);
-    ctx.storage.sql.exec(
-      'CREATE TABLE IF NOT EXISTS turns (n INTEGER PRIMARY KEY, room TEXT, sender TEXT, text TEXT, reply TEXT)',
-    );
-  }
-
-  turn(room: string, sender: string, text: string): Turn {
-    const reply = `ack ${sender}: ${text}`;
-    this.ctx.storage.sql.exec(
-      'INSERT INTO turns (room, sender, text, reply) VALUES (?, ?, ?, ?)',
-      room,
-      sender,
-      text,
-      reply,
-    );
-    const n = this.ctx.storage.sql.exec<{ n: number }>('SELECT MAX(n) AS n FROM turns').one().n;
-    return { n, room, sender, text, reply };
-  }
-
-  read(): { readonly boot: string; readonly turns: readonly Turn[] } {
-    const turns = this.ctx.storage.sql
-      .exec<Turn>('SELECT n, room, sender, text, reply FROM turns ORDER BY n')
+  read() {
+    return this.ctx.storage.sql
+      .exec<{ n: number; sender: string; text: string }>('SELECT n, sender, text FROM messages ORDER BY n')
       .toArray();
-    return { boot: this.boot, turns };
-  }
-
-  crash(): void {
-    this.ctx.abort('shape smoke: restart on purpose');
   }
 }
 
-export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
-    const url = new URL(request.url);
-    const roomName = url.searchParams.get('room') ?? 'default';
-    const agentName = url.searchParams.get('agent') ?? 'default';
-    const room = env.ROOM.get(env.ROOM.idFromName(roomName));
-    const agent = env.AGENT.get(env.AGENT.idFromName(agentName));
-    if (url.pathname === '/post') {
-      const sender = url.searchParams.get('sender') ?? 'anon';
-      return Response.json(await room.post(roomName, agentName, sender, url.searchParams.get('text') ?? ''));
-    }
-    if (url.pathname === '/messages') return Response.json(await room.messages());
-    if (url.pathname === '/agent') return Response.json(await agent.read());
-    if (url.pathname === '/crash') {
-      try {
-        await agent.crash();
-      } catch (error) {
-        return Response.json({ restarted: true, reason: String(error) });
-      }
-      return Response.json({ restarted: false });
-    }
-    return new Response('agent-room shape');
+const roomOf = (env: Env) => env.ROOM.get(env.ROOM.idFromName(ROOM_NAME));
+
+const roomTools = (env: Env, agent: string) =>
+  defineExtension({
+    name: 'room',
+    tools: [
+      defineTool({
+        name: 'read_room',
+        description: 'Read every message in the shared chat room, oldest first, with its verified sender.',
+        parameters: Type.Object({}),
+        replay: 'safe',
+        execute: async () => {
+          const lines = (await roomOf(env).read()).map((each) => `#${each.n} ${each.sender}: ${each.text}`);
+          return {
+            output: [{ type: 'text', text: lines.length === 0 ? '(the room is empty)' : lines.join('\n') }],
+          };
+        },
+      }),
+      defineTool({
+        name: 'post_to_room',
+        description: 'Post one message to the shared chat room as yourself.',
+        parameters: Type.Object({ text: Type.String() }),
+        execute: async (args) => {
+          const n = await roomOf(env).post(`agent:${agent}`, args.text);
+          return { output: [{ type: 'text', text: `posted #${n}` }] };
+        },
+      }),
+    ],
+  });
+
+export class RoomAgent extends piAgent<Env>({
+  name: 'agent-room',
+  instructions:
+    'You are an AI agent in a shared chat room with people and other agents. Use read_room to see what was said, with each verified sender, and post_to_room to answer. Do what the newest message from a person asks, then reply in one short sentence.',
+  environment: () => undefined,
+  extensions: (env) => [roomTools(env, 'helper')],
+  probe: async (env) => {
+    const messages = await roomOf(env).read();
+    return {
+      facts: {
+        messages: messages.length,
+        agentPosts: messages.filter((each) => each.sender.startsWith('agent:')).length,
+        last: messages.at(-1)?.text ?? '',
+      },
+    };
   },
-} satisfies ExportedHandler<Env>;
+}) {}
+
+export default piRouter<Env>({
+  shape: 'agent-room',
+  agent: (env, name) => env.AGENT.get(env.AGENT.idFromName(name)),
+  gateway: (env) => env.GATEWAY,
+  extra: async (request, env) => {
+    const url = new URL(request.url);
+    if (url.pathname !== '/say') return undefined;
+    const sender = url.searchParams.get('sender') ?? '';
+    const text = url.searchParams.get('text') ?? '';
+    if (sender === '' || text === '')
+      return Response.json({ error: 'sender and text are required' }, { status: 400 });
+    return Response.json({ n: await roomOf(env).post(`person:${sender}`, text) });
+  },
+});

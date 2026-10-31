@@ -1,0 +1,14 @@
+{
+  "slug": "agent-room",
+  "at": "2026-10-31T12:15:17.558Z",
+  "agent": "pi-durable",
+  "task": "read the shared room and answered a person by posting to it",
+  "passed": true,
+  "restarted": false,
+  "resumed": false,
+  "usd": 0.00122273,
+  "tokens": 2515,
+  "seconds": 11,
+  "infrastructure": "There is no container: the room and the agent are separate Durable Objects. Pi read the room through a tool and posted \"kiwi6200\" as agent:helper.",
+  "infrastructureOk": true
+}
