@@ -68,52 +68,5 @@
     "prefix": "port-shape-self-observe",
     "leftovers": {},
     "errors": {}
-  },
-  "eval": {
-    "model": "@cf/moonshotai/kimi-k2.6",
-    "maxTurns": 16,
-    "runs": [
-      ".tmp/self-observe-1793368820297.json",
-      ".tmp/self-observe-1793372079323.json"
-    ],
-    "droppedModelErrors": 28,
-    "byArm": {
-      "baseline": {
-        "seats": 20,
-        "passed": 14,
-        "usd": 0.6163,
-        "per": 0.044,
-        "turns": 6.4
-      },
-      "shrink": {
-        "seats": 29,
-        "passed": 19,
-        "usd": 1.2597,
-        "per": 0.0663,
-        "turns": 9.4
-      },
-      "mutate": {
-        "seats": 20,
-        "passed": 10,
-        "usd": 0.7139,
-        "per": 0.0714,
-        "turns": 8.7
-      },
-      "governor": {
-        "seats": 20,
-        "passed": 17,
-        "usd": 0.5627,
-        "per": 0.0331,
-        "turns": 7.1
-      },
-      "all": {
-        "seats": 24,
-        "passed": 14,
-        "usd": 1.0271,
-        "per": 0.0734,
-        "turns": 12.7
-      }
-    },
-    "spendUsd": 4.24
   }
 }
