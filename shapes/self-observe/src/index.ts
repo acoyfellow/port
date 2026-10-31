@@ -2,8 +2,8 @@ import { DurableObject } from 'cloudflare:workers';
 import { transform } from 'sucrase';
 import { type Block, callModel, costOf, type Message, type ModelEnv, type Tool, type ToolUse } from './model';
 import {
-  type Arm,
   ARMS,
+  type Arm,
   armHas,
   govern,
   mutantsOf,
