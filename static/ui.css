@@ -352,3 +352,7 @@ pre { background: var(--raised); padding: 12px; border-radius: 8px; overflow: au
 .entry .thumb { margin: -20px -20px 2px; aspect-ratio: 16 / 7; border-bottom: 1px solid var(--line); background: var(--brand-soft); border-radius: var(--radius) var(--radius) 0 0; display: grid; place-items: center; padding: 14px 16px; overflow: hidden; }
 .entry .thumb-svg { display: block; width: 100%; height: 100%; }
 @media (prefers-color-scheme: dark) { .entry .thumb { --thumb-grid: #2a2440; --thumb-edge: #6b5bd6; } }
+
+.pi-tech .pi-head { display: flex; align-items: center; gap: 12px; }
+.pi-tech .pi-head h2 { margin: 0; }
+.pi-tech .pi-mark img { display: block; }

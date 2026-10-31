@@ -44,7 +44,7 @@ const token = () => {
   return access;
 };
 
-const api = async (path, init = {}) => {
+export const api = async (path, init = {}) => {
   const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${accountId()}${path}`, {
     ...init,
     headers: { authorization: `Bearer ${token()}`, 'content-type': 'application/json', ...init.headers },

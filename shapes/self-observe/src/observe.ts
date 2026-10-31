@@ -1,9 +1,3 @@
-export type Arm = 'baseline' | 'shrink' | 'mutate' | 'governor' | 'all' | 'grounded';
-export const ARMS: readonly Arm[] = ['baseline', 'shrink', 'mutate', 'governor', 'all', 'grounded'];
-
-export const armHas = (arm: Arm, tool: 'shrink' | 'mutate' | 'governor' | 'trace') =>
-  arm === 'all' || arm === tool || (tool === 'trace' && arm === 'shrink');
-
 export const probeMain = (
   target: string,
   exportName: string,
@@ -112,59 +106,4 @@ export function mutantsOf(source: string, limit = 40): Mutant[] {
   });
   const step = Math.max(1, Math.ceil(out.length / limit));
   return out.filter((_, i) => i % step === 0).slice(0, limit);
-}
-
-export type TurnRecord = {
-  readonly turn: number;
-  readonly tools: readonly string[];
-  readonly paths: readonly string[];
-  readonly passed: number | null;
-  readonly total: number | null;
-  readonly tokens: number;
-};
-
-export type Governor = { readonly note: string | null; readonly cells: Record<string, number> };
-
-export function govern(history: readonly TurnRecord[], maxTurns: number): Governor {
-  const last = history.at(-1);
-  if (!last) return { note: null, cells: {} };
-  const edits = history
-    .flatMap((t) => t.tools.map((tool, i) => ({ tool, path: t.paths[i] ?? '', turn: t.turn })))
-    .filter((x) => x.tool === 'edit_file' || x.tool === 'write_file');
-  const perFile = new Map<string, number>();
-  for (const e of edits) perFile.set(e.path, (perFile.get(e.path) ?? 0) + 1);
-  const hot = [...perFile.entries()].sort((a, b) => b[1] - a[1])[0];
-  const runs = history.filter((t) => t.passed !== null);
-  const lastRuns = runs.slice(-3);
-  const flat =
-    lastRuns.length === 3 &&
-    lastRuns.every((r) => r.passed === lastRuns[0]?.passed && r.total === lastRuns[0]?.total) &&
-    (lastRuns[0]?.passed ?? 0) < (lastRuns[0]?.total ?? 0);
-  const sinceTest = history.length - 1 - history.map((t) => t.passed !== null).lastIndexOf(true);
-  const readsOnly = history
-    .slice(-3)
-    .every((t) => t.tools.length > 0 && t.tools.every((x) => x === 'read_file' || x === 'list_files'));
-  const left = maxTurns - last.turn;
-  const cells = {
-    turn: last.turn,
-    left,
-    edits: edits.length,
-    hotFileEdits: hot?.[1] ?? 0,
-    flatRuns: flat ? 1 : 0,
-    turnsSinceTest: sinceTest,
-    readsOnly: readsOnly ? 1 : 0,
-  };
-  const notes: string[] = [];
-  if (flat)
-    notes.push(
-      `the last 3 test runs all gave ${lastRuns[0]?.passed}/${lastRuns[0]?.total}: your edits are not changing the result, so re-read the failing message before editing again`,
-    );
-  if (hot && hot[1] >= 4)
-    notes.push(
-      `you edited ${hot[0]} ${hot[1]} times: consider rewriting the function whole, or use shrink/trace to see what it really does`,
-    );
-  if (sinceTest >= 4 && edits.length > 0) notes.push(`${sinceTest} turns since you last ran tests`);
-  if (readsOnly && last.turn >= 4) notes.push('3 turns of only reading: start writing');
-  if (left <= 3) notes.push(`${left} turns left: finish, run the tests and stop`);
-  return { note: notes.length ? `governor: ${notes.join('; ')}.` : null, cells };
 }

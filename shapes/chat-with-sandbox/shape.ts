@@ -72,19 +72,12 @@ export const SHAPE: Entry = {
     'Delegated children get no MCP, browser, machine, or delegation tools.',
     'Local checks do not prove Access, containers, or models. The repo says a deployed proof is needed.',
   ],
-  measures: [
-    { label: 'Exec default timeout', value: '120 s', source: 'src/pi-engine/workspace-tools.ts' },
-    { label: 'Exec max timeout', value: '600 s', source: 'src/pi-engine/workspace-tools.ts' },
-    { label: 'Tool output limit', value: '30,000 chars', source: 'src/pi-engine/workspace-tools.ts' },
-    { label: 'Turn watchdog interval', value: '60 s', source: 'src/turn-watchdog.ts' },
-    { label: 'Delegate child timeout', value: '120 s', source: 'src/delegate-many.ts' },
-    { label: 'Delegate max tasks', value: '1000', source: 'src/delegate-many.ts' },
-    { label: 'NamedComputer max instances', value: '10', source: 'wrangler.jsonc' },
-  ],
   install: {
     status: 'planned',
     plan: 'An Alchemy v2 (Effect v4) project would create one Worker with static assets, a cron trigger, and these bindings: Workers AI, Browser, Worker Loader, D1, KV, two R2 buckets, and the Durable Object classes with SQLite migrations. PiChatAgent and Sandbox are the minimum for box B. Hard parts: the Sandbox container image must build and push from the Dockerfile. The Access application and its AUD and issuer values must exist before the Worker accepts traffic. An optional model gateway URL and its token are secrets. The OAuth client Durable Object needs an OAuth app for each MCP connector.',
   },
+  tools:
+    'in the chat’s own sandbox container with internet off, through the same forwarded Node tool environment.',
   evalPlan:
     'Port could open one Pi chat per swarm-5 task, send the task prompt over the chat route, and let the agent work in its Sandbox workspace. After the turn ends, port copies the hidden tests into /home/user, runs them with exec, and records pass or fail. It would measure tasks passed out of 5, wall time per turn, cold wake time of the Durable Object and container, and model tokens per task.',
   source: 'https://github.com/acoyfellow/my-ax',

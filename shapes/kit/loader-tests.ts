@@ -63,6 +63,34 @@ const toModule = (path: string, source: string) =>
     )
     .replace(/(["'])(\.{1,2}\/[^"']+)\.ts\1/g, (_m, quote, stem) => `${quote}${stem}.js${quote}`);
 
+export const compileProject = (files: Record<string, string>) => {
+  const modules: Record<string, string> = { '__test.js': testShim };
+  const errors: TestResult[] = [];
+  for (const [path, source] of Object.entries(files)) {
+    if (!path.endsWith('.ts')) continue;
+    try {
+      modules[path.replace(/\.ts$/, '.js')] = toModule(path.replace(/\.ts$/, '.js'), source);
+    } catch (error) {
+      errors.push({ name: 'compile', file: path, ok: false, error: String(error).slice(0, 800) });
+    }
+  }
+  return { modules, errors };
+};
+
+export const runModuleInIsolate = async (loader: WorkerLoader, modules: Record<string, string>, main: string) => {
+  const worker = loader.get(`probe:${crypto.randomUUID()}`, () => ({
+    compatibilityDate: '2026-09-30',
+    compatibilityFlags: ['nodejs_compat'],
+    mainModule: '__probe.js',
+    modules: { ...modules, '__probe.js': main },
+    globalOutbound: null,
+    env: {},
+  }));
+  const response = await worker.getEntrypoint().fetch('https://probe.isolate/');
+  const result: unknown = await response.json();
+  return result;
+};
+
 export const runInIsolate = async (
   loader: WorkerLoader,
   files: Record<string, string>,

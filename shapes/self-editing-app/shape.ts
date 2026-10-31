@@ -77,16 +77,12 @@ export const SHAPE: Entry = {
     'The agent edits only the app body. It has no container, shell, or general computer.',
     'Sign-in needs a Cloudflare OAuth client, and users must grant account access for model calls.',
   ],
-  measures: [
-    { label: 'Local e2e', value: '10/10 passed in 141 s', source: 'receipts/e2e-local.json' },
-    { label: 'Deployed e2e', value: '10/10 passed in 63 s', source: 'receipts/e2e-deployed.json' },
-    { label: 'Build CPU per generation', value: 'about 10 s', source: 'wrangler.jsonc' },
-    { label: 'Worker CPU limit', value: '300000 ms', source: 'wrangler.jsonc' },
-  ],
   install: {
     status: 'planned',
     plan: 'An Alchemy v2 (Effect v4) project would create one Worker with nodejs_compat and enable_ctx_exports, a Worker Loader binding, a version metadata binding, and four SQLite Durable Object classes: Agent, Body, Builder, Directory. It sets MODEL and a cpu_ms limit of 300000. It bundles the kernel assets and the seed body source. The hard part is the Cloudflare OAuth app: the user must register a client and set its ID and secret, and set the redirect URL to the route. No containers. No AI binding is needed because users bring their own account.',
   },
+  tools:
+    'in memory in the Durable Object, plus a ship_app tool that boots the new app version in a fresh Worker Loader isolate and makes it live only if its check passes.',
   evalPlan:
     'swarm-5 does not fit directly, because the agent edits only its own app body. A fitting eval gives the agent 5 app change requests with hidden story tests placed in the body checks. Port measures how many versions pass the gate on the first ship, ship attempts per task, build and gate time per version, rollbacks, and model tokens. The repo e2e suite (npm run e2e) is a ready baseline for gate correctness.',
   source: 'https://github.com/acoyfellow/skin',

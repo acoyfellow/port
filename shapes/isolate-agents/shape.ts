@@ -46,15 +46,12 @@ export const SHAPE: Entry = {
     'No shell, git or browser tools.',
     'A model call with no answer stops the task. There is no timeout yet.',
   ],
-  measures: [
-    { label: 'swarm-5 hidden tests passed (Kimi K2.7 Code)', value: '4 of 5', source: 'eval.json' },
-    { label: 'Model cost for the whole run', value: '$0.088', source: 'eval.json' },
-    { label: 'Resources installed and removed', value: '2 of 2', source: 'teardown.json' },
-  ],
   install: {
     status: 'ready',
     plan: 'port uploads one Worker and creates one AI Gateway with your sign-in. Tear down deletes both and checks they are gone.',
   },
+  tools:
+    'in memory inside the agent’s Durable Object; files are stored in its SQLite, and node --test runs in a fresh Worker Loader isolate with no internet.',
   evalPlan:
     'swarm-5: 5 agents work on 5 tasks at the same time; port grades each with hidden tests and reports passes, turns, cost and time.',
   source: 'github.com/acoyfellow/port (shapes/isolate-agents)',

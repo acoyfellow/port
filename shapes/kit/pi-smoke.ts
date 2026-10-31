@@ -35,7 +35,7 @@ export type PiSmoke = {
     readonly ok: boolean;
     readonly claim: string;
   };
-  readonly restartAfterChecks?: number;
+  readonly restartAfterMs?: number;
 };
 
 export type PiReceipt = {
@@ -61,15 +61,13 @@ export const runPiSmoke = async (smoke: PiSmoke) => {
   const health = await api.get('/health', Health, { tries: 150 });
   const agent = `smoke-${Date.now()}`;
   await api.post(`/run?agent=${agent}`, Started, { body: { prompt: smoke.task.prompt } });
-  let status = await api.get(`/status?agent=${agent}`, Status);
-  let restarted = false;
-  let runningAtRestart = false;
+  await pause(smoke.restartAfterMs ?? 3000);
+  const before = await api.get(`/status?agent=${agent}`, Status);
+  const runningAtRestart = before.status === 'running';
+  const restarted = (await api.get(`/restart?agent=${agent}`, Restarted)).restarted;
+  let status = await api.get(`/status?agent=${agent}`, Status, { tries: 60 });
   for (let check = 0; check < 150 && status.status === 'running'; check++) {
     await pause(4000);
-    if (!restarted && check === (smoke.restartAfterChecks ?? 2)) {
-      runningAtRestart = status.status === 'running';
-      restarted = (await api.get(`/restart?agent=${agent}`, Restarted)).restarted;
-    }
     status = await api.get(`/status?agent=${agent}`, Status, { tries: 60 });
   }
   const files = await api.get(`/files?agent=${agent}`, Files, { tries: 30 });

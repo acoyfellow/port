@@ -4,8 +4,6 @@ import { piRouter } from '../../kit/router.ts';
 
 type Env = AgentEnv & { readonly SESSION: DurableObjectNamespace<Session> };
 
-const boot = crypto.randomUUID();
-
 export class Session extends piAgent<Env>({
   name: 'durable-session',
   instructions:
@@ -18,7 +16,6 @@ export class Session extends piAgent<Env>({
     }),
   probe: async (_env, ctx) => ({
     facts: {
-      boot,
       tables: ctx.storage.sql
         .exec<{ tables: number }>("SELECT COUNT(*) AS tables FROM sqlite_master WHERE type = 'table'")
         .one().tables,

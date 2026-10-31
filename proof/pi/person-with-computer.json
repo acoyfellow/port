@@ -1,0 +1,14 @@
+{
+  "slug": "person-with-computer",
+  "at": "2026-10-31T12:17:29.763Z",
+  "agent": "pi-durable",
+  "task": "wrote and checked fizzbuzz.py and NOTES.md",
+  "passed": true,
+  "restarted": true,
+  "resumed": true,
+  "usd": 0.00474934,
+  "tokens": 9237,
+  "seconds": 134,
+  "infrastructure": "The agent ran as the signed-in person in their own computer (boot 684d2117). The token stayed in the Directory Durable Object; the browser got only a signed cookie, and a forged cookie got HTTP 401.",
+  "infrastructureOk": true
+}

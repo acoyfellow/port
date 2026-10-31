@@ -71,22 +71,12 @@ export const SHAPE: Entry = {
     'Setup must create an Access application. A deploy button alone leaves the URL open, so the README says not to use one.',
     'Tools come only from MCP connectors that each person adds.',
   ],
-  measures: [
-    {
-      label: 'Cross-account attacks held in security boundary run',
-      value: '30 of 30',
-      source: 'receipts/security-boundary.json',
-    },
-    {
-      label: 'Security check suites passed',
-      value: '11 of 11',
-      source: 'receipts/security.json',
-    },
-  ],
   install: {
     status: 'planned',
     plan: 'An Alchemy v2 (Effect v4) project creates one Worker, three SQLite Durable Object classes (ChatRoomDO, ConnectorVaultDO, AgentDO) with one migration, a Workers AI binding and one R2 bucket. The hard part is Cloudflare Access: it must create an Access application and policy for the allowed emails, then write the Access team and audience values onto the Worker. Without them the Worker refuses all requests. No containers and no OAuth apps are needed. Connector tokens are added by each user at run time, not at install.',
   },
+  tools:
+    'there are no file or shell tools. Pi gets two tools, read_room and post_to_room, that talk to a separate room Durable Object and carry the verified sender.',
   evalPlan:
     'swarm-5 does not fit well because chat-ax has no shell or container to run hidden tests. A fitting eval: drive the /mcp endpoint with two test accounts, create an agent, send turns from both, and replay the security boundary attacks. Measure attacks held, turns that resume after a forced restart, and time to first streamed token on Workers AI.',
   source: 'https://github.com/acoyfellow/chat-ax',

@@ -59,32 +59,12 @@ export const SHAPE: Entry = {
     'The real pi-coding-agent package is about 7 MB and fails at startup in a Worker, so extensions depend on a shim.',
     'It is not safe on the open internet. Anyone who reaches it spends the Workers AI budget.',
   ],
-  measures: [
-    {
-      label: 'kill5 run',
-      value: '5 kills, 6 lives, 1 commit, 1 file',
-      source: 'tardigrade/README.md',
-    },
-    {
-      label: 'Storage conformance cases in workerd',
-      value: '23 of 23',
-      source: 'tardigrade/test/conformance/',
-    },
-    {
-      label: 'Offline revival test',
-      value: '3 kills, 4 lives, finished file',
-      source: 'tardigrade/test/revival/',
-    },
-    {
-      label: 'Revive delay after kill',
-      value: '1 s',
-      source: 'tardigrade/worker/conversation.ts',
-    },
-  ],
   install: {
     status: 'planned',
     plan: 'An Alchemy v2 (Effect v4) stack needs one Worker with static assets, a SQLite Durable Object class Agent with migrations, an AI binding, an Artifacts binding, and the MODEL var. Cloudflare Access is the hard part: it needs an Access application on the user account, and its team domain and audience must go into the worker vars. Artifacts may need account enablement. No containers, secrets, or OAuth apps are needed.',
   },
+  tools:
+    'in memory inside the same Durable Object that holds the session; transcript and files share one SQLite database. No container.',
   evalPlan:
     'Run swarm-5 with one Durable Object per task. Seed each task repo in Artifacts, send the task, and run the hidden tests on the final commit. Run each task twice: once clean, and once with kills every 9.5 seconds as in npm run kill5. Measure tasks passed, lives used, extra commits from replayed steps, and wall time to the last commit. Node-based test runners need a container, which this shape does not have, so the tests run outside the agent.',
   source: 'https://github.com/acoyfellow/pi-ext-durable',

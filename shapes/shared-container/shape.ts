@@ -65,16 +65,6 @@ export const SHAPE: Entry = {
     'max_turns is not enforced by run-seat, so seats ran up to 35 turns.',
     'Proven only in local Docker on a 4-CPU laptop VM, one run per attempt.',
   ],
-  measures: [
-    { label: 'Hidden tests passed', value: '4/5', source: 'proof/swarm-5/DISPROVEN.json' },
-    {
-      label: 'Cross-seat reads',
-      value: '0 in 15 probes, 260 denials',
-      source: 'proof/swarm-5/DISPROVEN.json',
-    },
-    { label: 'Mean USD per seat', value: '0.593', source: 'proof/swarm-5/DISPROVEN.json' },
-    { label: 'Turns per seat', value: '14-35', source: 'proof/swarm-5/DISPROVEN.json' },
-  ],
   install: {
     status: 'planned',
     plan: 'An Alchemy v2 (Effect v4) project would build fleet-image/Dockerfile and deploy it as a Cloudflare Container behind a Worker and a Durable Object that starts the run. The image must include seat-user.sh and the sudoers file. The model API key must be a Worker secret passed to the container. Hard parts: the container (image size with Chromium and Erlang, sudo and adduser inside it) and secrets. gh and cf sign-in need a user token or OAuth app; that was not tested.',

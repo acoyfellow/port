@@ -23,18 +23,20 @@ const entrySlugs = readdirSync(entriesDir)
   .map((name) => name.slice(0, -3))
   .filter((slug) => !shapeSlugs.includes(slug));
 
-const seconds = (ms) => Math.round(ms / 1000);
 const buildOf = (slug) => {
-  const file = join(root, 'proof', 'shapes', `${slug}.json`);
+  const file = join(root, 'proof', 'pi', `${slug}.json`);
   if (!existsSync(file)) return undefined;
   const receipt = JSON.parse(readFileSync(file, 'utf8'));
-  if (![receipt.up, receipt.smoke, receipt.down].every((step) => step?.ok === true)) return undefined;
-  const proved = receipt.smoke.tail.find((line) => line.startsWith('PROVED '));
-  if (proved === undefined) return undefined;
+  if (receipt.agent !== 'pi-durable' || receipt.passed !== true || receipt.infrastructureOk !== true)
+    return undefined;
   return {
-    proved: proved.slice('PROVED '.length),
-    seconds: { up: seconds(receipt.up.ms), smoke: seconds(receipt.smoke.ms), down: seconds(receipt.down.ms) },
-    on: receipt.smoke.at.slice(0, 10),
+    task: receipt.task,
+    infrastructure: receipt.infrastructure,
+    usd: receipt.usd,
+    tokens: receipt.tokens,
+    seconds: receipt.seconds,
+    resumed: receipt.resumed === true,
+    on: receipt.at.slice(0, 10),
   };
 };
 

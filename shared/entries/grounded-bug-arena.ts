@@ -58,38 +58,6 @@ export const ENTRY: Entry = {
     'Measured on 21 toy circuits and 52 visible bugs, one model at a time',
     'Not deployed: the replay judge runs on a laptop today',
   ],
-  measures: [
-    {
-      label: 'Planted bugs our own tests catch',
-      value: '141 of 217 (65%)',
-      source: 'marionette/spikes/arena/results.jsonl',
-    },
-    {
-      label: 'Sonnet 5.5 claim precision, raw',
-      value: '27 of 67 (40%)',
-      source: 'marionette/spikes/arena/rescore.json',
-    },
-    {
-      label: 'Sonnet 5.5 claim precision, replay-grounded',
-      value: '22 of 22 (100%)',
-      source: 'marionette/spikes/arena/rescore.json',
-    },
-    {
-      label: 'False alarms rejected by replay',
-      value: '19 of 19',
-      source: 'marionette/spikes/arena/rescore.json',
-    },
-    {
-      label: 'Visible bugs found by Sonnet 5.5',
-      value: '22 of 52 (42%)',
-      source: 'marionette/spikes/arena/rescore.json',
-    },
-    {
-      label: 'Clef claim flag agrees with agent JSON',
-      value: '146 of 146',
-      source: 'marionette/spikes/arena session log',
-    },
-  ],
   install: {
     status: 'planned',
     plan: 'One Worker with the circuit runtime bundled, a D1 ledger and a Workers AI binding for Clef and Clairic. GET /task returns a planted circuit; POST /claim parses and replays the claim and returns found, wrong-line or false-alarm. No containers.',

@@ -71,27 +71,12 @@ export const SHAPE: Entry = {
     'The containers have internet access, so do not run hostile code in them.',
     'Disk snapshots stay after a thread ends, because the container binding has no delete call yet.',
   ],
-  measures: [
-    {
-      label: 'Tool time vs model time, swarm-5, 5 seats',
-      value: 'tools 9.5 s of 14.8 min model time',
-      source: 'gleam-agents/proof/swarm-5/tool-mix.json',
-    },
-    {
-      label: 'Idle pause',
-      value: '9 min',
-      source: 'coil/README.md',
-    },
-    {
-      label: 'Lighthouse',
-      value: '99 / 100 / 100 / 100',
-      source: 'coil/receipts/lighthouse-v5.json',
-    },
-  ],
   install: {
     status: 'planned',
     plan: 'An Alchemy v2 project must create one Worker with assets, a Worker Loader binding, an AI binding, and three SQLite Durable Object classes: Thread, Directory, and ConnectorStore. Thread is also a container class with a Dockerfile image. The container image is hard: it depends on a prebuilt Nix base image in a registry, and the build must push it to the user account. Sign-in is hard: access mode needs a Zero Trust Access app and audience; cloudflare mode needs an OAuth app and a session secret. A model gateway token is a secret minted per deploy.',
   },
+  tools:
+    'in this thread’s own container. A small server in the container runs Pi’s Node tool environment; the Durable Object forwards each tool call to it.',
   evalPlan:
     'Port can run swarm-5 by creating 5 threads through POST /api/threads/:name/messages with wait true, one task per thread. Each thread writes code in its own container, then port copies the files out with thread_read_file and runs the hidden tests outside. Measure pass count, wall time per seat, model time vs tool time, cold start of the container, and cost per seat.',
   source: 'https://github.com/acoyfellow/coil',

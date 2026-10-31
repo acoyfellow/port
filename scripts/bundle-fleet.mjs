@@ -26,7 +26,7 @@ const bundle = await build({
   bundle: true,
   format: 'esm',
   platform: 'neutral',
-  external: ['cloudflare:workers'],
+  external: ['cloudflare:workers', 'node:*'],
   mainFields: ['module', 'main'],
   conditions: ['workerd', 'worker', 'import'],
   minify: true,

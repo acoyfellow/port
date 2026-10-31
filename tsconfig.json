@@ -11,5 +11,5 @@
     "noUncheckedIndexedAccess": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["worker", "shared", "shapes/*/shape.ts", "shapes/*/src"]
+  "include": ["worker", "shared", "shapes/*/shape.ts"]
 }

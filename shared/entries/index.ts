@@ -13,99 +13,72 @@ import { ENTRY as grounded_bug_arena } from './grounded-bug-arena';
 
 const BUILDS: Readonly<Record<string, ShapeBuild>> = {
   "agent-room": {
-    "proved": "ChatRoomDO sent 2 turns from alice and bob to a separate AgentDO. The AgentDO kept both turns and their senders after a forced restart. The boot ID changed. The room holds 4 messages.",
-    "seconds": {
-      "up": 7,
-      "smoke": 9,
-      "down": 4
-    },
-    "on": "2026-10-30"
+    "task": "read the shared room and answered a person by posting to it",
+    "infrastructure": "There is no container: the room and the agent are separate Durable Objects. Pi read the room through a tool and posted \"kiwi5691\" as agent:helper.",
+    "usd": 0.00108901,
+    "tokens": 2516,
+    "seconds": 17,
+    "resumed": true,
+    "on": "2026-10-31"
   },
   "chat-with-sandbox": {
-    "proved": "Chat A wrote /home/user/note.txt in its own container. Chat A kept 2 Durable Object turns. Chat B got a different container. Chat B had no note and 1 turn.",
-    "seconds": {
-      "up": 30,
-      "smoke": 137,
-      "down": 5
-    },
-    "on": "2026-10-30"
+    "task": "wrote and checked fizzbuzz.py and NOTES.md",
+    "infrastructure": "The tools ran in this chat's own sandbox container, internet off (boot 76a9bf68).",
+    "usd": 0.0031724299999999995,
+    "tokens": 4848,
+    "seconds": 120,
+    "resumed": true,
+    "on": "2026-10-31"
   },
   "container-per-thread": {
-    "proved": "Each thread got its own Durable Object and container. Thread A saw its own file across 2 turns. Thread B got a different host. Thread B did not see the file of thread A.",
-    "seconds": {
-      "up": 19,
-      "smoke": 132,
-      "down": 3
-    },
-    "on": "2026-10-30"
+    "task": "wrote and checked fizzbuzz.py and NOTES.md",
+    "infrastructure": "The tools ran in this thread's own container (boot 5c16a669).",
+    "usd": 0.00403377,
+    "tokens": 7356,
+    "seconds": 127,
+    "resumed": true,
+    "on": "2026-10-31"
   },
   "durable-session": {
-    "proved": "The session kept 3 turns after a forced Durable Object restart. The boot ID changed and the SQLite rows stayed.",
-    "seconds": {
-      "up": 8,
-      "smoke": 14,
-      "down": 3
-    },
-    "on": "2026-10-30"
-  },
-  "isolate-agents": {
-    "proved": "The seed tests passed in a Worker Loader isolate (23 of 23). A test that called the internet failed, because the isolate has no outbound network. One agent in a Durable Object ran 6 turns through the AI Gateway, changed files 2 times and was graded by hidden tests.",
-    "seconds": {
-      "up": 13,
-      "smoke": 180,
-      "down": 8
-    },
-    "on": "2026-10-30"
+    "task": "wrote and checked fizzbuzz.py and NOTES.md",
+    "infrastructure": "There is no container: Pi's transcript and the workspace files live in one Durable Object's SQLite (11 tables).",
+    "usd": 0.0024773600000000005,
+    "tokens": 3412,
+    "seconds": 22,
+    "resumed": true,
+    "on": "2026-10-31"
   },
   "person-with-computer": {
-    "proved": "Two signed-in people each got their own Hark Durable Object and container. Alice saw her note alpha. Bob saw an empty note. The two boot IDs were different. Directory kept the token on the server. The client got only a signed cookie. A forged cookie got 401. The Hark object trimmed 30 messages to the last 24.",
-    "seconds": {
-      "up": 18,
-      "smoke": 84,
-      "down": 4
-    },
-    "on": "2026-10-30"
+    "task": "wrote and checked fizzbuzz.py and NOTES.md",
+    "infrastructure": "The agent ran as the signed-in person in their own computer (boot 684d2117). The token stayed in the Directory Durable Object; the browser got only a signed cookie, and a forged cookie got HTTP 401.",
+    "usd": 0.00474934,
+    "tokens": 9237,
+    "seconds": 134,
+    "resumed": true,
+    "on": "2026-10-31"
   },
   "sealed-box": {
-    "proved": "A sealed container ran one task with internet off. It returned the correct answer. It echoed the run ID, the task SHA-256 and a fresh nonce.",
-    "seconds": {
-      "up": 22,
-      "smoke": 12,
-      "down": 6
-    },
-    "on": "2026-10-30"
-  },
-  "self-editing-app": {
-    "proved": "The Worker Loader gate shipped v1. The gate rejected v2 because its check failed. The gate rejected v3 because it did not boot. Version 1 stayed live. The gate shipped v4. Rollback made v1 live again.",
-    "seconds": {
-      "up": 8,
-      "smoke": 9,
-      "down": 5
-    },
-    "on": "2026-10-30"
-  },
-  "self-observe": {
-    "proved": "The self-observe shape ran 67 seats on @cf/moonshotai/kimi-k2.6. Each arm used the same tasks and the same turn limit. Hidden tests graded every seat. The spend was $2.460.",
-    "seconds": {
-      "up": 8,
-      "smoke": 5942,
-      "down": 11
-    },
-    "on": "2026-10-30"
+    "task": "wrote and checked fizzbuzz.py and NOTES.md",
+    "infrastructure": "The tools ran in a container with internet off: a fetch from inside the box was blocked. Model calls left from the Durable Object, not the box.",
+    "usd": 0.0031159,
+    "tokens": 5551,
+    "seconds": 149,
+    "resumed": true,
+    "on": "2026-10-31"
   },
   "shared-container": {
-    "proved": "5 agents ran as 5 different Unix users in one container. The container had 1 boot ID. Each agent wrote a private file. All 20 cross-agent reads got Permission denied.",
-    "seconds": {
-      "up": 18,
-      "smoke": 8,
-      "down": 3
-    },
-    "on": "2026-10-30"
+    "task": "wrote and checked fizzbuzz.py and NOTES.md",
+    "infrastructure": "The tools ran in the shared container as Unix user agent2; reading /home/agent3 was denied.",
+    "usd": 0.005279079999999999,
+    "tokens": 10232,
+    "seconds": 129,
+    "resumed": true,
+    "on": "2026-10-31"
   }
 };
 
 export const ENTRIES: readonly Entry[] = [
-  { ...isolate_agents, build: BUILDS["isolate-agents"] },
+  isolate_agents,
   { ...durable_session, build: BUILDS["durable-session"] },
   { ...chat_with_sandbox, build: BUILDS["chat-with-sandbox"] },
   { ...agent_room, build: BUILDS["agent-room"] },
@@ -113,7 +86,7 @@ export const ENTRIES: readonly Entry[] = [
   { ...person_with_computer, build: BUILDS["person-with-computer"] },
   { ...shared_container, build: BUILDS["shared-container"] },
   { ...sealed_box, build: BUILDS["sealed-box"] },
-  { ...self_editing_app, build: BUILDS["self-editing-app"] },
-  { ...self_observe, build: BUILDS["self-observe"] },
+  self_editing_app,
+  self_observe,
   grounded_bug_arena,
 ];

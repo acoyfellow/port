@@ -42,20 +42,20 @@ const list = (title: string, items: readonly string[]) =>
     ? ''
     : html`<section class="card"><h2>${title}</h2><ul class="muted">${items.map((item) => html`<li>${item}</li>`)}</ul></section>`;
 
-const measures = (entry: Entry) =>
-  entry.measures.length === 0
-    ? ''
-    : html`<section><div class="section-head"><h2>Measured</h2><p>Each number links to where it came from.</p></div><div class="card table-card"><table><thead><tr><th>What</th><th>Value</th><th>Source</th></tr></thead><tbody>${entry.measures.map(
-        (measure) =>
-          html`<tr><td>${measure.label}</td><td><strong>${measure.value}</strong></td><td><code>${measure.source}</code></td></tr>`,
-      )}</tbody></table></div></section>`;
-
 const REPO = 'https://github.com/acoyfellow/port/blob/main';
 
-const portBuild = (entry: Entry) => {
+const PI_TECH =
+  'Every shape runs the same agent: stock Pi (pi-durable 1.4.0) inside a Durable Object. Pi owns the loop, the built-in tools (read, write, edit, bash, grep, find, ls) and the cost count. Its session lives in the Durable Object’s SQLite, so a restart mid-task picks up where it stopped. Model calls go through your AI Gateway to Workers AI. Only the place the tools run changes from shape to shape.';
+
+const piSection = (entry: Entry) => {
   const receipt = entry.build;
-  if (receipt === undefined) return '';
-  return html`<section class="card build"><h2>port build</h2><p>${receipt.proved}</p><dl><div><dt>Deploy</dt><dd>${receipt.seconds.up} s</dd></div><div><dt>Test</dt><dd>${receipt.seconds.smoke} s</dd></div><div><dt>Delete</dt><dd>${receipt.seconds.down} s</dd></div><div><dt>Left after delete</dt><dd>0</dd></div></dl><p class="muted">Run on <code>${receipt.on}</code> on a personal account. <a href="${REPO}/shapes/${entry.slug}">Source</a> · <a href="${REPO}/proof/shapes/${entry.slug}.json">Receipt</a></p></section>`;
+  return html`<section class="card pi-tech"><div class="pi-head"><a href="https://pi.dev" class="pi-mark" aria-label="Pi"><img src="/pi-logo.svg" alt="Pi logo" width="40" height="40"></a><h2>Runs on <a href="https://pi.dev">Pi</a></h2></div><p>${PI_TECH}</p>${
+    entry.tools === undefined ? '' : html`<p><strong>Where the tools run here:</strong> ${entry.tools}</p>`
+  }${
+    receipt === undefined
+      ? html`<p class="muted">No Pi run is recorded for this shape yet.</p>`
+      : html`<p>${`Last run: Pi ${receipt.task}. ${receipt.infrastructure}`}</p><dl><div><dt>Pi cost</dt><dd>$${receipt.usd.toFixed(4)}</dd></div><div><dt>Tokens</dt><dd>${receipt.tokens.toLocaleString('en-US')}</dd></div><div><dt>Time</dt><dd>${receipt.seconds} s</dd></div><div><dt>Restart mid-task</dt><dd>${receipt.resumed ? 'resumed' : 'did not resume'}</dd></div></dl><p class="muted">Run on <code>${receipt.on}</code>, then torn down. <a href="${REPO}/shapes/${entry.slug}">Source</a> · <a href="${REPO}/proof/pi/${entry.slug}.json">Receipt</a></p>`
+  }</section>`;
 };
 
 const installAction = (entry: Entry, viewer: Viewer) =>
@@ -71,11 +71,11 @@ export const entryPage = (viewer: Viewer, entry: Entry) =>
     viewer,
     section: 'home',
     crumbs: [{ label: 'Directory', href: '/' }, { label: entry.name }],
-    body: html`${pageHead(entry.name, html`${STAGE_BADGE[entry.stage]} ${entry.oneLine}`, installAction(entry, viewer))}<div class="stack">${portBuild(entry)}<figure class="card diagram"><figcaption>${entry.shape}</figcaption>${raw(
+    body: html`${pageHead(entry.name, html`${STAGE_BADGE[entry.stage]} ${entry.oneLine}`, installAction(entry, viewer))}<div class="stack">${piSection(entry)}<figure class="card diagram"><figcaption>${entry.shape}</figcaption>${raw(
       entryDiagram(entry),
     )}</figure><div class="grid">${list('Strengths', entry.strengths)}${list('Limits', entry.limits)}<section class="card"><h2>Parts</h2><ul class="muted">${entry.parts.map(
       (part) => html`<li><strong>${part.label}</strong> · ${part.detail}</li>`,
-    )}</ul></section></div>${measures(entry)}${
+    )}</ul></section></div>${
       entry.build === undefined
         ? html`<div class="grid"><section class="card"><h2>Install ${badge(
             entry.install.status === 'ready' ? 'ok' : 'plain',
@@ -86,5 +86,5 @@ export const entryPage = (viewer: Viewer, entry: Entry) =>
                 : 'Not planned',
           )}</h2><p class="muted">${entry.install.plan}</p></section><section class="card"><h2>Eval</h2><p class="muted">${entry.evalPlan}</p></section></div>`
         : ''
-    }<p class="muted">This shape was first seen in <code>${entry.source}</code>. The measurements above come from that project. port builds its own copy.</p></div>`,
+    }<p class="muted">This shape was first seen in <code>${entry.source}</code>. port builds its own copy on stock Pi.</p></div>`,
   });

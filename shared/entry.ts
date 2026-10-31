@@ -23,8 +23,6 @@ export type Part = {
 
 export type Edge = { readonly from: string; readonly to: string; readonly label?: string };
 
-export type Measure = { readonly label: string; readonly value: string; readonly source: string };
-
 export type Entry = {
   readonly slug: string;
   readonly mark: string;
@@ -36,15 +34,19 @@ export type Entry = {
   readonly edges: readonly Edge[];
   readonly strengths: readonly string[];
   readonly limits: readonly string[];
-  readonly measures: readonly Measure[];
   readonly install: { readonly status: 'ready' | 'planned' | 'none'; readonly plan: string };
   readonly evalPlan: string;
   readonly source: string;
   readonly build?: ShapeBuild;
+  readonly tools?: string;
 };
 
 export type ShapeBuild = {
-  readonly proved: string;
-  readonly seconds: { readonly up: number; readonly smoke: number; readonly down: number };
+  readonly task: string;
+  readonly infrastructure: string;
+  readonly usd: number;
+  readonly tokens: number;
+  readonly seconds: number;
+  readonly resumed: boolean;
   readonly on: string;
 };
