@@ -61,7 +61,7 @@ export const shapeStack = <const Env extends Cloudflare.WorkerBindingProps>(
       const worker = yield* Cloudflare.Worker('worker', {
         name: workerName(slug),
         main: './src/index.ts',
-        compatibility: { date: COMPATIBILITY_DATE },
+        compatibility: { date: COMPATIBILITY_DATE, flags: ['nodejs_compat'] },
         workersDev: false,
         domain: shapeHost(slug),
         env: { ...env, ...gateway, ...secret },
