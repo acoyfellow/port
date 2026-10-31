@@ -1,5 +1,5 @@
-export type Arm = 'baseline' | 'shrink' | 'mutate' | 'governor' | 'all';
-export const ARMS: readonly Arm[] = ['baseline', 'shrink', 'mutate', 'governor', 'all'];
+export type Arm = 'baseline' | 'shrink' | 'mutate' | 'governor' | 'all' | 'grounded';
+export const ARMS: readonly Arm[] = ['baseline', 'shrink', 'mutate', 'governor', 'all', 'grounded'];
 
 export const armHas = (arm: Arm, tool: 'shrink' | 'mutate' | 'governor' | 'trace') =>
   arm === 'all' || arm === tool || (tool === 'trace' && arm === 'shrink');

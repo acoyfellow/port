@@ -1,0 +1,2404 @@
+{
+ "suite": "hard-5",
+ "model": "@cf/moonshotai/kimi-k2.6",
+ "maxTurns": 16,
+ "seeds": 11,
+ "byArm": [
+  {
+   "arm": "baseline",
+   "seats": 55,
+   "passed": 34,
+   "usd": 2.153,
+   "usdPerPass": 0.0633,
+   "turns": 375,
+   "hiddenTests": 104
+  },
+  {
+   "arm": "grounded",
+   "seats": 55,
+   "passed": 36,
+   "usd": 3.3637,
+   "usdPerPass": 0.0934,
+   "turns": 574,
+   "hiddenTests": 124
+  }
+ ],
+ "results": [
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "baseline",
+   "turns": 2,
+   "usd": 0.033147300000000005,
+   "ms": 173358,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 2
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "baseline",
+   "turns": 2,
+   "usd": 0.0339473,
+   "ms": 167147,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 4
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "baseline",
+   "turns": 3,
+   "usd": 0.03401208,
+   "ms": 175101,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "baseline",
+   "turns": 3,
+   "usd": 0.03439509,
+   "ms": 179302,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 1
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "baseline",
+   "turns": 3,
+   "usd": 0.03487066,
+   "ms": 176092,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 3
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "baseline",
+   "turns": 3,
+   "usd": 0.03548379,
+   "ms": 177096,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 5
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "baseline",
+   "turns": 3,
+   "usd": 0.03458604,
+   "ms": 176136,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 6
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "baseline",
+   "turns": 2,
+   "usd": 0.0336513,
+   "ms": 176183,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 7
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "baseline",
+   "turns": 4,
+   "usd": 0.037598910000000006,
+   "ms": 175512,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 5
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 8
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "baseline",
+   "turns": 3,
+   "usd": 0.03622073000000001,
+   "ms": 181213,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 4
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 9
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "baseline",
+   "turns": 3,
+   "usd": 0.03413496,
+   "ms": 185173,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 10
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "baseline",
+   "turns": 3,
+   "usd": 0.03450624000000001,
+   "ms": 185044,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 2
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "baseline",
+   "turns": 3,
+   "usd": 0.034728709999999996,
+   "ms": 187028,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 3
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "baseline",
+   "turns": 3,
+   "usd": 0.03526071,
+   "ms": 185386,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 4
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "baseline",
+   "turns": 3,
+   "usd": 0.03434540999999999,
+   "ms": 199010,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 1
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 8
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "baseline",
+   "turns": 6,
+   "usd": 0.036580220000000004,
+   "ms": 209453,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 2,
+    "read_file": 6
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 7
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "baseline",
+   "turns": 2,
+   "usd": 0.0333858,
+   "ms": 223009,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 1
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "baseline",
+   "turns": 3,
+   "usd": 0.035091590000000006,
+   "ms": 225646,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "baseline",
+   "turns": 4,
+   "usd": 0.035691089999999995,
+   "ms": 227424,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 4
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 6
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "baseline",
+   "turns": 7,
+   "usd": 0.01672017,
+   "ms": 348287,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 4,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 8
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "baseline",
+   "turns": 7,
+   "usd": 0.05259575,
+   "ms": 428664,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 5,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 1
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "baseline",
+   "turns": 16,
+   "usd": 0.08072728,
+   "ms": 493189,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "write_file": 5,
+    "run_tests": 5,
+    "edit_file": 2
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 10
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "baseline",
+   "turns": 8,
+   "usd": 0.04298854,
+   "ms": 546751,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "run_tests": 2,
+    "write_file": 2
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 2
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "baseline",
+   "turns": 6,
+   "usd": 0.01761842,
+   "ms": 127409,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 10
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "baseline",
+   "turns": 16,
+   "usd": 0.09264014999999999,
+   "ms": 1263268,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 4,
+    "read_file": 9,
+    "write_file": 4,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 2,
+    "total": 3
+   },
+   "seed": 5
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "baseline",
+   "turns": 7,
+   "usd": 0.048631690000000005,
+   "ms": 623247,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "baseline",
+   "turns": 7,
+   "usd": 0.05424132,
+   "ms": 660055,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 4,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 5
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "baseline",
+   "turns": 15,
+   "usd": 0.03745303,
+   "ms": 695100,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 3,
+    "read_file": 9,
+    "write_file": 2,
+    "run_tests": 3,
+    "edit_file": 2
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 6
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "baseline",
+   "turns": 7,
+   "usd": 0.03226885,
+   "ms": 219217,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 4,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "baseline",
+   "turns": 9,
+   "usd": 0.035305510000000005,
+   "ms": 724736,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 4,
+    "write_file": 2,
+    "run_tests": 2,
+    "edit_file": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 7
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "baseline",
+   "turns": 6,
+   "usd": 0.03024838,
+   "ms": 194553,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 5,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 1
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "baseline",
+   "turns": 6,
+   "usd": 0.02749856,
+   "ms": 185933,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 2
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "baseline",
+   "turns": 6,
+   "usd": 0.024783529999999998,
+   "ms": 148898,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 6
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "baseline",
+   "turns": 6,
+   "usd": 0.03222262,
+   "ms": 233682,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 4
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "baseline",
+   "turns": 8,
+   "usd": 0.02904477,
+   "ms": 895859,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 4,
+    "run_tests": 2,
+    "write_file": 2
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 3
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "baseline",
+   "turns": 6,
+   "usd": 0.02153287,
+   "ms": 149237,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 9
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "baseline",
+   "turns": 6,
+   "usd": 0.03034191,
+   "ms": 192208,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 8
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "baseline",
+   "turns": 14,
+   "usd": 0.04432127,
+   "ms": 515419,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 6,
+    "write_file": 2,
+    "run_tests": 2,
+    "edit_file": 2
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 9
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "baseline",
+   "turns": 7,
+   "usd": 0.04864674000000001,
+   "ms": 354519,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 3
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "baseline",
+   "turns": 7,
+   "usd": 0.04091835,
+   "ms": 280518,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 7
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "baseline",
+   "turns": 6,
+   "usd": 0.02659423,
+   "ms": 173151,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 1
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "baseline",
+   "turns": 7,
+   "usd": 0.03072832,
+   "ms": 192704,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "write_file": 2,
+    "run_tests": 2
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 2
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "baseline",
+   "turns": 10,
+   "usd": 0.05742111999999999,
+   "ms": 1135473,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 2,
+    "read_file": 8,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 4
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "baseline",
+   "turns": 15,
+   "usd": 0.07184653,
+   "ms": 484361,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 5,
+    "write_file": 2,
+    "edit_file": 5,
+    "run_tests": 3
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 5
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "baseline",
+   "turns": 10,
+   "usd": 0.047464349999999995,
+   "ms": 303190,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 4,
+    "write_file": 2,
+    "run_tests": 3,
+    "edit_file": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "baseline",
+   "turns": 7,
+   "usd": 0.03286808,
+   "ms": 237201,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 5
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "baseline",
+   "turns": 7,
+   "usd": 0.0441839,
+   "ms": 305368,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 4,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 3
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "baseline",
+   "turns": 7,
+   "usd": 0.04211053,
+   "ms": 266249,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2,
+    "run_tests": 2,
+    "write_file": 2
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 7
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "baseline",
+   "turns": 9,
+   "usd": 0.03865684,
+   "ms": 230432,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "write_file": 2,
+    "run_tests": 2,
+    "edit_file": 2
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 8
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "baseline",
+   "turns": 8,
+   "usd": 0.02939957,
+   "ms": 204144,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 2,
+    "read_file": 3,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 9
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "baseline",
+   "turns": 9,
+   "usd": 0.06959440000000001,
+   "ms": 791383,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 2,
+    "read_file": 4,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 10
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "baseline",
+   "turns": 6,
+   "usd": 0.05702398,
+   "ms": 655990,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 1,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 6
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "baseline",
+   "turns": 10,
+   "usd": 0.04224899000000001,
+   "ms": 530840,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 2,
+    "read_file": 4,
+    "write_file": 2,
+    "run_tests": 2,
+    "edit_file": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 10
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "baseline",
+   "turns": 13,
+   "usd": 0.050967330000000005,
+   "ms": 1332802,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 3,
+    "read_file": 5,
+    "run_tests": 4,
+    "write_file": 2
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 4
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "baseline",
+   "turns": 16,
+   "usd": 0.00954267,
+   "ms": 2718550,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 5,
+    "read_file": 14,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 9
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "grounded",
+   "turns": 16,
+   "usd": 0.08444432,
+   "ms": 3102865,
+   "governorNotes": 0,
+   "checks": 1,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 4,
+    "read_file": 9,
+    "write_file": 2,
+    "run_tests": 4
+   },
+   "hidden": {
+    "passed": 2,
+    "total": 3
+   },
+   "seed": 7
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "grounded",
+   "turns": 14,
+   "usd": 0.10841579999999999,
+   "ms": 3392431,
+   "governorNotes": 0,
+   "checks": 2,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 5,
+    "read_file": 14
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 4
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "grounded",
+   "turns": 16,
+   "usd": 0.07411155,
+   "ms": 3377876,
+   "governorNotes": 0,
+   "checks": 2,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 5,
+    "read_file": 13
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 6
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "grounded",
+   "turns": 16,
+   "usd": 0.06298598999999999,
+   "ms": 2344033,
+   "governorNotes": 0,
+   "checks": 1,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 6,
+    "read_file": 16,
+    "write_file": 2
+   },
+   "hidden": {
+    "passed": 2,
+    "total": 3
+   },
+   "seed": 1
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "grounded",
+   "turns": 16,
+   "usd": 0.061083019999999995,
+   "ms": 2909327,
+   "governorNotes": 0,
+   "checks": 1,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 4,
+    "read_file": 8,
+    "write_file": 3,
+    "run_tests": 5
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 10
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "grounded",
+   "turns": 16,
+   "usd": 0.07810511,
+   "ms": 3125141,
+   "governorNotes": 0,
+   "checks": 2,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 6,
+    "read_file": 14
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 8
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "grounded",
+   "turns": 16,
+   "usd": 0.07940435000000001,
+   "ms": 3424635,
+   "governorNotes": 0,
+   "checks": 2,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 5,
+    "read_file": 18,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 9
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "grounded",
+   "turns": 15,
+   "usd": 0.13909997999999998,
+   "ms": 2294506,
+   "governorNotes": 0,
+   "checks": 2,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 3,
+    "read_file": 12,
+    "write_file": 2
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 3
+   },
+   "seed": 6
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "grounded",
+   "turns": 11,
+   "usd": 0.07099958,
+   "ms": 441581,
+   "governorNotes": 0,
+   "checks": 1,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 2,
+    "read_file": 4,
+    "write_file": 3,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 5
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "grounded",
+   "turns": 7,
+   "usd": 0.07572514999999999,
+   "ms": 514475,
+   "governorNotes": 0,
+   "checks": 1,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 2,
+    "read_file": 4,
+    "write_file": 1
+   },
+   "hidden": {
+    "passed": 1,
+    "total": 3
+   },
+   "seed": 7
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "grounded",
+   "turns": 16,
+   "usd": 0.07907726,
+   "ms": 906345,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 2,
+    "read_file": 5,
+    "run_tests": 5,
+    "write_file": 4,
+    "edit_file": 2
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "grounded",
+   "turns": 9,
+   "usd": 0.07151249000000001,
+   "ms": 431486,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 4,
+    "write_file": 4,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 10
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "grounded",
+   "turns": 11,
+   "usd": 0.11156605,
+   "ms": 633657,
+   "governorNotes": 0,
+   "checks": 2,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 3,
+    "read_file": 7,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 9
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "grounded",
+   "turns": 11,
+   "usd": 0.10824945,
+   "ms": 1024886,
+   "governorNotes": 0,
+   "checks": 2,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 3,
+    "read_file": 7,
+    "write_file": 1
+   },
+   "hidden": {
+    "passed": 1,
+    "total": 3
+   },
+   "seed": 8
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "grounded",
+   "turns": 5,
+   "usd": 0.030337600000000003,
+   "ms": 229633,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "grounded",
+   "turns": 6,
+   "usd": 0.01787915,
+   "ms": 150318,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 2,
+    "read_file": 1,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 4
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "grounded",
+   "turns": 8,
+   "usd": 0.023326700000000002,
+   "ms": 428430,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 4,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 1
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "grounded",
+   "turns": 16,
+   "usd": 0.10367296,
+   "ms": 1530119,
+   "governorNotes": 0,
+   "checks": 2,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 5,
+    "read_file": 7,
+    "run_tests": 2,
+    "write_file": 1,
+    "edit_file": 1
+   },
+   "hidden": {
+    "passed": 1,
+    "total": 3
+   },
+   "seed": 2
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "grounded",
+   "turns": 8,
+   "usd": 0.049399769999999996,
+   "ms": 448863,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 2
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "grounded",
+   "turns": 6,
+   "usd": 0.01687371,
+   "ms": 348642,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 5
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "grounded",
+   "turns": 8,
+   "usd": 0.05286855,
+   "ms": 648547,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "run_tests": 2,
+    "write_file": 2
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 3
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "grounded",
+   "turns": 16,
+   "usd": 0.08178832000000001,
+   "ms": 1812556,
+   "governorNotes": 0,
+   "checks": 2,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 5,
+    "read_file": 8,
+    "run_tests": 2,
+    "write_file": 1
+   },
+   "hidden": {
+    "passed": 1,
+    "total": 3
+   },
+   "seed": 4
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "grounded",
+   "turns": 14,
+   "usd": 0.06218569,
+   "ms": 394838,
+   "governorNotes": 0,
+   "checks": 1,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 3,
+    "read_file": 6,
+    "run_tests": 3,
+    "write_file": 2,
+    "edit_file": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 7
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "grounded",
+   "turns": 9,
+   "usd": 0.05279239,
+   "ms": 318221,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 2,
+    "read_file": 8,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 9
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "grounded",
+   "turns": 12,
+   "usd": 0.08658689,
+   "ms": 592695,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 8,
+    "run_tests": 2,
+    "write_file": 2
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 6
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "grounded",
+   "turns": 6,
+   "usd": 0.03219321,
+   "ms": 201313,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "grounded",
+   "turns": 6,
+   "usd": 0.02354383,
+   "ms": 131294,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 1
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "grounded",
+   "turns": 7,
+   "usd": 0.02903238,
+   "ms": 188596,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 2
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "grounded",
+   "turns": 7,
+   "usd": 0.019627930000000002,
+   "ms": 119438,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 4,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 5
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "grounded",
+   "turns": 12,
+   "usd": 0.11033045,
+   "ms": 2283709,
+   "governorNotes": 0,
+   "checks": 2,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 4,
+    "run_tests": 1,
+    "read_file": 8
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 1
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "grounded",
+   "turns": 8,
+   "usd": 0.04640753000000001,
+   "ms": 792795,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 4,
+    "write_file": 3,
+    "run_tests": 2
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 8
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "grounded",
+   "turns": 7,
+   "usd": 0.05127491000000001,
+   "ms": 588727,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 4,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 10
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "grounded",
+   "turns": 6,
+   "usd": 0.02769185,
+   "ms": 430199,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 3
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "grounded",
+   "turns": 6,
+   "usd": 0.018771180000000002,
+   "ms": 146335,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 8
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "grounded",
+   "turns": 7,
+   "usd": 0.02613923,
+   "ms": 178388,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 4,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 9
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "grounded",
+   "turns": 16,
+   "usd": 0.1095182,
+   "ms": 2543082,
+   "governorNotes": 0,
+   "checks": 2,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 5,
+    "read_file": 11,
+    "run_tests": 1,
+    "write_file": 3
+   },
+   "hidden": {
+    "passed": 1,
+    "total": 3
+   },
+   "seed": 3
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "grounded",
+   "turns": 7,
+   "usd": 0.02351875,
+   "ms": 393972,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 5,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 6
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "grounded",
+   "turns": 7,
+   "usd": 0.04330974,
+   "ms": 275447,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 5,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 3
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "grounded",
+   "turns": 14,
+   "usd": 0.059521460000000005,
+   "ms": 338658,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "write_file": 2,
+    "run_tests": 3,
+    "edit_file": 5
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 4
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "grounded",
+   "turns": 15,
+   "usd": 0.12233994000000001,
+   "ms": 3181395,
+   "governorNotes": 0,
+   "checks": 2,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 4,
+    "read_file": 11,
+    "write_file": 1
+   },
+   "hidden": {
+    "passed": 1,
+    "total": 3
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "grounded",
+   "turns": 16,
+   "usd": 0.07909727999999999,
+   "ms": 3175180,
+   "governorNotes": 0,
+   "checks": 2,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 7,
+    "read_file": 14
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 2
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "grounded",
+   "turns": 14,
+   "usd": 0.10872938,
+   "ms": 3168678,
+   "governorNotes": 0,
+   "checks": 2,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 6,
+    "read_file": 12
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 3
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "grounded",
+   "turns": 16,
+   "usd": 0.04564505,
+   "ms": 3855314,
+   "governorNotes": 0,
+   "checks": 1,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 6,
+    "read_file": 15,
+    "write_file": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 5
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "grounded",
+   "turns": 7,
+   "usd": 0.03763477,
+   "ms": 719338,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 5,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 4
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "grounded",
+   "turns": 8,
+   "usd": 0.059523009999999994,
+   "ms": 436353,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2,
+    "write_file": 2,
+    "edit_file": 1,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 7
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "grounded",
+   "turns": 6,
+   "usd": 0.034064540000000004,
+   "ms": 472284,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2,
+    "run_tests": 2,
+    "write_file": 2
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 10
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "grounded",
+   "turns": 8,
+   "usd": 0.08744589,
+   "ms": 806614,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "run_tests": 2,
+    "write_file": 3
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "grounded",
+   "turns": 11,
+   "usd": 0.04288239,
+   "ms": 249025,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "write_file": 2,
+    "run_tests": 3,
+    "edit_file": 4
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 1
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "grounded",
+   "turns": 12,
+   "usd": 0.0602844,
+   "ms": 357530,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "write_file": 2,
+    "run_tests": 4,
+    "edit_file": 3
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 2
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "grounded",
+   "turns": 6,
+   "usd": 0.02216773,
+   "ms": 126057,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 1,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 5
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "grounded",
+   "turns": 8,
+   "usd": 0.02471904,
+   "ms": 139683,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2,
+    "write_file": 2,
+    "run_tests": 2,
+    "edit_file": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 9
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "grounded",
+   "turns": 8,
+   "usd": 0.03798544,
+   "ms": 225431,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 2,
+    "read_file": 3,
+    "write_file": 2,
+    "edit_file": 1,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 8
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "grounded",
+   "turns": 8,
+   "usd": 0.07023613,
+   "ms": 468697,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 6,
+    "write_file": 2,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 7
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "grounded",
+   "turns": 9,
+   "usd": 0.07570302000000001,
+   "ms": 493193,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "write_file": 4,
+    "run_tests": 2
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 10
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "grounded",
+   "turns": 8,
+   "usd": 0.05185521,
+   "ms": 571579,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 5,
+    "write_file": 2,
+    "edit_file": 1,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 6
+  }
+ ],
+ "endedAt": 1793411253295
+}

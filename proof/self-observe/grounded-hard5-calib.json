@@ -1,0 +1,243 @@
+{
+ "suite": "hard-5",
+ "model": "@cf/moonshotai/kimi-k2.6",
+ "maxTurns": 16,
+ "seeds": 1,
+ "byArm": [
+  {
+   "arm": "baseline",
+   "seats": 5,
+   "passed": 2,
+   "usd": 0.2111,
+   "usdPerPass": 0.1055,
+   "turns": 31,
+   "hiddenTests": 6
+  },
+  {
+   "arm": "grounded",
+   "seats": 5,
+   "passed": 3,
+   "usd": 0.3925,
+   "usdPerPass": 0.1308,
+   "turns": 44,
+   "hiddenTests": 9
+  }
+ ],
+ "results": [
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "baseline",
+   "turns": 3,
+   "usd": 0.03459291,
+   "ms": 176433,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "baseline",
+   "turns": 9,
+   "usd": 0.03635957,
+   "ms": 171658,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2,
+    "write_file": 2,
+    "run_tests": 2,
+    "edit_file": 2
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "baseline",
+   "turns": 3,
+   "usd": 0.034495090000000006,
+   "ms": 180611,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "baseline",
+   "turns": 6,
+   "usd": 0.03728224,
+   "ms": 181646,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 4
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "date-range",
+   "arm": "grounded",
+   "turns": 9,
+   "usd": 0.03911856,
+   "ms": 182746,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 3,
+    "write_file": 2,
+    "run_tests": 2,
+    "edit_file": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "grounded",
+   "turns": 7,
+   "usd": 0.05469085,
+   "ms": 264140,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 2,
+    "write_file": 3,
+    "run_tests": 1
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "semver-sort",
+   "arm": "baseline",
+   "turns": 10,
+   "usd": 0.06835806,
+   "ms": 306018,
+   "governorNotes": 0,
+   "checks": 0,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 1,
+    "read_file": 2,
+    "write_file": 2,
+    "edit_file": 2,
+    "run_tests": 2
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "csv-parse",
+   "arm": "grounded",
+   "turns": 10,
+   "usd": 0.11147102,
+   "ms": 519850,
+   "governorNotes": 0,
+   "checks": 2,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 2,
+    "read_file": 6,
+    "run_tests": 2,
+    "write_file": 1
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 2
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "split-bill",
+   "arm": "grounded",
+   "turns": 12,
+   "usd": 0.08435962,
+   "ms": 391299,
+   "governorNotes": 0,
+   "checks": 1,
+   "passed": true,
+   "toolCalls": {
+    "list_files": 3,
+    "read_file": 4,
+    "run_tests": 2,
+    "write_file": 2
+   },
+   "hidden": {
+    "passed": 3,
+    "total": 3
+   },
+   "seed": 0
+  },
+  {
+   "state": "done",
+   "task": "sku-glob",
+   "arm": "grounded",
+   "turns": 6,
+   "usd": 0.10284786,
+   "ms": 505003,
+   "governorNotes": 0,
+   "checks": 2,
+   "passed": false,
+   "toolCalls": {
+    "list_files": 2,
+    "read_file": 2
+   },
+   "hidden": {
+    "passed": 0,
+    "total": 1
+   },
+   "seed": 0
+  }
+ ],
+ "endedAt": 1793398336550
+}

@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+import { money } from '../../src/core/money.ts';
+import { splitBill } from '../../src/split.ts';
+const c = (xs: { cents: number }[]) => xs.map((x) => x.cents);
+test('splitBill(money(200), [1,1,1], 0)', () => assert.deepEqual(c(splitBill(money(200), [1, 1, 1], 0)), [67, 67, 66]));
+test('splitBill(money(100), [1,3], 10)', () => assert.deepEqual(c(splitBill(money(100), [1, 3], 10)), [28, 82]));
+test('splitBill(money(2), [1,0,1], 0)', () => assert.deepEqual(c(splitBill(money(2), [1, 0, 1], 0)), [1, 0, 1]));
+test('splitBill(money(10), [1], -5) keeps one share', () => assert.equal(splitBill(money(10), [1], 0).length, 1));
+test('splitBill(money(10), [Infinity]) throws RangeError', () => assert.throws(() => splitBill(money(10), [Number.POSITIVE_INFINITY], 0), RangeError));

@@ -46,6 +46,8 @@ export const SHAPE: Entry = {
     '28 of 141 seats died on Workers AI timeouts before any work and were left out, so arm sizes differ.',
     'Five small tasks, one model, at most 6 seats per arm and task: differences of one or two passes are noise.',
     'sku-glob failed in every arm, so it measures nothing between arms.',
+    'Grounded eval: baseline passed 0, 1 or 11 of 11 on each task. No task sat near 30 to 40 percent, so the clue had two tasks to help on.',
+    'Grounded eval: the baseline seats ran before a Workers AI outage and the grounded seats ran during and after it.',
     'No shell, git or browser tools.',
     'A model call with no answer stops the task. There is no timeout yet.',
   ],
@@ -56,6 +58,8 @@ export const SHAPE: Entry = {
     { label: 'Mutate arm', value: '10 of 20 (50%), $0.071 per pass', source: 'proof/shapes/self-observe.json' },
     { label: 'All tools', value: '14 of 24 (58%), $0.073 per pass', source: 'proof/shapes/self-observe.json' },
     { label: 'Model spend, 141 seats over two runs', value: '$4.24', source: 'proof/shapes/self-observe.json' },
+    { label: 'Grounded arm vs baseline, hard-5, 60 seats each: verdict KILL', value: '39 of 60 (65%) at $0.096 per pass vs 36 of 60 (60%) at $0.066 per pass, 1.47x cost', source: 'proof/self-observe/grounded-hard5.json' },
+    { label: 'Grounded arm on the two tasks baseline almost never solves', value: 'sku-glob 1 of 11 vs 0 of 11, csv-parse 2 of 11 vs 1 of 11', source: 'proof/self-observe/grounded-hard5.json' },
   ],
   install: {
     status: 'ready',

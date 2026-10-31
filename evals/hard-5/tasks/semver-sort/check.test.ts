@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+import { compareVersions, sortVersions } from '../../src/semver.ts';
+test('2.0.0 > 1.99.99', () => assert.ok(compareVersions('2.0.0', '1.99.99') > 0));
+test('1.0.0-2 < 1.0.0-10', () => assert.ok(compareVersions('1.0.0-2', '1.0.0-10') < 0));
+test('1.0.0-alpha < 1.0.0-alpha.0', () => assert.ok(compareVersions('1.0.0-alpha', '1.0.0-alpha.0') < 0));
+test('1.0.0-1 < 1.0.0-a', () => assert.ok(compareVersions('1.0.0-1', '1.0.0-a') < 0));
+test('sort keeps build-only ties in input order', () => assert.deepEqual(sortVersions(['1.0.0+z', '1.0.0+a', '0.1.0']), ['1.0.0+z', '1.0.0+a', '0.1.0']));
+test('1.2.3.4 throws SyntaxError', () => assert.throws(() => compareVersions('1.2.3.4', '1.2.3'), SyntaxError));
+test('v01.2.3 throws SyntaxError', () => assert.throws(() => compareVersions('v01.2.3', '1.2.3'), SyntaxError));

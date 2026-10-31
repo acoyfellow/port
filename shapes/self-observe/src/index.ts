@@ -29,6 +29,7 @@ type Job = {
   prompt: string;
   files: Files;
   hidden: { files: Files; entry: string };
+  check?: { files: Files; entry: string };
   model: string;
   maxTurns: number;
   arm?: Arm;
@@ -50,6 +51,7 @@ type Outcome = {
   toolCalls: Record<string, number>;
   arm: Arm;
   governorNotes: number;
+  checks: number;
   history: TurnRecord[];
   visible?: { passed: number; total: number };
   hidden?: { passed: number; total: number; failures: TestResult[] };
@@ -164,10 +166,17 @@ const runTests = async (env: Env, files: Files, pick: (path: string) => boolean)
     globalOutbound: null,
     env: {},
   }));
-  const response = await worker.getEntrypoint().fetch('https://tests.fleet/');
-  const results: TestResult[] = await response.json();
-
-  return [...errors, ...results];
+  try {
+    const response = await worker.getEntrypoint().fetch('https://tests.fleet/');
+    const results: TestResult[] = await response.json();
+    return [...errors, ...results];
+  } catch (error) {
+    const message = String(error instanceof Error ? error.message : error).slice(0, 300);
+    return [
+      ...errors,
+      { name: 'run', file: testFiles.join(', '), ok: false, error: `the tests did not finish: ${message}. Your code is too slow or loops forever on some input.` },
+    ];
+  }
 };
 
 const TOOLS: Tool[] = [
@@ -290,6 +299,7 @@ export class Agent extends DurableObject<Env> {
       toolCalls: {},
       arm: job.arm && ARMS.includes(job.arm) ? job.arm : 'baseline',
       governorNotes: 0,
+      checks: 0,
       history: [],
     };
     await this.ctx.storage.put({ job, outcome, files: job.files });
@@ -422,7 +432,19 @@ export class Agent extends DurableObject<Env> {
       messages.push({ role: 'assistant', content: reply.content });
 
       const calls = reply.content.filter(isToolUse);
-      if (calls.length === 0) break;
+      if (calls.length === 0) {
+        if (outcome.arm !== 'grounded' || !job.check || outcome.checks >= 2) break;
+        const files = await this.files();
+        const results = await runTests(this.env, { ...files, ...job.check.files }, (path) => path === job.check?.entry);
+        const failed = results.find((result) => !result.ok);
+        if (!failed) break;
+        outcome.checks += 1;
+        messages.push({
+          role: 'user',
+          content: `A replay check ran your code. The first failing case:\n${failed.name}\n${failed.error ?? ''}\nFix the code so this case passes, keep every test passing, then stop again.`,
+        });
+        continue;
+      }
 
       const results: Block[] = [];
       let passed: number | null = null;
