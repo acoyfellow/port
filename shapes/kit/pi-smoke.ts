@@ -54,10 +54,14 @@ export type PiReceipt = {
   readonly reason?: string;
 };
 
+const installRun = process.env.SHAPE_INSTALL_ID;
+
 export const writePiReceipt = (receipt: PiReceipt) =>
   writeFileSync(
-    join(import.meta.dirname, '..', '..', 'proof', 'pi', `${receipt.slug}.json`),
-    `${JSON.stringify(receipt, null, 2)}\n`,
+    installRun === undefined
+      ? join(import.meta.dirname, '..', '..', 'proof', 'pi', `${receipt.slug}.json`)
+      : join(import.meta.dirname, '..', '..', 'proof', 'install', 'runs', `${receipt.slug}.smoke.json`),
+    `${JSON.stringify(installRun === undefined ? receipt : { ...receipt, install: installRun }, null, 2)}\n`,
   );
 
 export const runPiSmoke = async (smoke: PiSmoke) => {

@@ -90,12 +90,30 @@ export type Client = {
   ) => Promise<S['Type']>;
 };
 
+const installedUrl = process.env.SHAPE_URL;
+const installedKey = process.env.SHAPE_PORT_KEY;
+
+const viaFetch = async (
+  method: string,
+  path: string,
+  body: string | undefined,
+  headers: Record<string, string>,
+): Promise<Reply> => {
+  const response = await fetch(`${installedUrl}${path}`, { method, body, headers });
+  return { status: response.status, text: await response.text() };
+};
+
 export const client = (slug: string, auth?: { readonly bearer: string }): Client => {
   const host = shapeHost(slug);
   const headers: Record<string, string> = {
     'content-type': 'application/json',
     ...(auth === undefined ? {} : { authorization: `Bearer ${auth.bearer}` }),
+    ...(installedKey === undefined ? {} : { 'x-port-key': installedKey }),
   };
+  const deliver = (method: string, path: string, body: string | undefined) =>
+    installedUrl === undefined
+      ? addressOf(host).then((address) => request(host, address, method, path, body, headers))
+      : viaFetch(method, path, body, headers);
   const send =
     (method: 'GET' | 'POST') =>
     async <S extends Decodable>(path: string, schema: S, options: RequestOptions = {}) => {
@@ -103,9 +121,7 @@ export const client = (slug: string, auth?: { readonly bearer: string }): Client
       const body = options.body === undefined ? undefined : JSON.stringify(options.body);
       let last = '';
       for (let attempt = 0; attempt < tries; attempt++) {
-        const reply = await addressOf(host)
-          .then((address) => request(host, address, method, path, body, headers))
-          .catch((error: unknown) => String(error));
+        const reply = await deliver(method, path, body).catch((error: unknown) => String(error));
         if (typeof reply !== 'string' && reply.status >= 200 && reply.status < 300)
           return Schema.decodeUnknownSync(schema)(JSON.parse(reply.text));
         last = typeof reply === 'string' ? reply : `HTTP ${reply.status}`;
@@ -114,7 +130,7 @@ export const client = (slug: string, auth?: { readonly bearer: string }): Client
       throw new Error(`${method} ${path} kept failing: ${last}`);
     };
   const raw = async (method: 'GET' | 'POST', path: string, body?: string) => {
-    const reply = await request(host, await addressOf(host), method, path, body, headers);
+    const reply = await deliver(method, path, body);
     return { status: reply.status, json: JSON.parse(reply.text) };
   };
   return { get: send('GET'), post: send('POST'), raw };

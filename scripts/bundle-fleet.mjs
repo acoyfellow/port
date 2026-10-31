@@ -72,4 +72,47 @@ const { diagramSvg, fleetDiagram } = await import(
 mkdirSync(join(root, 'static'), { recursive: true });
 writeFileSync(join(root, 'static/fleet.svg'), `${diagramSvg(fleetDiagram())}\n`);
 
+const SHAPES = [
+  'isolate-agents',
+  'durable-session',
+  'agent-room',
+  'self-editing-app',
+  'self-observe',
+  'chat-with-sandbox',
+  'container-per-thread',
+  'sealed-box',
+  'person-with-computer',
+  'shared-container',
+];
+const shapeCode = {};
+for (const slug of SHAPES) {
+  const built = await build({
+    entryPoints: [join(root, 'shapes', slug, 'src', 'index.ts')],
+    bundle: true,
+    format: 'esm',
+    platform: 'neutral',
+    external: ['cloudflare:*', 'node:*'],
+    mainFields: ['module', 'main'],
+    conditions: ['workerd', 'worker', 'import'],
+    minify: true,
+    write: false,
+    logLevel: 'warning',
+    absWorkingDir: join(root, 'shapes'),
+  });
+  shapeCode[slug] = built.outputFiles[0].text;
+}
+const bundles = join(root, 'static', 'shape-bundles');
+mkdirSync(bundles, { recursive: true });
+for (const [slug, source] of Object.entries(shapeCode)) writeFileSync(join(bundles, `${slug}.js`), source);
+const shapeVersions = Object.fromEntries(
+  Object.entries(shapeCode).map(([slug, source]) => [
+    slug,
+    createHash('sha256').update(source).digest('hex').slice(0, 12),
+  ]),
+);
+writeFileSync(
+  join(out, 'shape-bundles.ts'),
+  `export const SHAPE_VERSIONS: Record<string, string> = ${JSON.stringify(shapeVersions)};\n`,
+);
+
 console.log(`fleet bundle ${version} ${(code.length / 1024).toFixed(0)} KB, ${tasks.length} tasks`);

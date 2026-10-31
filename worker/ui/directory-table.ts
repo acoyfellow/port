@@ -1,4 +1,4 @@
-import type { Entry, Stage } from '../../shared/entry';
+import type { Entry } from '../../shared/entry';
 import { html } from './html';
 
 type Cell = ReturnType<typeof html> | string;
@@ -15,13 +15,6 @@ export type SortDir = 'asc' | 'desc';
 export type Sort = { readonly key: string; readonly dir: SortDir };
 
 const DASH = '—';
-const STAGE_RANK: Record<Stage, number> = { installable: 0, verified: 1, outlined: 2, idea: 3 };
-const STAGE_LABEL: Record<Stage, string> = {
-  installable: 'Installable',
-  verified: 'Verified',
-  outlined: 'Outlined',
-  idea: 'Idea',
-};
 const INTERNET_LABEL = { off: 'Off', on: 'On', none: 'No shell' } as const;
 const INTERNET_RANK = { off: 0, none: 1, on: 2 } as const;
 
@@ -94,12 +87,6 @@ const COLUMNS: readonly Column[] = [
     cell: (entry) =>
       entry.build === undefined ? DASH : entry.build.resumed ? pill('ok', 'Resumed') : pill('warn', 'Lost'),
     value: (entry) => (entry.build === undefined ? undefined : entry.build.resumed ? 0 : 1),
-  },
-  {
-    key: 'stage',
-    label: 'Stage',
-    cell: (entry) => pill(entry.stage === 'installable' ? 'brand' : 'plain', STAGE_LABEL[entry.stage]),
-    value: (entry) => STAGE_RANK[entry.stage],
   },
   { key: 'lists', label: 'Pros / cons', cell: listsCell },
 ];

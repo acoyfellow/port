@@ -18,10 +18,7 @@ const order = [
 const rank = (slug) => order.indexOf(slug) + 1 || 99;
 
 const shapeSlugs = readdirSync(shapesDir).filter((name) => existsSync(join(shapesDir, name, 'shape.ts')));
-const entrySlugs = readdirSync(entriesDir)
-  .filter((name) => name.endsWith('.ts') && name !== 'index.ts')
-  .map((name) => name.slice(0, -3))
-  .filter((slug) => !shapeSlugs.includes(slug));
+const entrySlugs = [];
 
 const buildOf = (slug) => {
   const file = join(root, 'proof', 'pi', `${slug}.json`);

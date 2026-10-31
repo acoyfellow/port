@@ -1,3 +1,4 @@
+import { shapeInstallOf } from '../../shared/shape-installs';
 import { type AuthEnv, currentUser, grantFor, mintCliKey, usesCliKey, viewerOf } from '../auth/routes';
 import {
   type EvalTask,
@@ -8,6 +9,7 @@ import {
   startEval,
   teardown,
 } from '../install';
+import { installShape, type ShapeInstallRecord, type ShapeSource, teardownShape } from '../shape-install';
 import { html } from '../ui/html';
 import {
   cliKeyPage,
@@ -17,6 +19,7 @@ import {
   type Run,
   type RunTask,
   runPage,
+  shapeInstallPage,
 } from '../ui/installs';
 import type { Viewer } from '../ui/layout';
 import { errorPage, linkButton, notFound } from '../ui/parts';
@@ -38,7 +41,12 @@ const json = (body: unknown, status = 200) =>
 const UPLOAD_SCOPE = 'workers-scripts.admin';
 
 const isStoredInstall = (value: unknown): value is StoredInstall =>
-  typeof value === 'object' && value !== null && 'id' in value && 'resources' in value && 'key' in value;
+  typeof value === 'object' &&
+  value !== null &&
+  'id' in value &&
+  'resources' in value &&
+  'key' in value &&
+  !('slug' in value);
 
 const runIdOf = (task: EvalTask | undefined) => task?.agent.split('-').at(-1) ?? '';
 
@@ -222,6 +230,57 @@ const showRun = async (env: AuthEnv, ctx: Context, found: StoredInstall, run: St
     : runPage(ctx.viewer, view(found), run, tasks, Date.now());
 };
 
+type ShapeEnv = AuthEnv & {
+  readonly ASSETS: Fetcher;
+  readonly SHAPE_REGISTRY_PASSWORD: string;
+  readonly SHAPE_REGISTRY_ACCOUNT: string;
+};
+
+const SHAPE_IMAGE_TAG = 'v1';
+
+const sourceOf = (env: AuthEnv, url: URL): ShapeSource => {
+  const shapeEnv: Partial<ShapeEnv> = env;
+  return {
+    bundle: async (slug) => {
+      const response = await (shapeEnv.ASSETS?.fetch(`${url.origin}/shape-bundles/${slug}.js`) ??
+        fetch(`${url.origin}/shape-bundles/${slug}.js`));
+      if (!response.ok) throw new Error(`no bundle for ${slug}: HTTP ${response.status}`);
+      return response.text();
+    },
+    sourceRegistry: { basic: btoa(`v1:${shapeEnv.SHAPE_REGISTRY_PASSWORD ?? ''}`) },
+    sourceAccount: shapeEnv.SHAPE_REGISTRY_ACCOUNT ?? '',
+    imageTag: SHAPE_IMAGE_TAG,
+  };
+};
+
+const SHAPE_KEY_PREFIX = 'shape:';
+
+const isShapeRecord = (value: unknown): value is ShapeInstallRecord =>
+  typeof value === 'object' && value !== null && 'slug' in value && 'resources' in value && 'key' in value;
+
+const shapeInstalls = async (ctx: Context) => {
+  const parsed: unknown = JSON.parse(await ctx.grant.installs());
+  return Array.isArray(parsed)
+    ? parsed
+        .filter((each) => typeof each === 'object' && each !== null && Reflect.get(each, 'entry') === 'shape')
+        .map((each) => Reflect.get(each, 'record'))
+        .filter(isShapeRecord)
+    : [];
+};
+
+const publicShape = ({ key: _key, ...rest }: ShapeInstallRecord) => rest;
+
+const saveShape = async (env: AuthEnv, ctx: Context, record: ShapeInstallRecord) => {
+  await ctx.grant.putInstall(
+    `${SHAPE_KEY_PREFIX}${record.id}`,
+    JSON.stringify({ id: `${SHAPE_KEY_PREFIX}${record.id}`, entry: 'shape', record }),
+  );
+  await env.RECEIPTS.put(
+    `shape-${record.id}`,
+    JSON.stringify({ ...publicShape(record), savedAt: Date.now() }),
+  );
+};
+
 export const installRoute = async (env: AuthEnv, request: Request, url: URL): Promise<Response | null> => {
   if (url.pathname !== '/installs' && !url.pathname.startsWith('/installs/')) return null;
   const cli = usesCliKey(request);
@@ -247,6 +306,32 @@ export const installRoute = async (env: AuthEnv, request: Request, url: URL): Pr
     return cli
       ? json(publicView(installed), installed.state === 'installed' ? 201 : 502)
       : to(`/installs/${installed.id}`);
+  }
+
+  if (request.method === 'POST' && id === 'shapes' && action !== undefined) {
+    const shape = shapeInstallOf(action);
+    if (shape === undefined) return missing('Shape');
+    const record = await installShape(ctx.token.accessToken, ctx.token.accountId, shape, sourceOf(env, url));
+    await saveShape(env, ctx, record);
+    return cli
+      ? json(publicShape(record), record.state === 'installed' ? 201 : 502)
+      : to(`/installs/shapes-${record.id}`);
+  }
+
+  if (id?.startsWith('shapes-') === true) {
+    const shapeId = id.slice('shapes-'.length);
+    const record = (await shapeInstalls(ctx)).find((each) => each.id === shapeId);
+    if (record === undefined) return missing('Install');
+    if (request.method === 'GET' && action === 'key' && cli)
+      return json({ url: record.url, key: record.key });
+    if (request.method === 'POST' && action === 'delete') {
+      const removed = await teardownShape(ctx.token.accessToken, record);
+      await saveShape(env, ctx, removed);
+      return cli ? json(publicShape(removed)) : to(`/installs/${id}`);
+    }
+    if (request.method === 'GET' && action === undefined)
+      return cli ? json(publicShape(record)) : shapeInstallPage(ctx.viewer, publicShape(record));
+    return missing('Page');
   }
 
   if (request.method === 'POST' && id === 'probe') {

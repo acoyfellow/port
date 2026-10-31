@@ -26,10 +26,22 @@ const stringField = (value: unknown, key: string) => {
 
 const NAME = /^[a-z0-9-]{1,64}$/;
 
+export const INSTALL_KEY_HEADER = 'x-port-key';
+
+const installKeyOf = (env: unknown) => {
+  const value = typeof env === 'object' && env !== null ? Reflect.get(env, 'PORT_KEY') : undefined;
+  return typeof value === 'string' ? value : undefined;
+};
+
 export const piRouter = <Env>(options: RouterOptions<Env>): ExportedHandler<Env> => ({
   async fetch(request, env) {
-    const key = options.key?.(env);
-    if (key !== undefined && request.headers.get('authorization') !== `Bearer ${key}`)
+    const key = options.key?.(env) ?? installKeyOf(env);
+    if (
+      key !== undefined &&
+      key !== '' &&
+      request.headers.get(INSTALL_KEY_HEADER) !== key &&
+      request.headers.get('authorization') !== `Bearer ${key}`
+    )
       return json({ error: 'unauthorized' }, 401);
     const url = new URL(request.url);
     if (url.pathname === '/health')

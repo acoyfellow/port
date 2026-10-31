@@ -290,3 +290,52 @@ export const cliKeyPage = (viewer: Viewer, key: string, origin: string) =>
       'This key acts as you on port for 24 hours: install, run, check and tear down. port does not store it. Treat it like a password.',
     )}<div class="stack">${copyField('cli-key', key, 'CLI key')}<pre>curl -H "authorization: Bearer $PORT_KEY" ${origin}/installs/json</pre></div>`,
   });
+
+export type ShapeInstallView = {
+  readonly id: string;
+  readonly slug: string;
+  readonly version: string;
+  readonly createdAt: number;
+  readonly url: string | null;
+  readonly state: 'installed' | 'removed' | 'failed';
+  readonly log: readonly string[];
+  readonly resources: readonly {
+    readonly kind: string;
+    readonly name: string;
+    readonly existsAfterInstall?: boolean;
+    readonly existsAfterTeardown?: boolean;
+  }[];
+};
+
+const SHAPE_STATUS: Record<ShapeInstallView['state'], Status> = {
+  installed: { tone: 'ok', label: 'Installed' },
+  removed: { tone: 'plain', label: 'Removed' },
+  failed: { tone: 'bad', label: 'Failed' },
+};
+
+const shapeResourceNow = (resource: ShapeInstallView['resources'][number]) =>
+  resource.existsAfterTeardown === false
+    ? badge('plain', 'Deleted')
+    : resource.existsAfterTeardown === true
+      ? badge('bad', 'Still there')
+      : resource.existsAfterInstall === true
+        ? badge('ok', 'Exists')
+        : badge('warn', 'Not checked');
+
+export const shapeInstallPage = (viewer: Viewer, install: ShapeInstallView) =>
+  page({
+    title: `Install ${install.id}`,
+    viewer,
+    section: 'installs',
+    crumbs: viewerCrumbs({ label: install.id }),
+    body: html`<div class="head"><div><h1>${install.slug} ${badge(SHAPE_STATUS[install.state].tone, SHAPE_STATUS[install.state].label)}</h1><p class="mono">${install.id} · build ${install.version}</p></div><div class="actions">${
+      install.state === 'removed'
+        ? ''
+        : postButton(`/installs/shapes-${install.id}/delete`, { label: 'Tear down', kind: 'danger' })
+    }</div></div><div class="stack"><section><div class="section-head"><h2>Resources on your account</h2></div><div class="card table-card"><table><thead><tr><th>Kind</th><th>Name</th><th>Now</th></tr></thead><tbody>${install.resources.map(
+      (resource) =>
+        html`<tr><td>${resource.kind}</td><td class="mono">${resource.name}</td><td>${shapeResourceNow(resource)}</td></tr>`,
+    )}</tbody></table></div></section><section class="card"><h2>Details</h2><dl class="kv" style="margin-top:12px"><dt>Created</dt><dd>${when(
+      install.createdAt,
+    )}</dd><dt>Address</dt><dd class="mono">${install.url ?? 'None'}</dd></dl><details style="margin-top:14px"${install.state === 'failed' ? ' open' : ''}><summary>Install log</summary><pre>${install.log.join('\n')}</pre></details></section></div>`,
+  });
