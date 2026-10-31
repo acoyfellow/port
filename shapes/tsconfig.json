@@ -8,19 +8,8 @@
     "skipLibCheck": true,
     "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true,
-    "types": [
-      "node",
-      "@cloudflare/workers-types"
-    ],
-    "lib": [
-      "es2023",
-      "dom"
-    ]
+    "types": ["node", "@cloudflare/workers-types"],
+    "lib": ["es2023", "dom"]
   },
-  "include": [
-    "*/alchemy.run.ts",
-    "*/smoke.ts",
-    "*/src/*.ts",
-    "kit/*.ts"
-  ]
+  "include": ["*/alchemy.run.ts", "*/smoke.ts", "*/src/*.ts", "kit/*.ts"]
 }

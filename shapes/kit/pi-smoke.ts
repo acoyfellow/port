@@ -54,6 +54,12 @@ export type PiReceipt = {
   readonly reason?: string;
 };
 
+export const writePiReceipt = (receipt: PiReceipt) =>
+  writeFileSync(
+    join(import.meta.dirname, '..', '..', 'proof', 'pi', `${receipt.slug}.json`),
+    `${JSON.stringify(receipt, null, 2)}\n`,
+  );
+
 export const runPiSmoke = async (smoke: PiSmoke) => {
   const bearer = typeof smoke.bearer === 'function' ? await smoke.bearer() : smoke.bearer;
   const api = client(smoke.slug, bearer === undefined ? undefined : { bearer });
@@ -89,10 +95,7 @@ export const runPiSmoke = async (smoke: PiSmoke) => {
     infrastructureOk: infrastructure.ok,
     ...(status.reason === undefined ? {} : { reason: status.reason }),
   };
-  writeFileSync(
-    join(import.meta.dirname, '..', '..', 'proof', 'pi', `${smoke.slug}.json`),
-    `${JSON.stringify(receipt, null, 2)}\n`,
-  );
+  writePiReceipt(receipt);
   prove(
     `Stock Pi (pi-durable) ${smoke.task.describe} on ${smoke.slug}, resumed after a forced restart, and spent $${receipt.usd.toFixed(4)} by Pi's own count. ${infrastructure.claim}`,
     health.agent === 'pi-durable' &&

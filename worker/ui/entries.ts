@@ -49,7 +49,7 @@ const PI_TECH =
 
 const piSection = (entry: Entry) => {
   const receipt = entry.build;
-  return html`<section class="card pi-tech"><div class="pi-head"><a href="https://pi.dev" class="pi-mark" aria-label="Pi"><img src="/pi-logo.svg" alt="Pi logo" width="40" height="40"></a><h2>Runs on <a href="https://pi.dev">Pi</a></h2></div><p>${PI_TECH}</p>${
+  return html`<section class="card build pi-tech"><div class="pi-head"><a href="https://pi.dev" class="pi-mark" aria-label="Pi"><img src="/pi-logo.svg" alt="Pi logo" width="40" height="40"></a><h2>Runs on <a href="https://pi.dev">Pi</a></h2></div><p>${PI_TECH}</p>${
     entry.tools === undefined ? '' : html`<p><strong>Where the tools run here:</strong> ${entry.tools}</p>`
   }${
     receipt === undefined

@@ -1,0 +1,14 @@
+{
+  "slug": "isolate-agents",
+  "at": "2026-10-31T12:43:41.706Z",
+  "agent": "pi-durable",
+  "task": "finished the money-words task; hidden tests passed 2 of 2",
+  "passed": true,
+  "restarted": true,
+  "resumed": true,
+  "usd": 0.03213973,
+  "tokens": 38232,
+  "seconds": 181,
+  "infrastructure": "The tools ran in memory in the Durable Object; node --test ran in Worker Loader isolates (seed 23/23) with the network blocked.",
+  "infrastructureOk": true
+}

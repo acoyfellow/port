@@ -77,7 +77,11 @@ export const compileProject = (files: Record<string, string>) => {
   return { modules, errors };
 };
 
-export const runModuleInIsolate = async (loader: WorkerLoader, modules: Record<string, string>, main: string) => {
+export const runModuleInIsolate = async (
+  loader: WorkerLoader,
+  modules: Record<string, string>,
+  main: string,
+) => {
   const worker = loader.get(`probe:${crypto.randomUUID()}`, () => ({
     compatibilityDate: '2026-09-30',
     compatibilityFlags: ['nodejs_compat'],

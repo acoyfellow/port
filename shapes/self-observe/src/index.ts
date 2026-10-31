@@ -25,7 +25,8 @@ const workspaceFiles = (ctx: DurableObjectState) =>
       .map(([path, bytes]) => [path.slice(WORKSPACE.length + 1), decoder.decode(bytes)]),
   );
 
-const visibleTests = (files: Record<string, string>) => Object.keys(files).filter((path) => /^test\/[^/]+\.test\.ts$/.test(path));
+const visibleTests = (files: Record<string, string>) =>
+  Object.keys(files).filter((path) => /^test\/[^/]+\.test\.ts$/.test(path));
 
 const countUse = (ctx: DurableObjectState, tool: string) => {
   ctx.storage.sql.exec('CREATE TABLE IF NOT EXISTS isolate_runs (tool TEXT PRIMARY KEY, runs INTEGER)');
@@ -37,7 +38,9 @@ const countUse = (ctx: DurableObjectState, tool: string) => {
 
 const usesOf = (ctx: DurableObjectState) => {
   ctx.storage.sql.exec('CREATE TABLE IF NOT EXISTS isolate_runs (tool TEXT PRIMARY KEY, runs INTEGER)');
-  const rows = ctx.storage.sql.exec<{ tool: string; runs: number }>('SELECT tool, runs FROM isolate_runs').toArray();
+  const rows = ctx.storage.sql
+    .exec<{ tool: string; runs: number }>('SELECT tool, runs FROM isolate_runs')
+    .toArray();
   return Object.fromEntries(rows.map((row) => [row.tool, row.runs]));
 };
 
@@ -46,8 +49,13 @@ const text = (value: string) => ({ output: [{ type: 'text' as const, text: value
 const probe = async (env: Env, ctx: DurableObjectState, path: string, exportName: string, body: string) => {
   countUse(ctx, 'probe');
   const { modules, errors } = compileProject(workspaceFiles(ctx));
-  if (errors.length > 0) return text(`compile error: ${errors.map((each) => `${each.file}: ${each.error}`).join('\n')}`);
-  const result = await runModuleInIsolate(env.LOADER, modules, probeMain(path.replace(/\.ts$/, '.js'), exportName, body));
+  if (errors.length > 0)
+    return text(`compile error: ${errors.map((each) => `${each.file}: ${each.error}`).join('\n')}`);
+  const result = await runModuleInIsolate(
+    env.LOADER,
+    modules,
+    probeMain(path.replace(/\.ts$/, '.js'), exportName, body),
+  );
   return text(JSON.stringify(result).slice(0, 2500));
 };
 
@@ -66,7 +74,8 @@ const observeTools = (env: Env, ctx: DurableObjectState) =>
           generator: Type.String(),
         }),
         replay: 'safe',
-        execute: (args) => probe(env, ctx, args.path, args.export, shrinkBody(args.property, args.generator, 200)),
+        execute: (args) =>
+          probe(env, ctx, args.path, args.export, shrinkBody(args.property, args.generator, 200)),
       }),
       defineTool({
         name: 'trace',
@@ -88,13 +97,15 @@ const observeTools = (env: Env, ctx: DurableObjectState) =>
           if (source === undefined) return text(`No file ${args.path}`);
           const tests = visibleTests(files);
           const baseline = await runInIsolate(env.LOADER, files, tests);
-          if (baseline.some((each) => !each.ok)) return text('fix the failing tests first: mutate needs a green baseline');
+          if (baseline.some((each) => !each.ok))
+            return text('fix the failing tests first: mutate needs a green baseline');
           countUse(ctx, 'mutate');
           const mutants = mutantsOf(source, 30);
           const survivors: string[] = [];
           for (const mutant of mutants) {
             const results = await runInIsolate(env.LOADER, { ...files, [args.path]: mutant.source }, tests);
-            if (results.every((each) => each.ok)) survivors.push(`line ${mutant.line}: \`${mutant.from}\` -> \`${mutant.to}\``);
+            if (results.every((each) => each.ok))
+              survivors.push(`line ${mutant.line}: \`${mutant.from}\` -> \`${mutant.to}\``);
           }
           return text(
             `${mutants.length - survivors.length}/${mutants.length} changes caught by your tests.${survivors.length > 0 ? `\nNOT caught:\n${survivors.slice(0, 12).join('\n')}` : ''}`,
@@ -124,7 +135,8 @@ export class Observer extends piAgent<Env>({
   seed(files: Record<string, string>) {
     const store = sqliteFileStore(this.ctx.storage.sql, SCOPE);
     if (Object.keys(store.load()).length > 0) return;
-    for (const [path, body] of Object.entries(files)) store.save(`${WORKSPACE}/${path}`, new TextEncoder().encode(body));
+    for (const [path, body] of Object.entries(files))
+      store.save(`${WORKSPACE}/${path}`, new TextEncoder().encode(body));
   }
 
   async grade(hidden: Record<string, string>, entry: string) {

@@ -1,0 +1,14 @@
+{
+  "slug": "self-observe",
+  "at": "2026-10-31T12:33:10.055Z",
+  "agent": "pi-durable",
+  "task": "wrote clamp with tests, then checked it with shrink and mutate in isolates",
+  "passed": true,
+  "restarted": true,
+  "resumed": true,
+  "usd": 0.17429245999999995,
+  "tokens": 539493,
+  "seconds": 630,
+  "infrastructure": "Shrink, trace and mutate are Pi extension tools that run the agent's code in fresh Worker Loader isolates: 7 shrink or trace runs and 7 mutate runs.",
+  "infrastructureOk": true
+}
