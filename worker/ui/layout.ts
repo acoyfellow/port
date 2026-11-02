@@ -30,7 +30,7 @@ const navLinks = (current: Section, viewer: Viewer) =>
 
 const viewerControls = (viewer: Viewer) =>
   viewer === null
-    ? html`<a class="btn small" href="/sign-in">Sign in</a>`
+    ? html`<a class="btn small cf" href="/sign-in" data-sign-in="cloudflare"><img class="cf-mark" src="/brand/cloudflare-cloud.svg" alt="" width="26" height="12"><span>Sign in</span></a>`
     : html`<a class="who row-link" href="/account" title="Account and sign out"><span class="who-mark" aria-hidden="true">${(viewer.email ?? '?').slice(0, 1).toUpperCase()}</span><span class="who-text"><span>${viewer.email ?? 'Signed in'}</span><small>${viewer.accountName ?? 'No account picked'}</small></span></a>`;
 
 const crumbTrail = (crumbs: readonly Crumb[]) =>

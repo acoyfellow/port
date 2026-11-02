@@ -60,6 +60,20 @@ Shape: hidden tests run in a Worker Loader isolate with no network and no bindin
 
 Question: can this replace Terrarium boxes for grading, and what does it cost per graded task?
 
+## 9. Session with a git gatekeeper
+
+Seen in: sesh (durable GitLab coding conversations).
+
+Shape: chat-with-sandbox plus a second Worker, the gatekeeper. Pi runs in a Durable Object per session. Its tools run in a container with no credentials. Files are checkpointed after each turn. The gatekeeper alone holds the git token and exposes only two actions: push the session branch, and open or reuse the merge request. It never merges or force-pushes. The agent reaches it through a service binding, so the token never enters the container or the Durable Object.
+
+Git host: Cloudflare Artifacts by default, so the shape installs and tests on any account with no outside service. GitLab is an option for people who bring a token.
+
+Pi task: change a file in an attached repo, restart mid-task, resume, then ask to publish. Pass when the branch and the merge request exist on the git host and the container has no credential in its environment or on disk.
+
+Question: does the gatekeeper boundary hold when the agent is told to push to main or force-push, and what does a checkpoint per turn cost?
+
 ## Order
 
 1 and 2 first: both reuse the fleet loop that already passes 4 of 5, and both change only one part. Then 4, because the measured tool mix says it is the biggest cost lever for coil-style shapes.
+
+Next batch, after every listed shape passes its button install: 9, then the browser-agent shapes (5, kitesurf, and a container with any browser). Each must ship with an install recipe and a button-install receipt before it is listed.

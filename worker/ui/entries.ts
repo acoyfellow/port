@@ -1,15 +1,9 @@
-import type { Entry, Stage } from '../../shared/entry';
+import type { Entry } from '../../shared/entry';
 import { entryDiagram, entryThumbnail } from '../../shared/entry-diagram';
+import { shapeInstallOf } from '../../shared/shape-installs';
 import { html, raw } from './html';
 import type { Viewer } from './layout';
-import { badge, linkButton, page, pageHead } from './parts';
-
-const STAGE_BADGE: Record<Stage, ReturnType<typeof badge> | ''> = {
-  installable: '',
-  verified: '',
-  outlined: badge('live', 'Outlined'),
-  idea: badge('plain', 'Idea'),
-};
+import { badge, linkButton, page, pageHead, postButton } from './parts';
 
 const PRODUCT_LABEL: Record<Entry['parts'][number]['product'], string> = {
   worker: 'Worker',
@@ -33,7 +27,7 @@ const products = (entry: Entry) => [...new Set(entry.parts.map((part) => PRODUCT
 export const entryHref = (entry: Entry) => `/d/${entry.slug}`;
 
 export const entryCard = (entry: Entry) =>
-  html`<a class="card entry" href="${entryHref(entry)}" data-entry="${entry.slug}"><div class="thumb" data-thumb>${raw(entryThumbnail(entry))}</div><div class="entry-top"><div class="entry-icon" aria-hidden="true">${entry.mark}</div><h2>${entry.name}</h2>${STAGE_BADGE[entry.stage]}</div><p class="shape">${entry.shape}</p><p>${entry.oneLine}</p><div class="chips">${products(
+  html`<a class="card entry" href="${entryHref(entry)}" data-entry="${entry.slug}"><div class="thumb" data-thumb>${raw(entryThumbnail(entry))}</div><div class="entry-top"><div class="entry-icon" aria-hidden="true">${entry.mark}</div><h2>${entry.name}</h2></div><p class="shape">${entry.shape}</p><p>${entry.oneLine}</p><div class="chips">${products(
     entry,
   ).map((label) => html`<span class="chip">${label}</span>`)}</div></a>`;
 
@@ -59,11 +53,14 @@ const piSection = (entry: Entry) => {
 };
 
 const installAction = (entry: Entry, viewer: Viewer) =>
-  entry.install.status !== 'ready'
+  shapeInstallOf(entry.slug) === undefined
     ? ''
     : viewer === null
-      ? linkButton('/sign-in?next=/installs', { label: 'Sign in to install' })
-      : linkButton('/installs', { label: 'Install on my account' });
+      ? linkButton(`/sign-in?next=/d/${entry.slug}`, { label: 'Sign in to install' })
+      : postButton(`/installs/shapes/${entry.slug}`, {
+          label: 'Install on my account',
+          busy: 'Installing… up to 2 minutes',
+        });
 
 export const entryPage = (viewer: Viewer, entry: Entry) =>
   page({
@@ -71,7 +68,7 @@ export const entryPage = (viewer: Viewer, entry: Entry) =>
     viewer,
     section: 'home',
     crumbs: [{ label: 'Directory', href: '/' }, { label: entry.name }],
-    body: html`${pageHead(entry.name, html`${STAGE_BADGE[entry.stage]} ${entry.oneLine}`, installAction(entry, viewer))}<div class="stack">${piSection(entry)}<figure class="card diagram"><figcaption>${entry.shape}</figcaption>${raw(
+    body: html`${pageHead(entry.name, entry.oneLine, installAction(entry, viewer))}<div class="stack">${piSection(entry)}<figure class="card diagram"><figcaption>${entry.shape}</figcaption>${raw(
       entryDiagram(entry),
     )}</figure><div class="grid">${list('Strengths', entry.strengths)}${list('Limits', entry.limits)}<section class="card"><h2>Parts</h2><ul class="muted">${entry.parts.map(
       (part) => html`<li><strong>${part.label}</strong> · ${part.detail}</li>`,
