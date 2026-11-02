@@ -21,7 +21,7 @@ const INTERNET_RANK = { off: 0, none: 1, on: 2 } as const;
 const pill = (tone: string, text: string) => html`<span class="pill pill-${tone}">${text}</span>`;
 
 const shapeCell = (entry: Entry) =>
-  html`<a class="row-name" href="/d/${entry.slug}"><span class="entry-icon" aria-hidden="true">${entry.mark}</span><span><strong>${entry.name}</strong><small>${entry.oneLine}</small></span></a>`;
+  html`<a class="row-name" href="/d/${entry.slug}"><span><strong>${entry.name}</strong><small>${entry.oneLine}</small></span></a>`;
 
 const listsCell = (entry: Entry) =>
   html`<details class="row-lists"><summary><span class="ok-text">+${entry.strengths.length}</span> <span class="warn-text">−${entry.limits.length}</span></summary><p class="lists-head">Strengths</p><ul>${entry.strengths.map((item) => html`<li>${item}</li>`)}</ul><p class="lists-head">Limits</p><ul>${entry.limits.map((item) => html`<li>${item}</li>`)}</ul></details>`;
@@ -80,13 +80,6 @@ const COLUMNS: readonly Column[] = [
     numeric: true,
     cell: (entry) => (entry.build === undefined ? DASH : `${entry.build.seconds} s`),
     value: (entry) => entry.build?.seconds,
-  },
-  {
-    key: 'restart',
-    label: 'Restart',
-    cell: (entry) =>
-      entry.build === undefined ? DASH : entry.build.resumed ? pill('ok', 'Resumed') : pill('warn', 'Lost'),
-    value: (entry) => (entry.build === undefined ? undefined : entry.build.resumed ? 0 : 1),
   },
   { key: 'lists', label: 'Pros / cons', cell: listsCell },
 ];

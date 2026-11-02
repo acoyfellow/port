@@ -60,13 +60,26 @@ export const randomToken = (bytes = 32) => base64Url(crypto.getRandomValues(new 
 export const pkceChallenge = async (verifier: string) =>
   base64Url(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier))));
 
-export const authorizeUrl = async (client: OAuthClient, state: string, verifier: string) => {
+export const BASIC_SCOPES = [
+  'offline_access',
+  'user-details.read',
+  'account-settings.read',
+  'ai.read',
+  'aig.run',
+];
+
+export const authorizeUrl = async (
+  client: OAuthClient,
+  state: string,
+  verifier: string,
+  scopes: readonly string[] = SCOPES,
+) => {
   const url = new URL(CLOUDFLARE_OAUTH.authorize);
 
   url.searchParams.set('response_type', 'code');
   url.searchParams.set('client_id', client.clientId);
   url.searchParams.set('redirect_uri', client.redirectUri);
-  url.searchParams.set('scope', SCOPES.join(' '));
+  url.searchParams.set('scope', scopes.join(' '));
   url.searchParams.set('state', state);
   url.searchParams.set('code_challenge', await pkceChallenge(verifier));
   url.searchParams.set('code_challenge_method', 'S256');

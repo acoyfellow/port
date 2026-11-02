@@ -4,7 +4,7 @@ import { SCOPES } from '../shared/scopes';
 import { type AuthEnv, authRoute, currentUser, grantFor, safeNext, viewerOf } from './auth/routes';
 import type { GrantEnv } from './grant';
 import { installRoute, receiptRoute } from './routes/installs';
-import { accountPage, signInPage } from './ui/auth';
+import { accountPage } from './ui/auth';
 import { fleetPage, homePage } from './ui/directory';
 import { sortOf } from './ui/directory-table';
 import { entryPage } from './ui/entries';
@@ -36,7 +36,12 @@ const pageRoute = async (env: Env, request: Request, url: URL): Promise<Response
   if (entry !== undefined) return entryPage(viewer, entry);
   if (url.pathname === '/sign-in')
     return viewer === null
-      ? signInPage(safeNext(url.searchParams.get('next')))
+      ? Response.redirect(
+          `${url.origin}/oauth/start?next=${encodeURIComponent(safeNext(url.searchParams.get('next')))}${
+            url.searchParams.get('scopes') === 'basic' ? '&scopes=basic' : ''
+          }`,
+          302,
+        )
       : Response.redirect(`${url.origin}${safeNext(url.searchParams.get('next'))}`, 302);
   if (url.pathname === '/account') {
     if (user === null || viewer === null)

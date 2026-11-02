@@ -338,13 +338,16 @@ pre { background: var(--raised); padding: 12px; border-radius: 8px; overflow: au
 .bp-num { display: block; font: 500 11px var(--mono); color: var(--bp-amber); letter-spacing: .1em; }
 .bp-step strong { display: block; color: #fff; font-size: 16px; margin-top: 4px; }
 .bp-step p { color: #c4b8f5; margin-top: 4px; }
-.bp-actions { margin-bottom: 36px; }
+.blueprint { margin-bottom: 36px; }
+.bp-step { display: flex; flex-direction: column-reverse; }
+@media (max-width: 1040px) and (min-width: 561px) { .bp-steps { grid-template-columns: 1fr; gap: 12px; } .bp-step { display: grid; grid-template-columns: 1fr minmax(180px, 42%); gap: 18px; align-items: center; } .bp-step .bp-art { overflow: visible; padding-right: 8px; border-bottom: 0; padding-bottom: 0; margin-bottom: 0; } }
+@media (max-width: 560px) { .bp-steps { grid-template-columns: 1fr; gap: 10px; margin-top: 20px; } .bp-step { display: grid; grid-template-columns: 1fr 112px; gap: 12px; align-items: center; padding: 12px 14px; } .bp-step .bp-art { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; } .bp-step p { font-size: 14px; } }
 .build { border-color: var(--brand-line); margin-bottom: 16px; }
 .build p { margin-top: 6px; }
 .build dl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 14px 0; }
 .build dt { font-size: 12px; color: var(--dim); }
 .build dd { margin: 2px 0 0; font: 600 18px var(--mono); }
-@media (max-width: 860px) { .bp-steps { grid-template-columns: 1fr; } .blueprint { padding: 24px 18px; } .blueprint h1 { font-size: 30px; } .build dl { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 860px) { .blueprint { padding: 24px 18px; } .blueprint h1 { font-size: 30px; } .build dl { grid-template-columns: repeat(2, 1fr); } }
 
 .btn.cf { background: #fff; color: #18181b; border-color: var(--line-strong); padding: 8px 16px 8px 12px; }
 .btn.cf .cf-mark { display: block; width: 33px; height: 15px; }
@@ -401,7 +404,6 @@ pre { background: var(--raised); padding: 12px; border-radius: 8px; overflow: au
 }
 
 @media (min-width: 861px) {
-  #directory .table-wrap { margin-inline: calc(-1 * max(0px, min(180px, (100vw - 1040px) / 2 - 16px))); }
   .dir-table th, .dir-table td { padding: 8px 10px; }
   .dir-table td { font-size: 12.5px; }
   .row-name { min-width: 210px; max-width: 260px; }

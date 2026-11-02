@@ -2,7 +2,7 @@ import { raw } from './html';
 
 const frame = (body: string, label: string) =>
   raw(
-    `<svg class="bp-art" viewBox="0 0 240 150" role="img" aria-label="${label}" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="bp-grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0H0V10" fill="none" stroke="currentColor" stroke-opacity=".12" stroke-width=".5"/></pattern></defs><rect width="240" height="150" fill="url(#bp-grid)"/>${body}</svg>`,
+    `<svg class="bp-art" viewBox="-6 -4 272 158" role="img" aria-label="${label}" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="bp-grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0H0V10" fill="none" stroke="currentColor" stroke-opacity=".12" stroke-width=".5"/></pattern></defs><rect width="240" height="150" fill="url(#bp-grid)"/>${body}</svg>`,
   );
 
 const dim = (x1: number, x2: number, y: number, text: string) =>

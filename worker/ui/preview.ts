@@ -1,6 +1,6 @@
 import { FLEET_VERSION } from '../generated/fleet-bundle';
 import type { Install } from '../install';
-import { accountPage, accountPickerPage, linkPage, signInPage } from './auth';
+import { accountPage, accountPickerPage, signInPage } from './auth';
 import { fleetPage, homePage } from './directory';
 import { html } from './html';
 import { cliKeyPage, type InstallView, installPage, installsPage, type RunTask, runPage } from './installs';
@@ -91,7 +91,6 @@ const SCREENS = {
   'home-signed-in': () => homePage(VIEWER),
   fleet: () => fleetPage(null),
   'sign-in': () => signInPage('/installs'),
-  'sign-in-link': () => linkPage('https://dash.cloudflare.com/oauth2/auth?client_id=preview&state=preview'),
   'pick-account': () =>
     accountPickerPage(VIEWER, [
       { id: '0123456789abcdef0123456789abcdef', name: "Ada's Account" },

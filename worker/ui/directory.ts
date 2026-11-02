@@ -4,15 +4,12 @@ import { installArt, signInArt, teardownArt } from './blueprint';
 import { directoryTable, type Sort } from './directory-table';
 import { html } from './html';
 import type { Viewer } from './layout';
-import { cloudflareButton, linkButton, page } from './parts';
+import { linkButton, page } from './parts';
 
 const CREATED_LABEL: Record<(typeof FLEET.creates)[number], string> = {
   worker: 'One Worker, with a Durable Object and a Worker Loader',
   'ai-gateway': 'One AI Gateway for the model calls',
 };
-
-const primary = (viewer: Viewer) =>
-  viewer === null ? cloudflareButton('/sign-in') : linkButton('/installs', { label: 'Your installs' });
 
 const STEPS = [
   [
@@ -34,7 +31,7 @@ const STEPS = [
 
 const howItWorks = html`<section class="blueprint" aria-labelledby="how"><div class="bp-head"><span class="bp-tag">How it works</span><h1 id="how">Agent infra on your own Cloudflare account.</h1><p>Each install runs on your account and your bill.</p></div><ol class="bp-steps">${STEPS.map(
   ([title, text, art], index) =>
-    html`<li class="bp-step">${art}<div><span class="bp-num">${String(index + 1).padStart(2, '0')}</span><strong>${title}</strong><p>${text}</p></div></li>`,
+    html`<li class="bp-step"><div class="bp-text"><span class="bp-num">${String(index + 1).padStart(2, '0')}</span><strong>${title}</strong><p>${text}</p></div>${art}</li>`,
 )}</ol></section>`;
 
 export const homePage = (viewer: Viewer, sort: Sort = { key: '', dir: 'asc' }) =>
@@ -42,10 +39,7 @@ export const homePage = (viewer: Viewer, sort: Sort = { key: '', dir: 'asc' }) =
     title: 'Agent infra for your Cloudflare account',
     viewer,
     section: 'home',
-    body: html`${howItWorks}<div class="actions bp-actions">${primary(viewer)}${linkButton('/fleet', {
-      label: 'See the agent fleet',
-      kind: 'ghost',
-    })}</div><section id="directory"><div class="section-head"><div><h2>Directory</h2><p>Every shape runs stock Pi. Click a column to sort. Cost and time come from each shape’s last Pi run, which was deployed, tested and deleted.</p></div></div>${directoryTable(ENTRIES, sort)}</section></div>`,
+    body: html`${howItWorks}<section id="directory"><div class="section-head"><div><h2>Directory</h2><p>Every shape runs stock Pi. Click a column to sort. Cost and time come from each shape’s last Pi run, which was deployed, tested and deleted.</p></div></div>${directoryTable(ENTRIES, sort)}</section></div>`,
   });
 
 export const fleetPage = (viewer: Viewer) =>

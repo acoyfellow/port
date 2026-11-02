@@ -1,16 +1,7 @@
 import { SCOPES } from '../../shared/scopes';
 import { html } from './html';
 import type { Viewer } from './layout';
-import {
-  cloudflareButton,
-  copyField,
-  errorPage,
-  linkButton,
-  notice,
-  page,
-  pageHead,
-  postButton,
-} from './parts';
+import { cloudflareButton, errorPage, linkButton, notice, page, pageHead, postButton } from './parts';
 
 export const signInPage = (next: string) =>
   page({
@@ -20,29 +11,11 @@ export const signInPage = (next: string) =>
     body: html`<div style="max-width:560px;margin:24px auto 0">${pageHead(
       'Sign in with Cloudflare',
       'port asks Cloudflare for the permissions below. Next you pick the one account port may act on. You can sign out at any time, and port forgets your tokens when you do.',
-    )}<div class="stack"><div class="actions">${cloudflareButton(`/oauth/start?next=${encodeURIComponent(next)}`)}${linkButton('/oauth/link', { label: 'Use a sign-in link instead', kind: 'ghost' })}</div><details class="card"><summary>The ${
+    )}<div class="stack"><div class="actions">${cloudflareButton(`/oauth/start?next=${encodeURIComponent(next)}`)}</div><details class="card"><summary>The ${
       SCOPES.length
     } permissions port asks for</summary><table style="margin-top:10px"><tbody>${SCOPES.map(
       (note) => html`<tr><td class="mono">${note.scope}</td><td class="muted">${note.why}</td></tr>`,
     )}</tbody></table></details></div></div>`,
-  });
-
-export const linkPage = (target: string) =>
-  page({
-    title: 'Sign-in link',
-    viewer: null,
-    section: 'none',
-    crumbs: [{ label: 'Sign in', href: '/sign-in' }, { label: 'Sign-in link' }],
-    body: html`<div style="max-width:560px">${pageHead(
-      'Sign in with a link',
-      'Some networks open new sites in a remote browser, and that breaks the Cloudflare sign-in. Copy this link and open it in a new tab. It works for 10 minutes.',
-    )}<div class="stack">${copyField('sign-in-link', target, 'Sign-in link')}<div class="actions">${linkButton(
-      target,
-      {
-        label: 'Open it here',
-        kind: 'ghost',
-      },
-    )}</div></div></div>`,
   });
 
 export type AccountChoice = { readonly id: string; readonly name: string };
@@ -109,8 +82,5 @@ export const signInError = (status: number, title: string, detail: string) =>
     title,
     detail,
     viewer: null,
-    actions: [
-      linkButton('/sign-in', { label: 'Try again' }),
-      linkButton('/oauth/link', { label: 'Use a sign-in link', kind: 'ghost' }),
-    ],
+    actions: [linkButton('/sign-in', { label: 'Try again' })],
   });

@@ -1,8 +1,9 @@
 import type { Grant } from '../grant';
-import { accountPickerPage, linkPage as linkView, signInError } from '../ui/auth';
+import { accountPickerPage, signInError } from '../ui/auth';
 import {
   accountsOf,
   authorizeUrl,
+  BASIC_SCOPES,
   type CloudflareAccount,
   exchangeCode,
   type OAuthClient,
@@ -104,12 +105,15 @@ const newFlowUrl = async (env: AuthEnv, url: URL) => {
     JSON.stringify({ verifier, next, expires: Date.now() + FLOW_STATE_TTL_MS, nonce: randomToken(8) }),
   );
 
-  return authorizeUrl(clientFor(env, url), state, verifier);
+  return authorizeUrl(
+    clientFor(env, url),
+    state,
+    verifier,
+    url.searchParams.get('scopes') === 'basic' ? BASIC_SCOPES : undefined,
+  );
 };
 
 const start = async (env: AuthEnv, url: URL) => redirect(await newFlowUrl(env, url));
-
-const linkPage = async (env: AuthEnv, url: URL) => linkView(await newFlowUrl(env, url));
 
 type Flow = { readonly verifier: string; readonly next: string };
 
@@ -144,11 +148,7 @@ const callback = async (env: AuthEnv, request: Request, url: URL) => {
   const denied = url.searchParams.get('error');
 
   if (denied !== null)
-    return signInError(
-      400,
-      'Sign in stopped',
-      `${url.searchParams.get('error_description') ?? denied}. If this mentions a CSRF value, your network opened the sign-in in two browsers: use a sign-in link and open it in a new tab.`,
-    );
+    return signInError(400, 'Sign in stopped', url.searchParams.get('error_description') ?? denied);
 
   const code = url.searchParams.get('code');
 
@@ -274,7 +274,6 @@ export const authRoute = (env: AuthEnv, request: Request, url: URL): Promise<Res
   const route = `${request.method} ${url.pathname}`;
 
   if (route === 'GET /oauth/start') return start(env, url);
-  if (route === 'GET /oauth/link') return linkPage(env, url);
   if (route === 'GET /oauth/callback') return callback(env, request, url);
   if (route === 'GET /oauth/account') return showAccounts(env, request, url);
   if (route === 'POST /oauth/account') return pickAccount(env, request, url);
