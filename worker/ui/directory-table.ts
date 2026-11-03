@@ -123,11 +123,11 @@ export const sortRows = (entries: readonly Entry[], sort: Sort): readonly Entry[
 };
 
 const headerCell = (column: Column, sort: Sort) => {
-  if (column.value === undefined) return html`<th scope="col">${column.label}</th>`;
+  if (column.value === undefined) return html`<th scope="col" class="col-${column.key}">${column.label}</th>`;
   const active = sort.key === column.key;
   const next: SortDir = active && sort.dir === 'asc' ? 'desc' : 'asc';
   const arrow = active ? (sort.dir === 'asc' ? '↑' : '↓') : '↕';
-  return html`<th scope="col" aria-sort="${active ? (sort.dir === 'asc' ? 'ascending' : 'descending') : 'none'}"${column.numeric ? html` class="num"` : ''}><a href="/?sort=${column.key}&amp;dir=${next}#directory"${active ? html` class="active"` : ''}>${column.label}<span class="arrow" aria-hidden="true">${arrow}</span></a></th>`;
+  return html`<th scope="col" aria-sort="${active ? (sort.dir === 'asc' ? 'ascending' : 'descending') : 'none'}" class="col-${column.key}${column.numeric ? ' num' : ''}"><a href="/?sort=${column.key}&amp;dir=${next}#directory"${active ? html` class="active"` : ''}>${column.label}<span class="arrow" aria-hidden="true">${arrow}</span></a></th>`;
 };
 
 const mobileSort = (sort: Sort) =>
