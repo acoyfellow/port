@@ -30,17 +30,8 @@ const pill = (tone: string, text: string) => html`<span class="pill pill-${tone}
 const shapeCell = (entry: Entry) =>
   html`<a class="row-name" href="/d/${entry.slug}"><span><strong>${entry.name}</strong><small>${entry.oneLine}</small></span></a>`;
 
-const listsCell = (entry: Entry) =>
-  html`<details class="row-lists"><summary><span class="ok-text">+${entry.strengths.length}</span> <span class="warn-text">−${entry.limits.length}</span></summary><p class="lists-head">Strengths</p><ul>${entry.strengths.map((item) => html`<li>${item}</li>`)}</ul><p class="lists-head">Limits</p><ul>${entry.limits.map((item) => html`<li>${item}</li>`)}</ul></details>`;
-
 const COLUMNS: readonly Column[] = [
   { key: 'name', label: 'Shape', cell: shapeCell, value: (entry) => entry.name },
-  {
-    key: 'runs',
-    label: 'Tools run in',
-    cell: (entry) => entry.traits?.runsIn ?? DASH,
-    value: (entry) => entry.traits?.runsIn,
-  },
   {
     key: 'isolation',
     label: 'Isolation',
@@ -57,36 +48,11 @@ const COLUMNS: readonly Column[] = [
     value: (entry) => (entry.traits === undefined ? undefined : INTERNET_RANK[entry.traits.internet]),
   },
   {
-    key: 'state',
-    label: 'State',
-    cell: (entry) => entry.traits?.state ?? DASH,
-    value: (entry) => entry.traits?.state,
-  },
-  {
-    key: 'startup',
-    label: 'Startup',
-    cell: (entry) =>
-      entry.traits === undefined
-        ? DASH
-        : pill(
-            entry.traits.startup === 'instant' ? 'ok' : 'plain',
-            entry.traits.startup === 'instant' ? 'Instant' : 'Container boot',
-          ),
-    value: (entry) => (entry.traits === undefined ? undefined : entry.traits.startup === 'instant' ? 0 : 1),
-  },
-  {
     key: 'cost',
     label: 'Pi cost',
     numeric: true,
     cell: (entry) => (entry.build === undefined ? DASH : `$${entry.build.usd.toFixed(4)}`),
     value: (entry) => entry.build?.usd,
-  },
-  {
-    key: 'time',
-    label: 'Pi time',
-    numeric: true,
-    cell: (entry) => (entry.build === undefined ? DASH : `${entry.build.seconds} s`),
-    value: (entry) => entry.build?.seconds,
   },
   {
     key: 'added',
@@ -97,7 +63,28 @@ const COLUMNS: readonly Column[] = [
         : html`<time datetime="${entry.added}">${shortDate(entry.added)}</time>`,
     value: (entry) => entry.added,
   },
-  { key: 'lists', label: 'Pros / cons', cell: listsCell },
+];
+
+type Group = {
+  readonly id: string;
+  readonly title: string;
+  readonly note: string;
+  readonly has: (entry: Entry) => boolean;
+};
+
+const GROUPS: readonly Group[] = [
+  {
+    id: 'no-container',
+    title: 'No container',
+    note: 'Tools run in Durable Objects and isolates. They start instantly.',
+    has: (entry) => entry.traits?.startup === 'instant',
+  },
+  {
+    id: 'container',
+    title: 'With a container',
+    note: 'Tools run in a Linux container with a disk. The first call waits for it to boot.',
+    has: (entry) => entry.traits?.startup !== 'instant',
+  },
 ];
 
 const SORTABLE = new Set(COLUMNS.filter((column) => column.value !== undefined).map((column) => column.key));
@@ -138,8 +125,8 @@ const mobileSort = (sort: Sort) =>
       html`<option value="${column.key}"${column.key === sort.key ? html` selected` : ''}>${column.label}</option>`,
   )}</select></label><select name="dir" onchange="this.form.submit()" aria-label="Order"><option value="asc"${sort.dir === 'asc' ? html` selected` : ''}>Low to high</option><option value="desc"${sort.dir === 'desc' ? html` selected` : ''}>High to low</option></select><noscript><button type="submit">Sort</button></noscript></form>`;
 
-export const directoryTable = (entries: readonly Entry[], sort: Sort) =>
-  html`${mobileSort(sort)}<div class="table-wrap"><table class="dir-table"><thead><tr>${COLUMNS.map((column) => headerCell(column, sort))}</tr></thead><tbody>${sortRows(
+const groupTable = (group: Group, entries: readonly Entry[], sort: Sort) =>
+  html`<section class="dir-group" aria-labelledby="group-${group.id}"><header class="dir-group-head"><h3 id="group-${group.id}">${group.title} <span class="count">${entries.length}</span></h3><p>${group.note}</p></header><div class="table-wrap"><table class="dir-table"><thead><tr>${COLUMNS.map((column) => headerCell(column, sort))}</tr></thead><tbody>${sortRows(
     entries,
     sort,
   ).map(
@@ -148,4 +135,9 @@ export const directoryTable = (entries: readonly Entry[], sort: Sort) =>
         (column) =>
           html`<td data-label="${column.label}" class="col-${column.key}${column.numeric ? ' num' : ''}">${column.cell(entry)}</td>`,
       )}</tr>`,
-  )}</tbody></table></div>`;
+  )}</tbody></table></div></section>`;
+
+export const directoryTable = (entries: readonly Entry[], sort: Sort) =>
+  html`${mobileSort(sort)}${GROUPS.map((group) => ({ group, members: entries.filter(group.has) }))
+    .filter(({ members }) => members.length > 0)
+    .map(({ group, members }) => groupTable(group, members, sort))}`;
