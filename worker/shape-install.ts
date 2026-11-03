@@ -1,6 +1,8 @@
 import {
   containerApplicationBody,
   containerBindings,
+  type PartNames,
+  partMetadata,
   type ShapeInstall,
   shapeWorkerMetadata,
 } from '../shared/shape-installs';
@@ -10,7 +12,7 @@ import { copyImage, deleteImage, type RegistryAuth } from './registry';
 const API = 'https://api.cloudflare.com/client/v4';
 
 export type ShapeResource = {
-  readonly kind: 'worker' | 'ai-gateway' | 'container' | 'registry-image';
+  readonly kind: 'worker' | 'ai-gateway' | 'container' | 'registry-image' | 'artifacts-namespace';
   readonly name: string;
   readonly id?: string;
   readonly existsAfterInstall?: boolean;
@@ -88,20 +90,15 @@ const registryAuth = async (token: string, accountId: string): Promise<RegistryA
   return { basic: btoa(`v1:${password}`) };
 };
 
-const uploadWorker = async (
+const uploadScript = async (
   token: string,
   accountId: string,
   name: string,
-  install: ShapeInstall,
-  gateway: string,
-  key: string,
+  metadata: unknown,
   code: string,
 ) => {
   const form = new FormData();
-  form.set(
-    'metadata',
-    new Blob([JSON.stringify(shapeWorkerMetadata(install, gateway, key))], { type: 'application/json' }),
-  );
+  form.set('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
   form.set('index.js', new Blob([code], { type: 'application/javascript+module' }), 'index.js');
   return cloudflare(token, `/accounts/${accountId}/workers/scripts/${name}`, { method: 'PUT', body: form });
 };
@@ -164,6 +161,7 @@ export const installShape = async (
     log.push(`created AI Gateway ${name}`);
 
     const boxes = containerBindings(install);
+
     const images = new Map<string, string>();
     if (boxes.length > 0) {
       const target = await registryAuth(token, accountId);
@@ -183,9 +181,43 @@ export const installShape = async (
       }
     }
 
+    const names: PartNames = { self: name, partName: (part) => `${name}-${part}` };
+    for (const part of install.parts ?? []) {
+      if (part.bindings.some((binding) => binding.kind === 'artifacts')) {
+        for (const repo of part.repos ?? [])
+          must(
+            `create repo ${repo}`,
+            await cloudflare(token, `/accounts/${accountId}/artifacts/namespaces/${name}/repos`, {
+              method: 'POST',
+              body: JSON.stringify({ name: repo, default_branch: 'main' }),
+            }),
+          );
+        created.push({ kind: 'artifacts-namespace', name });
+        log.push(`created Artifacts namespace ${name} with repos ${(part.repos ?? []).join(', ')}`);
+      }
+      must(
+        `upload Worker ${part.part}`,
+        await uploadScript(
+          token,
+          accountId,
+          names.partName(part.part),
+          partMetadata(part, names),
+          await source.bundle(`${install.slug}--${part.part}`),
+        ),
+      );
+      created.push({ kind: 'worker', name: names.partName(part.part) });
+      log.push(`uploaded Worker ${names.partName(part.part)}`);
+    }
+
     must(
       'upload Worker',
-      await uploadWorker(token, accountId, name, install, name, key, await source.bundle(install.slug)),
+      await uploadScript(
+        token,
+        accountId,
+        name,
+        shapeWorkerMetadata(install, name, key, names),
+        await source.bundle(install.slug),
+      ),
     );
     created.push({ kind: 'worker', name });
     log.push(`uploaded Worker ${name}`);
@@ -248,6 +280,8 @@ export const shapeResourceExists = async (token: string, accountId: string, reso
     const listed = await cloudflare(token, `/accounts/${accountId}/containers/applications`);
     return Array.isArray(listed.result) && listed.result.some((app) => field(app, 'name') === resource.name);
   }
+  if (resource.kind === 'artifacts-namespace')
+    return (await cloudflare(token, `/accounts/${accountId}/artifacts/namespaces/${resource.name}`)).ok;
   const auth = await registryAuth(token, accountId);
   const tags = await fetch(`https://registry.cloudflare.com/v2/${resource.name}/tags/list`, {
     headers: { authorization: `Basic ${auth.basic}` },
@@ -280,6 +314,25 @@ const removeResource = async (token: string, accountId: string, resource: ShapeR
       ? cloudflare(token, `/accounts/${accountId}/containers/applications/${appId}`, { method: 'DELETE' })
       : { ok: true, status: 404, result: null, message: 'already gone' };
   }
+  if (resource.kind === 'artifacts-namespace') {
+    const path = `/accounts/${accountId}/artifacts/namespaces/${resource.name}`;
+    const repos = await cloudflare(token, `${path}/repos`);
+    for (const repo of Array.isArray(repos.result) ? repos.result : []) {
+      const repoName = field(repo, 'name');
+      if (typeof repoName === 'string')
+        await cloudflare(token, `${path}/repos/${repoName}`, { method: 'DELETE' });
+    }
+    const removed = await fetch(`${API}${path}`, {
+      method: 'DELETE',
+      headers: { authorization: `Bearer ${token}` },
+    });
+    return {
+      ok: removed.ok || removed.status === 404,
+      status: removed.status,
+      result: null,
+      message: `HTTP ${removed.status}`,
+    };
+  }
   await deleteImage(await registryAuth(token, accountId), resource.name);
   return { ok: true, status: 200, result: null, message: 'deleted' };
 };
@@ -289,7 +342,13 @@ export const teardownShape = async (
   record: ShapeInstallRecord,
 ): Promise<ShapeInstallRecord> => {
   const log = [...record.log];
-  const order: ShapeResource['kind'][] = ['container', 'worker', 'registry-image', 'ai-gateway'];
+  const order: ShapeResource['kind'][] = [
+    'container',
+    'worker',
+    'artifacts-namespace',
+    'registry-image',
+    'ai-gateway',
+  ];
   const sorted = [...record.resources].sort((a, b) => order.indexOf(a.kind) - order.indexOf(b.kind));
   for (const resource of sorted) {
     const result = await removeResource(token, record.accountId, resource).catch((error: unknown) => ({

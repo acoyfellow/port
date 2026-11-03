@@ -2,6 +2,7 @@ import { SHAPE as agent_room } from '../../shapes/agent-room/shape';
 import { SHAPE as chat_with_sandbox } from '../../shapes/chat-with-sandbox/shape';
 import { SHAPE as container_per_thread } from '../../shapes/container-per-thread/shape';
 import { SHAPE as durable_session } from '../../shapes/durable-session/shape';
+import { SHAPE as git_gatekeeper } from '../../shapes/git-gatekeeper/shape';
 import { SHAPE as isolate_agents } from '../../shapes/isolate-agents/shape';
 import { SHAPE as person_with_computer } from '../../shapes/person-with-computer/shape';
 import { SHAPE as sealed_box } from '../../shapes/sealed-box/shape';
@@ -48,6 +49,16 @@ const BUILDS: Readonly<Record<string, ShapeBuild>> = {
     seconds: 22,
     resumed: true,
     on: '2026-10-31',
+  },
+  'git-gatekeeper': {
+    task: 'wrote fizzbuzz.py, published it through the gatekeeper and was refused on main',
+    infrastructure:
+      'The gatekeeper Worker alone holds the Artifacts binding. It pushed a session branch and opened merge request record 1; main has only gatekeeper commits; the sandbox had 0 credentials in its environment or on disk. Branches: main,session/b2fa1657a50e8dc3.',
+    usd: 0.00354462,
+    tokens: 7704,
+    seconds: 72,
+    resumed: true,
+    on: '2026-11-03',
   },
   'isolate-agents': {
     task: 'finished the money-words task; hidden tests passed 2 of 2',
@@ -121,5 +132,6 @@ export const ENTRIES: readonly Entry[] = [
   { ...shared_container, build: BUILDS['shared-container'] },
   { ...sealed_box, build: BUILDS['sealed-box'] },
   { ...self_editing_app, build: BUILDS['self-editing-app'] },
+  { ...git_gatekeeper, build: BUILDS['git-gatekeeper'] },
   { ...self_observe, build: BUILDS['self-observe'] },
 ];

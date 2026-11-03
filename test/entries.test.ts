@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { ENTRIES } from '../shared/entries/index';
 import { entryDiagram } from '../shared/entry-diagram';
+import { shapeInstallOf } from '../shared/shape-installs';
 
 const SECRET_SHAPES = [/[0-9a-f]{32}/, /[a-z0-9.-]+@[a-z0-9-]+\.[a-z]+/i, /cfdata/i, /\.staging\./];
 
@@ -27,9 +28,9 @@ describe('directory entries', () => {
   });
 
   it.each(ENTRIES.map((entry) => [entry.slug, entry] as const))(
-    '%s: only installable entries claim ready',
+    '%s: every listed entry has an install recipe',
     (_, entry) => {
-      expect(entry.install.status === 'ready').toBe(entry.stage === 'installable');
+      expect(shapeInstallOf(entry.slug)).toBeDefined();
     },
   );
 

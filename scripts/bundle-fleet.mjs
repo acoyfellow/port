@@ -83,11 +83,14 @@ const SHAPES = [
   'sealed-box',
   'person-with-computer',
   'shared-container',
+  'git-gatekeeper',
+  'git-gatekeeper/gate',
 ];
 const shapeCode = {};
 for (const slug of SHAPES) {
+  const [shapeSlug, part] = slug.split('/');
   const built = await build({
-    entryPoints: [join(root, 'shapes', slug, 'src', 'index.ts')],
+    entryPoints: [join(root, 'shapes', shapeSlug, part ?? 'src', 'index.ts')],
     bundle: true,
     format: 'esm',
     platform: 'neutral',
@@ -103,7 +106,8 @@ for (const slug of SHAPES) {
 }
 const bundles = join(root, 'static', 'shape-bundles');
 mkdirSync(bundles, { recursive: true });
-for (const [slug, source] of Object.entries(shapeCode)) writeFileSync(join(bundles, `${slug}.js`), source);
+for (const [slug, source] of Object.entries(shapeCode))
+  writeFileSync(join(bundles, `${slug.replace('/', '--')}.js`), source);
 const shapeVersions = Object.fromEntries(
   Object.entries(shapeCode).map(([slug, source]) => [
     slug,

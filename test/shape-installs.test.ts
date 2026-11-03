@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import {
   containerApplicationBody,
   durableClasses,
+  partMetadata,
   SHAPE_INSTALLS,
   shapeInstallOf,
   shapeWorkerMetadata,
@@ -20,17 +21,21 @@ const deployable = readdirSync(shapesDir).filter((slug) => {
 });
 
 const declared = (slug: string) => {
-  const source = readFileSync(join(shapesDir, slug, 'alchemy.run.ts'), 'utf8');
+  const source = readFileSync(join(shapesDir, slug, 'alchemy.run.ts'), 'utf8').replace(
+    /container<[A-Za-z]+>\(SLUG, /g,
+    `container('${slug}', `,
+  );
   const bindings = [
     ...source.matchAll(
       /([A-Z_]+): (durableObject|container|workerLoader|workersAi)<?[A-Za-z]*>?\(([^)]*)\)/g,
     ),
+    ...source.matchAll(/([A-Z_]+): Cloudflare\.(WorkerEntrypoint)\(([^)]*)\)/g),
   ];
   return bindings.map(([, binding, kind, args]) => ({
     binding,
     kind,
     className:
-      kind === 'container'
+      kind === 'container' || kind === 'WorkerEntrypoint'
         ? /'([A-Za-z]+)'(?:,|\s*$)/.exec(args.split(',')[1] ?? '')?.[1]
         : /'([A-Za-z]+)'/.exec(args)?.[1],
   }));
@@ -52,11 +57,15 @@ describe('shape install recipes', () => {
           container: 'container',
           'worker-loader': 'workerLoader',
           ai: 'workersAi',
+          service: 'WorkerEntrypoint',
+          artifacts: 'artifacts',
         }[binding.kind],
         className:
           binding.kind === 'durable-object' || binding.kind === 'container'
             ? binding.className
-            : binding.binding,
+            : binding.kind === 'service'
+              ? binding.entrypoint
+              : binding.binding,
       }));
       expect(ours.sort((a, b) => a.binding.localeCompare(b.binding))).toEqual(
         declared(slug).sort((a, b) => a.binding.localeCompare(b.binding)),
@@ -81,5 +90,30 @@ describe('shape install recipes', () => {
       durable_objects: { namespace_id: 'ns' },
       instances: 0,
     });
+  });
+});
+
+describe('git-gatekeeper install', () => {
+  const install = shapeInstallOf('git-gatekeeper');
+  if (install === undefined) throw new Error('missing');
+  const names = {
+    self: 'port-git-gatekeeper-ab12',
+    partName: (part: string) => `port-git-gatekeeper-ab12-${part}`,
+  };
+
+  it('gives the Artifacts binding only to the gatekeeper Worker', () => {
+    const main = shapeWorkerMetadata(install, 'gw', 'k', names);
+    expect(main.bindings.some((binding) => binding.type === 'artifacts')).toBe(false);
+    expect(main.bindings).toContainEqual({
+      type: 'service',
+      name: 'GATE',
+      service: 'port-git-gatekeeper-ab12-gate',
+      entrypoint: 'Gatekeeper',
+    });
+    const gate = install.parts?.find((part) => part.part === 'gate');
+    if (gate === undefined) throw new Error('no gate part');
+    expect(partMetadata(gate, names).bindings).toEqual([
+      { type: 'artifacts', name: 'REPOS', namespace: 'port-git-gatekeeper-ab12' },
+    ]);
   });
 });

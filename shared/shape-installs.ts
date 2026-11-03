@@ -10,12 +10,26 @@ export type ShapeBinding =
       readonly instanceType: InstanceType;
     }
   | { readonly kind: 'worker-loader'; readonly binding: string }
-  | { readonly kind: 'ai'; readonly binding: string };
+  | { readonly kind: 'ai'; readonly binding: string }
+  | { readonly kind: 'artifacts'; readonly binding: string }
+  | {
+      readonly kind: 'service';
+      readonly binding: string;
+      readonly part: string;
+      readonly entrypoint: string;
+    };
+
+export type ShapePart = {
+  readonly part: string;
+  readonly bindings: readonly ShapeBinding[];
+  readonly repos?: readonly string[];
+};
 
 export type ShapeInstall = {
   readonly slug: string;
   readonly bindings: readonly ShapeBinding[];
   readonly gatewayBinding: string;
+  readonly parts?: readonly ShapePart[];
 };
 
 const DO = (binding: string, className: string): ShapeBinding => ({
@@ -53,6 +67,13 @@ export const SHAPE_INSTALLS: readonly ShapeInstall[] = [
   shape('sealed-box', [BOX('BOX', 'Box', PI_BOX_IMAGE)]),
   shape('person-with-computer', [DO('DIRECTORY', 'Directory'), BOX('PERSON', 'Person', PI_BOX_IMAGE)]),
   shape('shared-container', [DO('SEAT', 'Seat'), BOX('BOX', 'Box', SHARED_BOX_IMAGE)]),
+  {
+    ...shape('git-gatekeeper', [
+      BOX('SESSION', 'Session', PI_BOX_IMAGE),
+      { kind: 'service', binding: 'GATE', part: 'gate', entrypoint: 'Gatekeeper' },
+    ]),
+    parts: [{ part: 'gate', bindings: [{ kind: 'artifacts', binding: 'REPOS' }], repos: ['demo'] }],
+  },
 ];
 
 export const shapeInstallOf = (slug: string) => SHAPE_INSTALLS.find((each) => each.slug === slug);
@@ -67,14 +88,40 @@ export type MetadataBinding =
   | { readonly type: 'worker_loader'; readonly name: string }
   | { readonly type: 'ai'; readonly name: string }
   | { readonly type: 'plain_text'; readonly name: string; readonly text: string }
-  | { readonly type: 'secret_text'; readonly name: string; readonly text: string };
+  | { readonly type: 'secret_text'; readonly name: string; readonly text: string }
+  | { readonly type: 'artifacts'; readonly name: string; readonly namespace: string }
+  | {
+      readonly type: 'service';
+      readonly name: string;
+      readonly service: string;
+      readonly entrypoint: string;
+    };
 
-const metadataBinding = (binding: ShapeBinding): MetadataBinding =>
-  binding.kind === 'durable-object' || binding.kind === 'container'
-    ? { type: 'durable_object_namespace', name: binding.binding, class_name: binding.className }
-    : binding.kind === 'worker-loader'
-      ? { type: 'worker_loader', name: binding.binding }
-      : { type: 'ai', name: binding.binding };
+export type PartNames = { readonly self: string; readonly partName: (part: string) => string };
+
+const metadataBinding = (binding: ShapeBinding, names: PartNames): MetadataBinding => {
+  if (binding.kind === 'durable-object' || binding.kind === 'container')
+    return { type: 'durable_object_namespace', name: binding.binding, class_name: binding.className };
+  if (binding.kind === 'worker-loader') return { type: 'worker_loader', name: binding.binding };
+  if (binding.kind === 'artifacts')
+    return { type: 'artifacts', name: binding.binding, namespace: names.self };
+  if (binding.kind === 'service')
+    return {
+      type: 'service',
+      name: binding.binding,
+      service: names.partName(binding.part),
+      entrypoint: binding.entrypoint,
+    };
+  return { type: 'ai', name: binding.binding };
+};
+
+export const partMetadata = (part: ShapePart, names: PartNames) => ({
+  main_module: 'index.js',
+  compatibility_date: SHAPE_COMPATIBILITY_DATE,
+  compatibility_flags: ['nodejs_compat'],
+  bindings: part.bindings.map((binding) => metadataBinding(binding, names)),
+  observability: { enabled: true },
+});
 
 export const durableClasses = (install: ShapeInstall) =>
   install.bindings.flatMap((binding) =>
@@ -84,12 +131,19 @@ export const durableClasses = (install: ShapeInstall) =>
 export const containerBindings = (install: ShapeInstall) =>
   install.bindings.flatMap((binding) => (binding.kind === 'container' ? [binding] : []));
 
-export const shapeWorkerMetadata = (install: ShapeInstall, gateway: string, key: string) => ({
+const NO_PARTS: PartNames = { self: '', partName: (part) => part };
+
+export const shapeWorkerMetadata = (
+  install: ShapeInstall,
+  gateway: string,
+  key: string,
+  names: PartNames = NO_PARTS,
+) => ({
   main_module: 'index.js',
   compatibility_date: SHAPE_COMPATIBILITY_DATE,
   compatibility_flags: ['nodejs_compat'],
   bindings: [
-    ...install.bindings.map(metadataBinding),
+    ...install.bindings.map((binding) => metadataBinding(binding, names)),
     { type: 'plain_text', name: install.gatewayBinding, text: gateway },
     { type: 'secret_text', name: 'PORT_KEY', text: key },
   ] satisfies readonly MetadataBinding[],

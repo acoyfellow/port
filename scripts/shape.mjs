@@ -86,6 +86,14 @@ const KINDS = {
   container: async () => listed('/containers/applications', asIs),
   workflow: async () => listed('/workflows?per_page=100', asIs),
   'custom-domain': async () => listed('/workers/domains', asIs, 'hostname'),
+  'artifacts-repo': async () => {
+    const namespaces = await listed('/artifacts/namespaces', asIs, 'namespace');
+    const repos = [];
+    for (const namespace of namespaces.filter((name) => String(name).startsWith(PREFIX)))
+      for (const repo of await listed(`/artifacts/namespaces/${namespace}/repos`, asIs))
+        repos.push(`${namespace}/${repo}`);
+    return repos;
+  },
   'registry-image': async () => {
     const basic = await registryBasic(['pull']);
     const repositories = new Set();
@@ -158,6 +166,33 @@ export const purgeImages = async (slug) => {
   return images;
 };
 
+const SEED_REPOS = { 'git-gatekeeper': ['demo'] };
+
+export const seedRepos = async (slug) => {
+  const namespace = `${PREFIX}${slug}`;
+  const made = [];
+  for (const name of SEED_REPOS[slug] ?? []) {
+    const exists = await api(`/artifacts/namespaces/${namespace}/repos/${name}`);
+    if (exists.status === 200) continue;
+    const created = await api(`/artifacts/namespaces/${namespace}/repos`, {
+      method: 'POST',
+      body: JSON.stringify({ name, default_branch: 'main' }),
+    });
+    if (created.status !== 201) throw new Error(`create repo ${name}: HTTP ${created.status}`);
+    made.push(`${namespace}/${name}`);
+  }
+  return made;
+};
+
+export const purgeRepos = async (slug) => {
+  const namespace = `${PREFIX}${slug}`;
+  const listing = await api(`/artifacts/namespaces/${namespace}/repos`);
+  const repos = Array.isArray(listing.body.result) ? listing.body.result.map((repo) => repo.name) : [];
+  for (const repo of repos)
+    await api(`/artifacts/namespaces/${namespace}/repos/${repo}`, { method: 'DELETE' });
+  return repos.map((repo) => `${namespace}/${repo}`);
+};
+
 const subdomain = async () => (await api('/workers/subdomain')).body.result?.subdomain ?? '';
 
 const shapeKey = (slug) => {
@@ -223,12 +258,13 @@ const main = async () => {
     );
   }
   if (!['up', 'smoke', 'down'].includes(step)) throw new Error(`unknown step ${step}`);
+  if (step === 'smoke') await seedRepos(slug);
   const ran = runStep(slug, step, await subdomain());
-  const purged = step === 'down' && ran.ok ? await purgeImages(slug) : [];
+  const purged = step === 'down' && ran.ok ? [...(await purgeImages(slug)), ...(await purgeRepos(slug))] : [];
   const result =
     purged.length === 0
       ? ran
-      : { ...ran, tail: [...ran.tail, `removed registry images: ${purged.join(', ')}`] };
+      : { ...ran, tail: [...ran.tail, `removed registry images and repos: ${purged.join(', ')}`] };
   const saved = writeReceipt(slug, {
     [step]: { ...result, tail: scrub(result.tail), at: new Date().toISOString() },
   });
