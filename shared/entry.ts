@@ -38,6 +38,7 @@ export type Entry = {
   readonly evalPlan: string;
   readonly source: string;
   readonly build?: ShapeBuild;
+  readonly added?: string;
   readonly tools?: string;
   readonly traits?: Traits;
 };

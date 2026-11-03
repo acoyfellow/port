@@ -123,15 +123,15 @@ const BUILDS: Readonly<Record<string, ShapeBuild>> = {
 };
 
 export const ENTRIES: readonly Entry[] = [
-  { ...isolate_agents, build: BUILDS['isolate-agents'] },
-  { ...durable_session, build: BUILDS['durable-session'] },
-  { ...chat_with_sandbox, build: BUILDS['chat-with-sandbox'] },
-  { ...agent_room, build: BUILDS['agent-room'] },
-  { ...container_per_thread, build: BUILDS['container-per-thread'] },
-  { ...person_with_computer, build: BUILDS['person-with-computer'] },
-  { ...shared_container, build: BUILDS['shared-container'] },
-  { ...sealed_box, build: BUILDS['sealed-box'] },
-  { ...self_editing_app, build: BUILDS['self-editing-app'] },
-  { ...git_gatekeeper, build: BUILDS['git-gatekeeper'] },
-  { ...self_observe, build: BUILDS['self-observe'] },
+  { ...isolate_agents, added: '2026-10-30', build: BUILDS['isolate-agents'] },
+  { ...durable_session, added: '2026-10-30', build: BUILDS['durable-session'] },
+  { ...chat_with_sandbox, added: '2026-10-30', build: BUILDS['chat-with-sandbox'] },
+  { ...agent_room, added: '2026-10-30', build: BUILDS['agent-room'] },
+  { ...container_per_thread, added: '2026-10-30', build: BUILDS['container-per-thread'] },
+  { ...person_with_computer, added: '2026-10-30', build: BUILDS['person-with-computer'] },
+  { ...shared_container, added: '2026-10-30', build: BUILDS['shared-container'] },
+  { ...sealed_box, added: '2026-10-30', build: BUILDS['sealed-box'] },
+  { ...self_editing_app, added: '2026-10-30', build: BUILDS['self-editing-app'] },
+  { ...git_gatekeeper, added: '2026-11-03', build: BUILDS['git-gatekeeper'] },
+  { ...self_observe, added: '2026-10-30', build: BUILDS['self-observe'] },
 ];

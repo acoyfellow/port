@@ -373,6 +373,7 @@ pre { background: var(--raised); padding: 12px; border-radius: 8px; overflow: au
 .dir-table th .arrow { opacity: 0.4; font-size: 11px; }
 .dir-table th a.active .arrow { opacity: 1; color: var(--brand, #6d4aff); }
 .dir-table .num { text-align: right; font-family: var(--mono); white-space: nowrap; }
+.dir-table .col-added { white-space: nowrap; color: var(--dim); }
 .dir-table th.num a { justify-content: flex-end; }
 .row-name { display: flex; gap: 10px; align-items: flex-start; color: inherit; text-decoration: none; min-width: 220px; }
 .row-name .entry-icon { flex: none; width: 28px; height: 28px; font-size: 11px; }

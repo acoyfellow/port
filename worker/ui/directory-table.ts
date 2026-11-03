@@ -18,6 +18,13 @@ const DASH = '—';
 const INTERNET_LABEL = { off: 'Off', on: 'On', none: 'No shell' } as const;
 const INTERNET_RANK = { off: 0, none: 1, on: 2 } as const;
 
+const shortDate = (iso: string) =>
+  new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
+
 const pill = (tone: string, text: string) => html`<span class="pill pill-${tone}">${text}</span>`;
 
 const shapeCell = (entry: Entry) =>
@@ -80,6 +87,15 @@ const COLUMNS: readonly Column[] = [
     numeric: true,
     cell: (entry) => (entry.build === undefined ? DASH : `${entry.build.seconds} s`),
     value: (entry) => entry.build?.seconds,
+  },
+  {
+    key: 'added',
+    label: 'Added',
+    cell: (entry) =>
+      entry.added === undefined
+        ? DASH
+        : html`<time datetime="${entry.added}">${shortDate(entry.added)}</time>`,
+    value: (entry) => entry.added,
   },
   { key: 'lists', label: 'Pros / cons', cell: listsCell },
 ];

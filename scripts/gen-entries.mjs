@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -38,6 +39,21 @@ const buildOf = (slug) => {
   };
 };
 
+const addedOn = (slug) => {
+  const dates = execFileSync(
+    'git',
+    ['log', '--diff-filter=A', '--format=%as', '--', `shapes/${slug}/shape.ts`],
+    {
+      cwd: root,
+      encoding: 'utf8',
+    },
+  )
+    .trim()
+    .split('\n')
+    .filter(Boolean);
+  return dates.at(-1) ?? new Date().toISOString().slice(0, 10);
+};
+
 const ident = (slug) => slug.replaceAll('-', '_');
 const all = [
   ...shapeSlugs.map((slug) => ({ slug, from: `../../shapes/${slug}/shape`, name: 'SHAPE' })),
@@ -48,8 +64,10 @@ const imports = all.map(({ slug, from, name }) => `import { ${name} as ${ident(s
 const builds = Object.fromEntries(
   shapeSlugs.map((slug) => [slug, buildOf(slug)]).filter(([, build]) => build !== undefined),
 );
-const items = all.map(({ slug }) =>
-  builds[slug] === undefined ? ident(slug) : `{ ...${ident(slug)}, build: BUILDS[${JSON.stringify(slug)}] }`,
+const added = Object.fromEntries(shapeSlugs.map((slug) => [slug, addedOn(slug)]));
+const items = all.map(
+  ({ slug }) =>
+    `{ ...${ident(slug)}${added[slug] === undefined ? '' : `, added: ${JSON.stringify(added[slug])}`}${builds[slug] === undefined ? '' : `, build: BUILDS[${JSON.stringify(slug)}]`} }`,
 );
 
 writeFileSync(
