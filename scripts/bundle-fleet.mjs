@@ -85,6 +85,8 @@ const SHAPES = [
   'shared-container',
   'git-gatekeeper',
   'git-gatekeeper/gate',
+  'gadget-workspace',
+  'gadget-workspace/gate',
 ];
 const shapeCode = {};
 for (const slug of SHAPES) {

@@ -1,0 +1,14 @@
+{
+  "slug": "gadget-workspace",
+  "at": "2026-11-04T19:14:56.489Z",
+  "agent": "pi-durable",
+  "task": "built a notes gadget in a facet, stored a note and shared it through the gatekeeper",
+  "passed": true,
+  "restarted": true,
+  "resumed": true,
+  "usd": 0.01226825,
+  "tokens": 13128,
+  "seconds": 94,
+  "infrastructure": "The gadget ran as a Durable Object facet and kept \"buy milk 2838\" in its own storage. Its email went to the gatekeeper, which queued 1 action for a person to approve and delivered 0. Only the gatekeeper Worker holds the delivery key. A sandboxed gadget saw bindings [OUTBOX] and its internet was blocked: This worker is not permitted to access the internet.",
+  "infrastructureOk": true
+}

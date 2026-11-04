@@ -12,6 +12,7 @@ export type ShapeBinding =
   | { readonly kind: 'worker-loader'; readonly binding: string }
   | { readonly kind: 'ai'; readonly binding: string }
   | { readonly kind: 'artifacts'; readonly binding: string }
+  | { readonly kind: 'secret'; readonly binding: string }
   | {
       readonly kind: 'service';
       readonly binding: string;
@@ -74,6 +75,17 @@ export const SHAPE_INSTALLS: readonly ShapeInstall[] = [
     ]),
     parts: [{ part: 'gate', bindings: [{ kind: 'artifacts', binding: 'REPOS' }], repos: ['demo'] }],
   },
+  {
+    ...shape('gadget-workspace', [
+      DO('WORKSPACE', 'Workspace'),
+      LOADER,
+      { kind: 'service', binding: 'OUTBOX', part: 'gate', entrypoint: 'Outbox' },
+      { kind: 'service', binding: 'REVIEW', part: 'gate', entrypoint: 'Review' },
+    ]),
+    parts: [
+      { part: 'gate', bindings: [DO('LEDGER', 'Ledger'), { kind: 'secret', binding: 'DELIVERY_KEY' }] },
+    ],
+  },
 ];
 
 export const shapeInstallOf = (slug: string) => SHAPE_INSTALLS.find((each) => each.slug === slug);
@@ -97,12 +109,17 @@ export type MetadataBinding =
       readonly entrypoint: string;
     };
 
-export type PartNames = { readonly self: string; readonly partName: (part: string) => string };
+export type PartNames = {
+  readonly self: string;
+  readonly partName: (part: string) => string;
+  readonly secret: string;
+};
 
 const metadataBinding = (binding: ShapeBinding, names: PartNames): MetadataBinding => {
   if (binding.kind === 'durable-object' || binding.kind === 'container')
     return { type: 'durable_object_namespace', name: binding.binding, class_name: binding.className };
   if (binding.kind === 'worker-loader') return { type: 'worker_loader', name: binding.binding };
+  if (binding.kind === 'secret') return { type: 'secret_text', name: binding.binding, text: names.secret };
   if (binding.kind === 'artifacts')
     return { type: 'artifacts', name: binding.binding, namespace: names.self };
   if (binding.kind === 'service')
@@ -115,12 +132,18 @@ const metadataBinding = (binding: ShapeBinding, names: PartNames): MetadataBindi
   return { type: 'ai', name: binding.binding };
 };
 
+const partClasses = (part: ShapePart) =>
+  part.bindings.flatMap((binding) => (binding.kind === 'durable-object' ? [binding.className] : []));
+
 export const partMetadata = (part: ShapePart, names: PartNames) => ({
   main_module: 'index.js',
   compatibility_date: SHAPE_COMPATIBILITY_DATE,
   compatibility_flags: ['nodejs_compat'],
   bindings: part.bindings.map((binding) => metadataBinding(binding, names)),
   observability: { enabled: true },
+  ...(partClasses(part).length === 0
+    ? {}
+    : { migrations: { new_tag: 'v1', new_sqlite_classes: partClasses(part) } }),
 });
 
 export const durableClasses = (install: ShapeInstall) =>
@@ -131,7 +154,7 @@ export const durableClasses = (install: ShapeInstall) =>
 export const containerBindings = (install: ShapeInstall) =>
   install.bindings.flatMap((binding) => (binding.kind === 'container' ? [binding] : []));
 
-const NO_PARTS: PartNames = { self: '', partName: (part) => part };
+const NO_PARTS: PartNames = { self: '', partName: (part) => part, secret: '' };
 
 export const shapeWorkerMetadata = (
   install: ShapeInstall,

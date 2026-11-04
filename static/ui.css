@@ -425,3 +425,7 @@ pre { background: var(--raised); padding: 12px; border-radius: 8px; overflow: au
   .mobile-sort { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; font-size: 13px; color: var(--dim); }
   .mobile-sort label { display: flex; gap: 8px; align-items: center; }
 }
+
+.source-links { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; margin: -8px 0 20px; font-size: 13px; color: var(--dim); }
+.source-links a { color: var(--brand, #6d4aff); text-decoration: none; }
+.source-links a:hover { text-decoration: underline; }

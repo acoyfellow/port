@@ -16,6 +16,7 @@ const order = [
   'sealed-box',
   'self-editing-app',
   'git-gatekeeper',
+  'gadget-workspace',
 ];
 const rank = (slug) => order.indexOf(slug) + 1 || 99;
 

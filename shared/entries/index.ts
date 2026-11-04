@@ -2,6 +2,7 @@ import { SHAPE as agent_room } from '../../shapes/agent-room/shape';
 import { SHAPE as chat_with_sandbox } from '../../shapes/chat-with-sandbox/shape';
 import { SHAPE as container_per_thread } from '../../shapes/container-per-thread/shape';
 import { SHAPE as durable_session } from '../../shapes/durable-session/shape';
+import { SHAPE as gadget_workspace } from '../../shapes/gadget-workspace/shape';
 import { SHAPE as git_gatekeeper } from '../../shapes/git-gatekeeper/shape';
 import { SHAPE as isolate_agents } from '../../shapes/isolate-agents/shape';
 import { SHAPE as person_with_computer } from '../../shapes/person-with-computer/shape';
@@ -49,6 +50,16 @@ const BUILDS: Readonly<Record<string, ShapeBuild>> = {
     seconds: 22,
     resumed: true,
     on: '2026-10-31',
+  },
+  'gadget-workspace': {
+    task: 'built a notes gadget in a facet, stored a note and shared it through the gatekeeper',
+    infrastructure:
+      'The gadget ran as a Durable Object facet and kept "buy milk 2838" in its own storage. Its email went to the gatekeeper, which queued 1 action for a person to approve and delivered 0. Only the gatekeeper Worker holds the delivery key. A sandboxed gadget saw bindings [OUTBOX] and its internet was blocked: This worker is not permitted to access the internet.',
+    usd: 0.01226825,
+    tokens: 13128,
+    seconds: 94,
+    resumed: true,
+    on: '2026-11-04',
   },
   'git-gatekeeper': {
     task: 'wrote fizzbuzz.py, published it through the gatekeeper and was refused on main',
@@ -133,5 +144,6 @@ export const ENTRIES: readonly Entry[] = [
   { ...sealed_box, added: '2026-10-30', build: BUILDS['sealed-box'] },
   { ...self_editing_app, added: '2026-10-30', build: BUILDS['self-editing-app'] },
   { ...git_gatekeeper, added: '2026-11-03', build: BUILDS['git-gatekeeper'] },
+  { ...gadget_workspace, added: '2026-11-04', build: BUILDS['gadget-workspace'] },
   { ...self_observe, added: '2026-10-30', build: BUILDS['self-observe'] },
 ];

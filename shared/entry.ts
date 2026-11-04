@@ -37,6 +37,7 @@ export type Entry = {
   readonly install: { readonly status: 'ready' | 'planned' | 'none'; readonly plan: string };
   readonly evalPlan: string;
   readonly source: string;
+  readonly links?: readonly { readonly label: string; readonly href: string }[];
   readonly build?: ShapeBuild;
   readonly added?: string;
   readonly tools?: string;

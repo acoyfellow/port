@@ -181,7 +181,7 @@ export const installShape = async (
       }
     }
 
-    const names: PartNames = { self: name, partName: (part) => `${name}-${part}` };
+    const names: PartNames = { self: name, partName: (part) => `${name}-${part}`, secret: randomHex(24) };
     for (const part of install.parts ?? []) {
       if (part.bindings.some((binding) => binding.kind === 'artifacts')) {
         for (const repo of part.repos ?? [])

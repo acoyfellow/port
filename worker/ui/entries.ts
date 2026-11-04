@@ -62,13 +62,20 @@ const installAction = (entry: Entry, viewer: Viewer) =>
           busy: 'Installing… up to 2 minutes',
         });
 
+const sourceLinks = (entry: Entry) =>
+  entry.links === undefined || entry.links.length === 0
+    ? ''
+    : html`<nav class="source-links" aria-label="Original source"><span>Pattern from ${entry.source}:</span>${entry.links.map(
+        (link) => html`<a href="${link.href}" rel="noopener">${link.label} ↗</a>`,
+      )}</nav>`;
+
 export const entryPage = (viewer: Viewer, entry: Entry) =>
   page({
     title: entry.name,
     viewer,
     section: 'home',
     crumbs: [{ label: 'Directory', href: '/' }, { label: entry.name }],
-    body: html`${pageHead(entry.name, entry.oneLine, installAction(entry, viewer))}<div class="stack">${piSection(entry)}<figure class="card diagram"><figcaption>${entry.shape}</figcaption>${raw(
+    body: html`${pageHead(entry.name, entry.oneLine, installAction(entry, viewer))}${sourceLinks(entry)}<div class="stack">${piSection(entry)}<figure class="card diagram"><figcaption>${entry.shape}</figcaption>${raw(
       entryDiagram(entry),
     )}</figure><div class="grid">${list('Strengths', entry.strengths)}${list('Limits', entry.limits)}<section class="card"><h2>Parts</h2><ul class="muted">${entry.parts.map(
       (part) => html`<li><strong>${part.label}</strong> · ${part.detail}</li>`,

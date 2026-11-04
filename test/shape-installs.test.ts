@@ -50,7 +50,13 @@ describe('shape install recipes', () => {
     it(`${slug} creates the same bindings as its alchemy.run.ts`, () => {
       const install = shapeInstallOf(slug);
       expect(install).toBeDefined();
-      const ours = (install?.bindings ?? []).map((binding) => ({
+      const everyBinding = [
+        ...(install?.bindings ?? []),
+        ...(install?.parts ?? []).flatMap((part) =>
+          part.bindings.filter((binding) => binding.kind === 'durable-object'),
+        ),
+      ];
+      const ours = everyBinding.map((binding) => ({
         binding: binding.binding,
         kind: {
           'durable-object': 'durableObject',
@@ -99,6 +105,7 @@ describe('git-gatekeeper install', () => {
   const names = {
     self: 'port-git-gatekeeper-ab12',
     partName: (part: string) => `port-git-gatekeeper-ab12-${part}`,
+    secret: 's',
   };
 
   it('gives the Artifacts binding only to the gatekeeper Worker', () => {
