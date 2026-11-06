@@ -87,6 +87,9 @@ const SHAPES = [
   'git-gatekeeper/gate',
   'gadget-workspace',
   'gadget-workspace/gate',
+  'egress-filter',
+  'egress-filter/filter',
+  'snapshot-rollback',
 ];
 const shapeCode = {};
 for (const slug of SHAPES) {

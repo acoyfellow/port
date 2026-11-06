@@ -65,6 +65,7 @@ export const SHAPE_INSTALLS: readonly ShapeInstall[] = [
   shape('self-observe', [DO('AGENT', 'Observer'), LOADER]),
   shape('chat-with-sandbox', [BOX('CHAT', 'Chat', PI_BOX_IMAGE)]),
   shape('container-per-thread', [BOX('THREAD', 'Thread', PI_BOX_IMAGE)]),
+  shape('snapshot-rollback', [BOX('THREAD', 'Thread', PI_BOX_IMAGE)]),
   shape('sealed-box', [BOX('BOX', 'Box', PI_BOX_IMAGE)]),
   shape('person-with-computer', [DO('DIRECTORY', 'Directory'), BOX('PERSON', 'Person', PI_BOX_IMAGE)]),
   shape('shared-container', [DO('SEAT', 'Seat'), BOX('BOX', 'Box', SHARED_BOX_IMAGE)]),
@@ -85,6 +86,16 @@ export const SHAPE_INSTALLS: readonly ShapeInstall[] = [
     parts: [
       { part: 'gate', bindings: [DO('LEDGER', 'Ledger'), { kind: 'secret', binding: 'DELIVERY_KEY' }] },
     ],
+  },
+  {
+    ...shape('egress-filter', [
+      DO('WORKSPACE', 'Workspace'),
+      DO('CANARY', 'Canary'),
+      LOADER,
+      { kind: 'service', binding: 'EGRESS', part: 'filter', entrypoint: 'Egress' },
+      { kind: 'service', binding: 'AUDIT', part: 'filter', entrypoint: 'Audit' },
+    ]),
+    parts: [{ part: 'filter', bindings: [DO('LOG', 'Log')] }],
   },
 ];
 

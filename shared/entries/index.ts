@@ -2,6 +2,7 @@ import { SHAPE as agent_room } from '../../shapes/agent-room/shape';
 import { SHAPE as chat_with_sandbox } from '../../shapes/chat-with-sandbox/shape';
 import { SHAPE as container_per_thread } from '../../shapes/container-per-thread/shape';
 import { SHAPE as durable_session } from '../../shapes/durable-session/shape';
+import { SHAPE as egress_filter } from '../../shapes/egress-filter/shape';
 import { SHAPE as gadget_workspace } from '../../shapes/gadget-workspace/shape';
 import { SHAPE as git_gatekeeper } from '../../shapes/git-gatekeeper/shape';
 import { SHAPE as isolate_agents } from '../../shapes/isolate-agents/shape';
@@ -10,6 +11,7 @@ import { SHAPE as sealed_box } from '../../shapes/sealed-box/shape';
 import { SHAPE as self_editing_app } from '../../shapes/self-editing-app/shape';
 import { SHAPE as self_observe } from '../../shapes/self-observe/shape';
 import { SHAPE as shared_container } from '../../shapes/shared-container/shape';
+import { SHAPE as snapshot_rollback } from '../../shapes/snapshot-rollback/shape';
 import type { Entry, ShapeBuild } from '../entry.ts';
 
 const BUILDS: Readonly<Record<string, ShapeBuild>> = {
@@ -51,15 +53,25 @@ const BUILDS: Readonly<Record<string, ShapeBuild>> = {
     resumed: true,
     on: '2026-10-31',
   },
-  'gadget-workspace': {
-    task: 'built a notes gadget in a facet, stored a note and shared it through the gatekeeper',
+  'egress-filter': {
+    task: 'wrote and ran two fetch scripts, one allowed and one blocked by the egress filter',
     infrastructure:
-      'The gadget ran as a Durable Object facet and kept "buy milk 2838" in its own storage. Its email went to the gatekeeper, which queued 1 action for a person to approve and delivered 0. Only the gatekeeper Worker holds the delivery key. A sandboxed gadget saw bindings [OUTBOX] and its internet was blocked: This worker is not permitted to access the internet.',
-    usd: 0.01226825,
-    tokens: 13128,
-    seconds: 94,
+      'Every script request went through the filter Worker, which logged 4 requests (+example.com,-api.github.com,-port-shape-egress-filter.customer0.dev,-cloudflare.com). It allowed example.com and blocked 3. A canary leak attempt from the sandbox got status 403; the canary saw 0 requests from the sandbox and 1 from the control. The sandbox had no bindings.',
+    usd: 0.0043368899999999995,
+    tokens: 6430,
+    seconds: 46,
     resumed: true,
-    on: '2026-11-04',
+    on: '2026-11-06',
+  },
+  'gadget-workspace': {
+    task: 'built a notes gadget in a facet, shared a note through the gatekeeper, and the email was delivered only after a valid passkey signature',
+    infrastructure:
+      'The gadget ran as a Durable Object facet and kept "buy milk 6148" in its own storage. Its email went to the gatekeeper and waited. The gatekeeper refused an unsigned approval, a signature from another key, a signature over a different action, a second enrollment and a replay (approval needs a passkey signature | the signature does not match the approver key | the signature is for a different action | action is already delivered); it delivered the email only for a valid P-256 passkey signature over that action\'s digest. Only the gatekeeper holds the delivery key. A sandboxed gadget saw bindings [OUTBOX] and no internet.',
+    usd: 0.01440298,
+    tokens: 17020,
+    seconds: 69,
+    resumed: true,
+    on: '2026-11-06',
   },
   'git-gatekeeper': {
     task: 'wrote fizzbuzz.py, published it through the gatekeeper and was refused on main',
@@ -131,6 +143,16 @@ const BUILDS: Readonly<Record<string, ShapeBuild>> = {
     resumed: true,
     on: '2026-10-31',
   },
+  'snapshot-rollback': {
+    task: 'wrote and tested stats.py and saved a whole-computer checkpoint',
+    infrastructure:
+      'Pi saved checkpoint "tests-pass" (3 files, 1 KB in the Durable Object, 169 ms). The test then deleted every file in /workspace; the rollback threw the container away, started a fresh one and unpacked the checkpoint in 2223 ms. The restored files hash to 6cb2cf57e15c30dc, the same as the checkpoint.',
+    usd: 0.005205,
+    tokens: 8762,
+    seconds: 28,
+    resumed: true,
+    on: '2026-11-06',
+  },
 };
 
 export const ENTRIES: readonly Entry[] = [
@@ -145,5 +167,7 @@ export const ENTRIES: readonly Entry[] = [
   { ...self_editing_app, added: '2026-10-30', build: BUILDS['self-editing-app'] },
   { ...git_gatekeeper, added: '2026-11-03', build: BUILDS['git-gatekeeper'] },
   { ...gadget_workspace, added: '2026-11-04', build: BUILDS['gadget-workspace'] },
+  { ...egress_filter, added: '2026-11-06', build: BUILDS['egress-filter'] },
+  { ...snapshot_rollback, added: '2026-11-06', build: BUILDS['snapshot-rollback'] },
   { ...self_observe, added: '2026-10-30', build: BUILDS['self-observe'] },
 ];

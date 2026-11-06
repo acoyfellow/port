@@ -1,0 +1,26 @@
+{
+  "slug": "egress-filter",
+  "at": "2026-11-06T11:38:53.025Z",
+  "agent": "pi-durable",
+  "task": "wrote and ran two fetch scripts, one allowed and one blocked by the egress filter",
+  "passed": true,
+  "restarted": true,
+  "resumed": true,
+  "usd": 0.0043368899999999995,
+  "tokens": 6430,
+  "seconds": 46,
+  "infrastructure": "Every script request went through the filter Worker, which logged 4 requests (+example.com,-api.github.com,-port-shape-egress-filter.customer0.dev,-cloudflare.com). It allowed example.com and blocked 3. A canary leak attempt from the sandbox got status 403; the canary saw 0 requests from the sandbox and 1 from the control. The sandbox had no bindings.",
+  "infrastructureOk": true,
+  "facts": {
+    "attempt": "HTTP 200\n{\"leak\":403,\"direct\":403,\"bindings\":\"\"}",
+    "allowedReached": true,
+    "blocked": 3,
+    "logged": 4,
+    "hosts": "+example.com,-api.github.com,-port-shape-egress-filter.customer0.dev,-cloudflare.com",
+    "canaryHits": 0,
+    "canaryControl": 1,
+    "controlStatus": 200,
+    "leakStatus": "403",
+    "sandboxBindings": ""
+  }
+}

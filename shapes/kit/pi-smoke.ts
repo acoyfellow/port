@@ -1,7 +1,7 @@
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import * as Schema from 'effect/Schema';
-import { client, pause, prove } from './smoke.ts';
+import { type Client, client, pause, prove } from './smoke.ts';
 
 const Health = Schema.Struct({
   ok: Schema.Boolean,
@@ -36,6 +36,7 @@ export type PiSmoke = {
     readonly claim: string;
   };
   readonly restartAfterMs?: number;
+  readonly afterTask?: (api: Client, agent: string) => Promise<Record<string, unknown>>;
 };
 
 export type PiReceipt = {
@@ -51,6 +52,7 @@ export type PiReceipt = {
   readonly seconds: number;
   readonly infrastructure: string;
   readonly infrastructureOk: boolean;
+  readonly facts?: Record<string, unknown>;
   readonly reason?: string;
 };
 
@@ -81,7 +83,9 @@ export const runPiSmoke = async (smoke: PiSmoke) => {
     status = await api.get(`/status?agent=${agent}`, Status, { tries: 60 });
   }
   const files = await api.get(`/files?agent=${agent}`, Files, { tries: 30 });
-  const probe = await api.get(`/probe?agent=${agent}`, Probe, { tries: 30 });
+  const probed = await api.get(`/probe?agent=${agent}`, Probe, { tries: 30 });
+  const probe =
+    smoke.afterTask === undefined ? probed : { ...probed, ...(await smoke.afterTask(api, agent)) };
   const infrastructure = smoke.infrastructure(probe);
   const passed = status.status === 'done' && smoke.task.passed(files, status.text ?? '');
   const receipt: PiReceipt = {
@@ -97,6 +101,7 @@ export const runPiSmoke = async (smoke: PiSmoke) => {
     seconds: Math.round((Date.now() - started) / 1000),
     infrastructure: infrastructure.claim,
     infrastructureOk: infrastructure.ok,
+    facts: probe,
     ...(status.reason === undefined ? {} : { reason: status.reason }),
   };
   writePiReceipt(receipt);

@@ -5,6 +5,7 @@ import { type AgentEnv, piAgent } from '../../kit/agent.ts';
 import { type FileStore, MemoryExecutionEnv, sqliteFileStore } from '../../kit/memory-env.ts';
 import { piRouter } from '../../kit/router.ts';
 import type { Action, Outbox, Review } from '../gate/index.ts';
+import type { ApproverKey, Assertion } from '../gate/passkey.ts';
 
 type Env = AgentEnv & {
   readonly WORKSPACE: DurableObjectNamespace<Workspace>;
@@ -179,8 +180,56 @@ export class Workspace extends piAgent<Env>({
   },
 }) {}
 
+const AGENT = /^[a-z0-9-]{1,64}$/;
+
+const approvalRoute = async (request: Request, env: Env) => {
+  const url = new URL(request.url);
+  if (!url.pathname.startsWith('/approvals')) return undefined;
+  const agent = url.searchParams.get('agent') ?? '';
+  if (!AGENT.test(agent)) return Response.json({ error: 'agent is required' }, { status: 400 });
+  const workspace = env.WORKSPACE.idFromName(agent).toString();
+  const id = Number(url.searchParams.get('id') ?? '0');
+  const body: unknown = request.method === 'POST' ? await request.json().catch(() => ({})) : {};
+  if (url.pathname === '/approvals') return Response.json(await env.REVIEW.actions(workspace));
+  if (url.pathname === '/approvals/enroll' && isApproverKey(body))
+    return Response.json(await env.REVIEW.enroll(workspace, body));
+  if (url.pathname === '/approvals/challenge')
+    return Response.json({
+      challenge: await env.REVIEW.challenge(workspace, id),
+      origin: url.origin,
+      rpId: url.hostname,
+    });
+  if (url.pathname === '/approvals/approve')
+    return Response.json(
+      await env.REVIEW.approve(workspace, id, assertionOf(body), url.origin, url.hostname),
+    );
+  if (url.pathname === '/approvals/reject') return Response.json(await env.REVIEW.reject(workspace, id));
+  return Response.json({ error: 'not found' }, { status: 404 });
+};
+
+const text = (value: unknown, key: string) => {
+  const found = typeof value === 'object' && value !== null ? Reflect.get(value, key) : undefined;
+  return typeof found === 'string' ? found : undefined;
+};
+
+const isApproverKey = (value: unknown): value is ApproverKey =>
+  text(value, 'kty') === 'EC' &&
+  text(value, 'crv') === 'P-256' &&
+  text(value, 'x') !== undefined &&
+  text(value, 'y') !== undefined;
+
+const assertionOf = (value: unknown): Assertion | undefined => {
+  const authenticatorData = text(value, 'authenticatorData');
+  const clientDataJSON = text(value, 'clientDataJSON');
+  const signature = text(value, 'signature');
+  return authenticatorData === undefined || clientDataJSON === undefined || signature === undefined
+    ? undefined
+    : { authenticatorData, clientDataJSON, signature };
+};
+
 export default piRouter<Env>({
   shape: 'gadget-workspace',
   agent: (env, name) => env.WORKSPACE.get(env.WORKSPACE.idFromName(name)),
   gateway: (env) => env.GATEWAY,
+  extra: approvalRoute,
 });

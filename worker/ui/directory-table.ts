@@ -15,8 +15,8 @@ export type SortDir = 'asc' | 'desc';
 export type Sort = { readonly key: string; readonly dir: SortDir };
 
 const DASH = '—';
-const INTERNET_LABEL = { off: 'Off', on: 'On', none: 'No shell' } as const;
-const INTERNET_RANK = { off: 0, none: 1, on: 2 } as const;
+const INTERNET_LABEL = { off: 'Off', on: 'On', none: 'No shell', allowlist: 'Allow list' } as const;
+const INTERNET_RANK = { off: 0, none: 1, allowlist: 2, on: 3 } as const;
 
 const shortDate = (iso: string) =>
   new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', {

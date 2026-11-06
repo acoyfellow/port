@@ -57,7 +57,7 @@ export type ShapeBuild = {
 export type Traits = {
   readonly runsIn: string;
   readonly isolation: string;
-  readonly internet: 'off' | 'on' | 'none';
+  readonly internet: 'off' | 'on' | 'none' | 'allowlist';
   readonly state: string;
   readonly startup: 'instant' | 'container';
 };

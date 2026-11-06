@@ -1,0 +1,30 @@
+{
+  "slug": "snapshot-rollback",
+  "at": "2026-11-06T12:15:11.588Z",
+  "agent": "pi-durable",
+  "task": "wrote and tested stats.py and saved a whole-computer checkpoint",
+  "passed": true,
+  "restarted": true,
+  "resumed": true,
+  "usd": 0.005205,
+  "tokens": 8762,
+  "seconds": 28,
+  "infrastructure": "Pi saved checkpoint \"tests-pass\" (3 files, 1 KB in the Durable Object, 169 ms). The test then deleted every file in /workspace; the rollback threw the container away, started a fresh one and unpacked the checkpoint in 2223 ms. The restored files hash to 6cb2cf57e15c30dc, the same as the checkpoint.",
+  "infrastructureOk": true,
+  "facts": {
+    "snapshots": 1,
+    "checkpoints": "tests-pass:3f:1180B:169ms",
+    "restores": 0,
+    "expectedFingerprint": "6cb2cf57e15c30dc",
+    "expectedFiles": 3,
+    "snapshotMs": 169,
+    "snapshotKb": 1,
+    "brokenFingerprint": "350edcc830129667",
+    "brokenBeforeRestore": true,
+    "restoredFingerprint": "6cb2cf57e15c30dc",
+    "restoredFiles": 3,
+    "restoredMatches": true,
+    "freshContainer": true,
+    "restoreMs": 2223
+  }
+}

@@ -65,7 +65,7 @@ const installAction = (entry: Entry, viewer: Viewer) =>
 const sourceLinks = (entry: Entry) =>
   entry.links === undefined || entry.links.length === 0
     ? ''
-    : html`<nav class="source-links" aria-label="Original source"><span>Pattern from ${entry.source}:</span>${entry.links.map(
+    : html`<nav class="source-links" aria-label="Original source"><span>Original:</span>${entry.links.map(
         (link) => html`<a href="${link.href}" rel="noopener">${link.label} ↗</a>`,
       )}</nav>`;
 

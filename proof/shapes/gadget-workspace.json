@@ -1,0 +1,72 @@
+{
+  "slug": "gadget-workspace",
+  "up": {
+    "ok": true,
+    "ms": 15582,
+    "tail": [
+      "[06:55:39.215] INFO (#496): [gateway] created (4.4s)",
+      "[06:55:39.219] INFO (#497): Cloudflare Worker read: checking port-shape-gadget-workspace",
+      "[06:55:39.430] INFO (#497): Cloudflare Worker reconcile: starting port-shape-gadget-workspace",
+      "[06:55:39.430] INFO (#497): Cloudflare Worker reconcile: durable objects [{\"logicalId\":\"WORKSPACE\",\"className\":\"Workspace\"}]",
+      "[06:55:39.648] INFO (#497): Cloudflare Worker reconcile: existing durable object tags []",
+      "[06:55:39.648] INFO (#497): Cloudflare Worker reconcile: previous durable object tags []",
+      "[06:55:39.648] INFO (#497): Cloudflare Worker create: preparing bundle for port-shape-gadget-workspace",
+      "[06:55:40.315] INFO (#497): Cloudflare Worker create: uploading script for port-shape-gadget-workspace",
+      "[06:55:41.003] INFO (#497): Cloudflare Worker put: durable object reconciliation {\"oldDoClassNameByLogicalId\":{},\"currentDoClassNameByLogicalId\":{\"WORKSPACE\":\"Workspace\"},\"deletedClasses\":[],\"renamedClasses\":[],\"transferredClasses\":[],\"newSqliteClasses\":[\"Workspace\"]}",
+      "[06:55:45.205] INFO (#497): [worker] created — Reconciling custom domains (1) ... (6.0s)",
+      "[06:55:45.219] INFO (#732): [gate] created — Uploading worker (5.08 KB) ... (10.4s)",
+      "[06:55:45.219] INFO (#733): [gateway] created (10.4s)",
+      "[06:55:45.219] INFO (#734): [worker] created — Reconciling custom domains (1) ... (6.0s)",
+      "[06:55:45.228] INFO (#1): ",
+      "[06:55:45.228] INFO (#1): Done: 3 succeeded (10.5s)",
+      "{",
+      "  url: 'https://port-shape-gadget-workspace.customer0.dev',",
+      "  worker: 'port-shape-gadget-workspace',",
+      "  gate: 'port-shape-gadget-workspace-gate'",
+      "}"
+    ],
+    "at": "2026-11-06T11:55:45.462Z"
+  },
+  "smoke": {
+    "ok": true,
+    "ms": 69413,
+    "tail": [
+      "{\"slug\":\"gadget-workspace\",\"at\":\"2026-11-06T11:56:55.348Z\",\"agent\":\"pi-durable\",\"task\":\"built a notes gadget in a facet, shared a note through the gatekeeper, and the email was delivered only after a valid passkey signature\",\"passed\":true,\"restarted\":true,\"resumed\":true,\"usd\":0.01440298,\"tokens\":17020,\"seconds\":69,\"infrastructure\":\"The gadget ran as a Durable Object facet and kept \\\"buy milk 6148\\\" in its own storage. Its email went to the gatekeeper and waited. The gatekeeper refused an unsigned approval, a signature from another key, a signature over a different action, a second enrollment and a replay (approval needs a passkey signature | the signature does not match the approver key | the signature is for a different action | action is already delivered); it delivered the email only for a valid P-256 passkey signature over that action's digest. Only the gatekeeper holds the delivery key. A sandboxed gadget saw bindings [OUTBOX] and no internet.\",\"infrastructureOk\":true,\"facts\":{\"list\":\"HTTP 200\\n{\\\"notes\\\":[\\\"buy milk 6148\\\",\\\"buy milk 6148\\\"]}\",\"pending\":2,\"delivered\":0,\"recipients\":\"team@example.com,team@example.com\",\"gateHoldsKey\":true,\"workspaceHasKey\":false,\"sandboxInternet\":\"blocked: This worker is not permitted to access the internet via global functions like fetch(). It must use capabilities (such as bindings in 'env') to talk to \",\"sandboxBindings\":\"OUTBOX\",\"unsignedRefused\":true,\"forgedRefused\":true,\"wrongDigestRefused\":true,\"signedDelivered\":true,\"replayRefused\":true,\"secondEnrollRefused\":true,\"otherActionRefused\":true,\"refusals\":\"approval needs a passkey signature | the signature does not match the approver key | the signature is for a different action | action is already delivered\"},\"files\":[\"gadget/server.js\"]}",
+      "PROVED Stock Pi (pi-durable) built a notes gadget in a facet, shared a note through the gatekeeper, and the email was delivered only after a valid passkey signature on gadget-workspace, resumed after a forced restart, and spent $0.0144 by Pi's own count. The gadget ran as a Durable Object facet and kept \"buy milk 6148\" in its own storage. Its email went to the gatekeeper and waited. The gatekeeper refused an unsigned approval, a signature from another key, a signature over a different action, a second enrollment and a replay (approval needs a passkey signature | the signature does not match the approver key | the signature is for a different action | action is already delivered); it delivered the email only for a valid P-256 passkey signature over that action's digest. Only the gatekeeper holds the delivery key. A sandboxed gadget saw bindings [OUTBOX] and no internet."
+    ],
+    "at": "2026-11-06T11:56:55.380Z"
+  },
+  "down": {
+    "ok": true,
+    "ms": 8866,
+    "tail": [
+      "[06:57:00.528] INFO (#1): [gateway] delete",
+      "[06:57:00.528] INFO (#1): [worker] delete",
+      "[06:57:00.528] INFO (#1): [worker/AI] unbind",
+      "[06:57:00.528] INFO (#1): [worker/GATEWAY] unbind",
+      "[06:57:00.528] INFO (#1): [worker/LOADER] unbind",
+      "[06:57:00.528] INFO (#1): [worker/OUTBOX] unbind",
+      "[06:57:00.528] INFO (#1): [worker/REVIEW] unbind",
+      "[06:57:00.528] INFO (#1): [worker/WORKSPACE] unbind",
+      "[06:57:00.528] INFO (#1): ",
+      "[06:57:00.534] INFO (#330): [worker] deleting",
+      "[06:57:00.540] INFO (#330): Cloudflare Worker delete: deleting port-shape-gadget-workspace",
+      "[06:57:00.544] INFO (#334): Cloudflare: using environment variables (CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN) instead of the profile.",
+      "[06:57:01.542] INFO (#330): [worker] deleted (1.0s)",
+      "[06:57:01.543] INFO (#331): [gateway] deleting",
+      "[06:57:01.543] INFO (#329): [gate] deleting",
+      "[06:57:01.549] INFO (#329): Cloudflare Worker delete: deleting port-shape-gadget-workspace-gate",
+      "[06:57:02.330] INFO (#329): [gate] deleted (787ms)",
+      "[06:57:04.657] INFO (#331): [gateway] deleted (3.1s)",
+      "[06:57:04.659] INFO (#1): ",
+      "[06:57:04.659] INFO (#1): Done: 3 succeeded (4.1s)"
+    ],
+    "at": "2026-11-06T11:57:06.501Z"
+  },
+  "sweep": {
+    "at": "2026-11-06T11:57:10.899Z",
+    "prefix": "port-shape-gadget-workspace",
+    "leftovers": {},
+    "errors": {}
+  }
+}

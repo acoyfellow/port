@@ -1,4 +1,5 @@
 import { DurableObject, WorkerEntrypoint } from 'cloudflare:workers';
+import { type ApproverKey, type Assertion, actionDigest, verifyAssertion } from './passkey.ts';
 
 export type Action = {
   readonly id: number;
@@ -49,14 +50,53 @@ export class Ledger extends DurableObject<GateEnv> {
       }));
   }
 
-  decide(workspace: string, id: number, approve: boolean) {
+  async enroll(workspace: string, key: ApproverKey) {
+    if (await this.ctx.storage.get<ApproverKey>(`approver:${workspace}`))
+      return { refused: 'an approver is already enrolled for this workspace' };
+    await this.ctx.storage.put(`approver:${workspace}`, key);
+    return { enrolled: true };
+  }
+
+  async challenge(workspace: string, id: number) {
+    const action = this.list(workspace).find((each) => each.id === id);
+    return action === undefined ? undefined : actionDigest(action);
+  }
+
+  async approve(
+    workspace: string,
+    id: number,
+    assertion: Assertion | undefined,
+    origin: string,
+    rpId: string,
+  ) {
+    const action = this.list(workspace).find((each) => each.id === id);
+    if (action === undefined) return { refused: 'no such action' };
+    if (action.status !== 'pending') return { refused: `action is already ${action.status}` };
+    if (assertion === undefined) return { refused: 'approval needs a passkey signature' };
+    const key = await this.ctx.storage.get<ApproverKey>(`approver:${workspace}`);
+    if (key === undefined) return { refused: 'no approver is enrolled' };
+    const problem = await verifyAssertion(key, assertion, {
+      challenge: await actionDigest(action),
+      origin,
+      rpId,
+    });
+    if (problem !== '') return { refused: problem };
+    this.#setStatus(workspace, id, 'delivered');
+    return { delivered: id };
+  }
+
+  reject(workspace: string, id: number) {
+    this.#setStatus(workspace, id, 'rejected');
+    return this.list(workspace).find((action) => action.id === id);
+  }
+
+  #setStatus(workspace: string, id: number, status: 'delivered' | 'rejected') {
     this.ctx.storage.sql.exec(
       "UPDATE actions SET status = ? WHERE workspace = ? AND id = ? AND status = 'pending'",
-      approve ? 'delivered' : 'rejected',
+      status,
       workspace,
       id,
     );
-    return this.list(workspace).find((action) => action.id === id);
   }
 }
 
@@ -86,8 +126,26 @@ export class Review extends WorkerEntrypoint<GateEnv> {
     return ledger(this.env).list(workspace);
   }
 
-  async decide(workspace: string, id: number, approve: boolean) {
-    return ledger(this.env).decide(workspace, id, approve);
+  async enroll(workspace: string, key: ApproverKey) {
+    return ledger(this.env).enroll(workspace, key);
+  }
+
+  async challenge(workspace: string, id: number) {
+    return ledger(this.env).challenge(workspace, id);
+  }
+
+  async approve(
+    workspace: string,
+    id: number,
+    assertion: Assertion | undefined,
+    origin: string,
+    rpId: string,
+  ) {
+    return ledger(this.env).approve(workspace, id, assertion, origin, rpId);
+  }
+
+  async reject(workspace: string, id: number) {
+    return ledger(this.env).reject(workspace, id);
   }
 
   async holdsKey() {

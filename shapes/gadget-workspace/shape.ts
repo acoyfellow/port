@@ -34,7 +34,7 @@ export const SHAPE: Entry = {
       id: 'gate',
       label: 'Gatekeeper Worker',
       detail:
-        'The only holder of the delivery key. Answers the gadget at once as if the action happened, records it, and holds it until a person approves or rejects it.',
+        'The only holder of the delivery key. Answers the gadget at once as if the action happened, records it, and delivers it only when the enrolled passkey signs that exact action.',
       product: 'worker',
     },
     {
@@ -53,6 +53,7 @@ export const SHAPE: Entry = {
   strengths: [
     'Each gadget is its own sandbox with its own storage, so a bug in one person’s app cannot leak another’s data.',
     'The agent never waits for approval: the gatekeeper simulates the action, and a person approves or rejects the queue later.',
+    'Approval is a passkey signature over the action’s digest, checked by the gatekeeper. Pi cannot approve, because it has no way to make that signature, and a signature for one action cannot approve another.',
     'The gadget’s only binding is a gatekeeper stub already scoped to its workspace, so it cannot name another workspace.',
     'No container: the facet starts in milliseconds, and the gadget’s code can change on every call without losing data.',
   ],
@@ -60,6 +61,8 @@ export const SHAPE: Entry = {
     'One gatekeeper (a simulated outbox). Cloudflare OS ships gatekeepers for real services with OAuth.',
     'One gadget per workspace. No sharing, multiplayer, blueprints or front end.',
     'Reads of simulated actions come from the gatekeeper’s own ledger, not the real service.',
+    'The test signs with a software P-256 key in the WebAuthn format. A real phone passkey uses the same check but was not part of the run.',
+    'The first passkey to enroll for a workspace becomes its approver. A real install would tie enrollment to sign-in.',
   ],
   install: {
     status: 'ready',
@@ -74,7 +77,7 @@ export const SHAPE: Entry = {
     startup: 'instant',
   },
   evalPlan:
-    'Pi turns the starter gadget into a notes app, is restarted mid-task, resumes, adds a note and shares it by email. Pass when the note is in the facet’s storage, the email is queued in the gatekeeper and not delivered, only the gatekeeper holds the key, and a sandboxed gadget sees only its OUTBOX binding and no internet.',
+    'Pi turns the starter gadget into a notes app, is restarted mid-task, resumes, adds a note and shares it by email. Then the test enrolls a P-256 passkey and tries to approve the email five ways. Pass when the note is in the facet’s storage, the gatekeeper refuses an unsigned approval, another key, a signature over another action, a second enrollment and a replay, and delivers only for the valid signature; only the gatekeeper holds the key; and a sandboxed gadget sees only OUTBOX and no internet.',
   source: 'Cloudflare OS',
   links: [
     { label: 'cloudflare/cloudflare-os', href: CFOS },
@@ -84,5 +87,6 @@ export const SHAPE: Entry = {
       href: `${CFOS}/blob/main/packages/workshop-backend/src/agent.ts`,
     },
     { label: 'Gatekeeper skill', href: `${CFOS}/blob/main/.agents/skills/write-gatekeeper/SKILL.md` },
+    { label: 'Passkey approval: I-HITL (arXiv 2610.35835)', href: 'https://arxiv.org/abs/2610.35835' },
   ],
 };

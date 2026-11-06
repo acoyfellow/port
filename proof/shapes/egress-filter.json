@@ -1,0 +1,72 @@
+{
+  "slug": "egress-filter",
+  "up": {
+    "ok": true,
+    "ms": 13816,
+    "tail": [
+      "[06:37:59.600] INFO (#508): [gateway] created (4.2s)",
+      "[06:37:59.604] INFO (#509): Cloudflare Worker read: checking port-shape-egress-filter",
+      "[06:37:59.885] INFO (#509): Cloudflare Worker reconcile: starting port-shape-egress-filter",
+      "[06:37:59.885] INFO (#509): Cloudflare Worker reconcile: durable objects [{\"logicalId\":\"CANARY\",\"className\":\"Canary\"},{\"logicalId\":\"WORKSPACE\",\"className\":\"Workspace\"}]",
+      "[06:38:00.073] INFO (#509): Cloudflare Worker reconcile: existing durable object tags []",
+      "[06:38:00.073] INFO (#509): Cloudflare Worker reconcile: previous durable object tags []",
+      "[06:38:00.073] INFO (#509): Cloudflare Worker create: preparing bundle for port-shape-egress-filter",
+      "[06:38:00.351] INFO (#509): Cloudflare Worker create: uploading script for port-shape-egress-filter",
+      "[06:38:00.986] INFO (#509): Cloudflare Worker put: durable object reconciliation {\"oldDoClassNameByLogicalId\":{},\"currentDoClassNameByLogicalId\":{\"CANARY\":\"Canary\",\"WORKSPACE\":\"Workspace\"},\"deletedClasses\":[],\"renamedClasses\":[],\"transferredClasses\":[],\"newSqliteClasses\":[\"Canary\",\"Workspace\"]}",
+      "[06:38:06.272] INFO (#509): [worker] created — Reconciling custom domains (1) ... (6.7s)",
+      "[06:38:06.274] INFO (#747): [filter] created — Uploading worker (1.33 KB) ... (10.9s)",
+      "[06:38:06.274] INFO (#748): [gateway] created (10.9s)",
+      "[06:38:06.274] INFO (#749): [worker] created — Reconciling custom domains (1) ... (6.7s)",
+      "[06:38:06.275] INFO (#1): ",
+      "[06:38:06.275] INFO (#1): Done: 3 succeeded (10.9s)",
+      "{",
+      "  url: 'https://port-shape-egress-filter.customer0.dev',",
+      "  worker: 'port-shape-egress-filter',",
+      "  filter: 'port-shape-egress-filter-filter'",
+      "}"
+    ],
+    "at": "2026-11-06T11:38:06.464Z"
+  },
+  "smoke": {
+    "ok": true,
+    "ms": 46140,
+    "tail": [
+      "{\"slug\":\"egress-filter\",\"at\":\"2026-11-06T11:38:53.025Z\",\"agent\":\"pi-durable\",\"task\":\"wrote and ran two fetch scripts, one allowed and one blocked by the egress filter\",\"passed\":true,\"restarted\":true,\"resumed\":true,\"usd\":0.0043368899999999995,\"tokens\":6430,\"seconds\":46,\"infrastructure\":\"Every script request went through the filter Worker, which logged 4 requests (+example.com,-api.github.com,-port-shape-egress-filter.customer0.dev,-cloudflare.com). It allowed example.com and blocked 3. A canary leak attempt from the sandbox got status 403; the canary saw 0 requests from the sandbox and 1 from the control. The sandbox had no bindings.\",\"infrastructureOk\":true,\"facts\":{\"attempt\":\"HTTP 200\\n{\\\"leak\\\":403,\\\"direct\\\":403,\\\"bindings\\\":\\\"\\\"}\",\"allowedReached\":true,\"blocked\":3,\"logged\":4,\"hosts\":\"+example.com,-api.github.com,-port-shape-egress-filter.customer0.dev,-cloudflare.com\",\"canaryHits\":0,\"canaryControl\":1,\"controlStatus\":200,\"leakStatus\":\"403\",\"sandboxBindings\":\"\"},\"files\":[\"other.js\",\"title.js\"]}",
+      "PROVED Stock Pi (pi-durable) wrote and ran two fetch scripts, one allowed and one blocked by the egress filter on egress-filter, resumed after a forced restart, and spent $0.0043 by Pi's own count. Every script request went through the filter Worker, which logged 4 requests (+example.com,-api.github.com,-port-shape-egress-filter.customer0.dev,-cloudflare.com). It allowed example.com and blocked 3. A canary leak attempt from the sandbox got status 403; the canary saw 0 requests from the sandbox and 1 from the control. The sandbox had no bindings."
+    ],
+    "at": "2026-11-06T11:38:53.035Z"
+  },
+  "down": {
+    "ok": true,
+    "ms": 6779,
+    "tail": [
+      "[06:38:55.934] INFO (#1): [worker] delete",
+      "[06:38:55.934] INFO (#1): [worker/AI] unbind",
+      "[06:38:55.934] INFO (#1): [worker/AUDIT] unbind",
+      "[06:38:55.934] INFO (#1): [worker/CANARY] unbind",
+      "[06:38:55.934] INFO (#1): [worker/EGRESS] unbind",
+      "[06:38:55.934] INFO (#1): [worker/GATEWAY] unbind",
+      "[06:38:55.934] INFO (#1): [worker/LOADER] unbind",
+      "[06:38:55.934] INFO (#1): [worker/WORKSPACE] unbind",
+      "[06:38:55.934] INFO (#1): ",
+      "[06:38:55.938] INFO (#330): [worker] deleting",
+      "[06:38:55.940] INFO (#330): Cloudflare Worker delete: deleting port-shape-egress-filter",
+      "[06:38:55.941] INFO (#334): Cloudflare: using environment variables (CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN) instead of the profile.",
+      "[06:38:56.980] INFO (#330): [worker] deleted (1.0s)",
+      "[06:38:56.980] INFO (#331): [gateway] deleting",
+      "[06:38:56.981] INFO (#329): [filter] deleting",
+      "[06:38:56.982] INFO (#329): Cloudflare Worker delete: deleting port-shape-egress-filter-filter",
+      "[06:38:57.532] INFO (#329): [filter] deleted (552ms)",
+      "[06:39:00.174] INFO (#331): [gateway] deleted (3.2s)",
+      "[06:39:00.176] INFO (#1): ",
+      "[06:39:00.176] INFO (#1): Done: 3 succeeded (4.2s)"
+    ],
+    "at": "2026-11-06T11:39:02.273Z"
+  },
+  "sweep": {
+    "at": "2026-11-06T11:39:06.950Z",
+    "prefix": "port-shape-egress-filter",
+    "leftovers": {},
+    "errors": {}
+  }
+}
