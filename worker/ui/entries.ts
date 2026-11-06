@@ -3,7 +3,7 @@ import { entryDiagram, entryThumbnail } from '../../shared/entry-diagram';
 import { shapeInstallOf } from '../../shared/shape-installs';
 import { html, raw } from './html';
 import type { Viewer } from './layout';
-import { badge, linkButton, page, pageHead, postButton } from './parts';
+import { AI_COST_NOTE, badge, cents, linkButton, page, pageHead, postButton } from './parts';
 
 const PRODUCT_LABEL: Record<Entry['parts'][number]['product'], string> = {
   worker: 'Worker',
@@ -49,7 +49,7 @@ const piSection = (entry: Entry) => {
   }${
     receipt === undefined
       ? html`<p class="muted">No Pi run is recorded for this shape yet.</p>`
-      : html`<p>${`Last run: Pi ${receipt.task}. ${receipt.infrastructure}`}</p><dl><div><dt>Pi cost</dt><dd>$${receipt.usd.toFixed(4)}</dd></div><div><dt>Tokens</dt><dd>${receipt.tokens.toLocaleString('en-US')}</dd></div><div><dt>Time</dt><dd>${receipt.seconds} s</dd></div><div><dt>Restart mid-task</dt><dd>${receipt.resumed ? 'resumed' : 'did not resume'}</dd></div></dl><p class="muted">Run on <code>${receipt.on}</code>, then torn down. <a href="${REPO}/shapes/${entry.slug}">Source</a> · <a href="${REPO}/proof/pi/${entry.slug}.json">Receipt</a></p>`
+      : html`<p>${`Last run: Pi ${receipt.task}. ${receipt.infrastructure}`}</p><dl><div><dt>AI cost / run</dt><dd>${cents(receipt.usd)} <span class="muted">($${receipt.usd.toFixed(4)})</span></dd></div><div><dt>Tokens</dt><dd>${receipt.tokens.toLocaleString('en-US')}</dd></div><div><dt>Time</dt><dd>${receipt.seconds} s</dd></div><div><dt>Restart mid-task</dt><dd>${receipt.resumed ? 'resumed' : 'did not resume'}</dd></div></dl><p class="cost-note">${AI_COST_NOTE}</p><p class="muted">Run on <code>${receipt.on}</code>, then torn down. <a href="${REPO}/shapes/${entry.slug}">Source</a> · <a href="${REPO}/proof/pi/${entry.slug}.json">Receipt</a></p>`
   }</section>`;
 };
 

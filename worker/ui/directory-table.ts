@@ -1,5 +1,6 @@
 import type { Entry } from '../../shared/entry';
 import { html } from './html';
+import { cents } from './parts';
 
 type Cell = ReturnType<typeof html> | string;
 type Value = number | string | undefined;
@@ -49,9 +50,9 @@ const COLUMNS: readonly Column[] = [
   },
   {
     key: 'cost',
-    label: 'Pi cost',
+    label: 'AI cost / run',
     numeric: true,
-    cell: (entry) => (entry.build === undefined ? DASH : `$${entry.build.usd.toFixed(4)}`),
+    cell: (entry) => (entry.build === undefined ? DASH : cents(entry.build.usd)),
     value: (entry) => entry.build?.usd,
   },
   {

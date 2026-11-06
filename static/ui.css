@@ -290,6 +290,7 @@ pre { background: var(--raised); padding: 12px; border-radius: 8px; overflow: au
 .choice small { color: var(--dim); font-family: var(--mono); font-size: 11.5px; }
 
 .muted { color: var(--dim); }
+.cost-note { margin-top: 10px; padding: 10px 12px; border-left: 3px solid var(--accent, #8a7cf0); background: color-mix(in srgb, var(--accent, #8a7cf0) 8%, transparent); color: inherit; max-width: 70ch; }
 
 .foot { border-top: 1px solid var(--line); color: var(--faint); font-size: 12.5px; }
 
@@ -400,7 +401,7 @@ pre { background: var(--raised); padding: 12px; border-radius: 8px; overflow: au
 .dir-table .col-name { width: 42%; }
 .dir-table .col-isolation { width: 26%; }
 .dir-table .col-internet { width: 12%; }
-.dir-table .col-cost { width: 11%; }
+.dir-table .col-cost { width: 13%; white-space: nowrap; }
 .dir-table .col-added { width: 9%; }
 .dir-table .col-added { white-space: nowrap; color: var(--dim); }
 
@@ -415,7 +416,7 @@ pre { background: var(--raised); padding: 12px; border-radius: 8px; overflow: au
   .dir-table td.col-name { flex-basis: 100%; color: inherit; margin-bottom: 4px; }
   .dir-table td.col-isolation { flex-basis: 100%; }
   .dir-table td.col-cost, .dir-table td.col-added { font-family: var(--mono); font-size: 12px; }
-  .dir-table td.col-cost::before { content: 'Pi '; font-family: inherit; }
+  .dir-table td.col-cost::before { content: 'AI cost / run '; font-family: inherit; }
   .dir-table td.col-added::before { content: '· added '; }
   .dir-table .num { text-align: left; }
 }

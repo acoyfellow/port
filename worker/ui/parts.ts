@@ -44,6 +44,16 @@ export const pageHead = (title: string, lead: Part, actions: Part = '') =>
 export const copyField = (id: string, value: string, label: string) =>
   html`<div class="copy"><input id="${id}" readonly value="${value}" aria-label="${label}" onclick="this.select()"><button type="button" class="btn ghost" data-copy="${id}">Copy</button></div>`;
 
+export const cents = (usd: number) => {
+  const value = usd * 100;
+  if (value === 0) return '0¢';
+  if (value < 0.1) return '<0.1¢';
+  return `${value < 1 ? value.toFixed(2) : value.toFixed(1)}¢`;
+};
+
+export const AI_COST_NOTE =
+  'AI cost / run is what the AI model charged for one full test run: the words Pi sent to it and got back. It does not include the Cloudflare products the shape runs on.';
+
 export const dollars = (usd: number) => (usd < 0.01 && usd > 0 ? `$${usd.toFixed(4)}` : `$${usd.toFixed(3)}`);
 
 export const seconds = (ms: number) =>

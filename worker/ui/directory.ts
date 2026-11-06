@@ -39,7 +39,7 @@ export const homePage = (viewer: Viewer, sort: Sort = { key: '', dir: 'asc' }) =
     title: 'Agent infra for your Cloudflare account',
     viewer,
     section: 'home',
-    body: html`${howItWorks}<section id="directory"><div class="section-head"><div><h2>Directory</h2><p>Every shape runs stock Pi. Pi cost is from each shape’s last test run. Open a shape for the full details.</p></div></div>${directoryTable(ENTRIES, sort)}</section></div>`,
+    body: html`${howItWorks}<section id="directory"><div class="section-head"><div><h2>Directory</h2><p>Every shape runs stock Pi. Open a shape for the full details.</p><p class="cost-note"><strong>AI cost / run</strong> is what the AI model charged for one full test of the shape (100¢ = $1). It does not include the Cloudflare products the shape runs on.</p></div></div>${directoryTable(ENTRIES, sort)}</section></div>`,
   });
 
 export const fleetPage = (viewer: Viewer) =>
