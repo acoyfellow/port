@@ -3,15 +3,20 @@ import { SHAPE as chat_with_sandbox } from '../../shapes/chat-with-sandbox/shape
 import { SHAPE as container_per_thread } from '../../shapes/container-per-thread/shape';
 import { SHAPE as durable_session } from '../../shapes/durable-session/shape';
 import { SHAPE as egress_filter } from '../../shapes/egress-filter/shape';
+import { SHAPE as flight_recorder } from '../../shapes/flight-recorder/shape';
 import { SHAPE as gadget_workspace } from '../../shapes/gadget-workspace/shape';
 import { SHAPE as git_gatekeeper } from '../../shapes/git-gatekeeper/shape';
 import { SHAPE as isolate_agents } from '../../shapes/isolate-agents/shape';
 import { SHAPE as person_with_computer } from '../../shapes/person-with-computer/shape';
+import { SHAPE as safe_sql } from '../../shapes/safe-sql/shape';
+import { SHAPE as scheduled_agent } from '../../shapes/scheduled-agent/shape';
 import { SHAPE as sealed_box } from '../../shapes/sealed-box/shape';
 import { SHAPE as self_editing_app } from '../../shapes/self-editing-app/shape';
 import { SHAPE as self_observe } from '../../shapes/self-observe/shape';
 import { SHAPE as shared_container } from '../../shapes/shared-container/shape';
 import { SHAPE as snapshot_rollback } from '../../shapes/snapshot-rollback/shape';
+import { SHAPE as vector_memory } from '../../shapes/vector-memory/shape';
+import { SHAPE as workflow_plan } from '../../shapes/workflow-plan/shape';
 import type { Entry, ShapeBuild } from '../entry.ts';
 
 const BUILDS: Readonly<Record<string, ShapeBuild>> = {
@@ -63,6 +68,16 @@ const BUILDS: Readonly<Record<string, ShapeBuild>> = {
     resumed: true,
     on: '2026-11-06',
   },
+  'flight-recorder': {
+    task: 'wrote and checked fizzbuzz.py and NOTES.md',
+    infrastructure:
+      'Pi made 4 tool calls (write,write,read,read). A separate Tail Worker, which the agent cannot reach or write to, recorded 4 of them from 13 traces.',
+    usd: 0.0018873700000000002,
+    tokens: 2004,
+    seconds: 34,
+    resumed: true,
+    on: '2026-11-06',
+  },
   'gadget-workspace': {
     task: 'built a notes gadget in a facet, shared a note through the gatekeeper, and the email was delivered only after a valid passkey signature',
     infrastructure:
@@ -102,6 +117,26 @@ const BUILDS: Readonly<Record<string, ShapeBuild>> = {
     seconds: 134,
     resumed: true,
     on: '2026-10-31',
+  },
+  'safe-sql': {
+    task: 'answered a question from D1 and was refused when it tried to change the data',
+    infrastructure:
+      "Pi answered from D1 through a read-only query Worker. Its write attempt was refused (UPDATE orders SET total_cents = 0 WHERE customer_id = (SELECT id FROM customers WHERE name = 'Grace');), and a direct UPDATE and DROP TABLE were refused too, by reading SQLite's query plan before running anything. Afterwards the database still had 4 customers, 7 orders and 20950 cents in total, as seeded. The agent's Worker has no D1 binding.",
+    usd: 0.0048658700000000004,
+    tokens: 7959,
+    seconds: 48,
+    resumed: true,
+    on: '2026-11-06',
+  },
+  'scheduled-agent': {
+    task: 'set up a job, then ran it twice on its own, woken by a Durable Object alarm',
+    infrastructure:
+      'After the first task, no request was sent to the agent. A separate clock Durable Object woke it 2 times by alarm, 20 s apart, and Pi wrote 2 tick lines to log.txt (tick 1 2026-11-06T13:35:05.271Z | tick 2 2026-11-06T13:35:25.321Z).',
+    usd: 0.0015176499999999997,
+    tokens: 3360,
+    seconds: 67,
+    resumed: true,
+    on: '2026-11-06',
   },
   'sealed-box': {
     task: 'wrote and checked fizzbuzz.py and NOTES.md',
@@ -153,6 +188,26 @@ const BUILDS: Readonly<Record<string, ShapeBuild>> = {
     resumed: true,
     on: '2026-11-06',
   },
+  'vector-memory': {
+    task: 'stored facts in Vectorize; a fresh session with no shared chat recalled them',
+    infrastructure:
+      "Session A stored 3 facts in Vectorize. Session B, a separate Durable Object that never saw A's chat and stored nothing itself, recalled 4 of A's facts by meaning (the project database is D1 | my project code name is ORCA-34827 | I prefer short answers) and answered with the code name and the database.",
+    usd: 0.00277328,
+    tokens: 5961,
+    seconds: 127,
+    resumed: true,
+    on: '2026-11-06',
+  },
+  'workflow-plan': {
+    task: 'planned three steps, then a Workflow ran each step as its own durable step with one forced retry',
+    infrastructure:
+      'A Cloudflare Workflow ran Pi\'s 3-step plan as durable steps and finished "complete". Step 2 failed once on purpose and the Workflow retried it on its own. Attempts: 1:ran,2:failed,2:ran,3:ran. No step\'s work ran twice.',
+    usd: 0.00144481,
+    tokens: 1845,
+    seconds: 63,
+    resumed: true,
+    on: '2026-11-06',
+  },
 };
 
 export const ENTRIES: readonly Entry[] = [
@@ -169,5 +224,10 @@ export const ENTRIES: readonly Entry[] = [
   { ...gadget_workspace, added: '2026-11-04', build: BUILDS['gadget-workspace'] },
   { ...egress_filter, added: '2026-11-06', build: BUILDS['egress-filter'] },
   { ...snapshot_rollback, added: '2026-11-06', build: BUILDS['snapshot-rollback'] },
+  { ...scheduled_agent, added: '2026-11-06', build: BUILDS['scheduled-agent'] },
+  { ...flight_recorder, added: '2026-11-06', build: BUILDS['flight-recorder'] },
+  { ...safe_sql, added: '2026-11-06', build: BUILDS['safe-sql'] },
+  { ...workflow_plan, added: '2026-11-06', build: BUILDS['workflow-plan'] },
+  { ...vector_memory, added: '2026-11-06', build: BUILDS['vector-memory'] },
   { ...self_observe, added: '2026-10-30', build: BUILDS['self-observe'] },
 ];

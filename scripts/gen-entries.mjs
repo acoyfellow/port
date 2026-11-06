@@ -19,6 +19,11 @@ const order = [
   'gadget-workspace',
   'egress-filter',
   'snapshot-rollback',
+  'scheduled-agent',
+  'flight-recorder',
+  'safe-sql',
+  'workflow-plan',
+  'vector-memory',
 ];
 const rank = (slug) => order.indexOf(slug) + 1 || 99;
 

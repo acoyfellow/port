@@ -1,0 +1,20 @@
+{
+  "slug": "scheduled-agent",
+  "at": "2026-11-06T13:35:28.408Z",
+  "agent": "pi-durable",
+  "task": "set up a job, then ran it twice on its own, woken by a Durable Object alarm",
+  "passed": true,
+  "restarted": true,
+  "resumed": true,
+  "usd": 0.0015176499999999997,
+  "tokens": 3360,
+  "seconds": 67,
+  "infrastructure": "After the first task, no request was sent to the agent. A separate clock Durable Object woke it 2 times by alarm, 20 s apart, and Pi wrote 2 tick lines to log.txt (tick 1 2026-11-06T13:35:05.271Z | tick 2 2026-11-06T13:35:25.321Z).",
+  "infrastructureOk": true,
+  "facts": {
+    "scheduledIn": 20000,
+    "scheduledRuns": 2,
+    "loggedTicks": 2,
+    "log": "tick 1 2026-11-06T13:35:05.271Z | tick 2 2026-11-06T13:35:25.321Z"
+  }
+}

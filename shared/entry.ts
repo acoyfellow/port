@@ -13,6 +13,7 @@ export type Part = {
     | 'ai-gateway'
     | 'kv'
     | 'd1'
+    | 'vectorize'
     | 'r2'
     | 'queue'
     | 'workflow'

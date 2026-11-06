@@ -1,0 +1,72 @@
+{
+  "slug": "flight-recorder",
+  "up": {
+    "ok": true,
+    "ms": 13408,
+    "tail": [
+      "[08:37:20.190] INFO (#454): [gateway] created (4.7s)",
+      "[08:37:20.190] INFO (#455): Cloudflare Worker read: checking port-shape-flight-recorder",
+      "[08:37:20.385] INFO (#455): Cloudflare Worker reconcile: starting port-shape-flight-recorder",
+      "[08:37:20.385] INFO (#455): Cloudflare Worker reconcile: durable objects [{\"logicalId\":\"SESSION\",\"className\":\"Session\"}]",
+      "[08:37:20.601] INFO (#455): Cloudflare Worker reconcile: existing durable object tags []",
+      "[08:37:20.601] INFO (#455): Cloudflare Worker reconcile: previous durable object tags []",
+      "[08:37:20.601] INFO (#455): Cloudflare Worker create: preparing bundle for port-shape-flight-recorder",
+      "[08:37:20.899] INFO (#455): Cloudflare Worker create: uploading script for port-shape-flight-recorder",
+      "[08:37:21.691] INFO (#455): Cloudflare Worker put: durable object reconciliation {\"oldDoClassNameByLogicalId\":{},\"currentDoClassNameByLogicalId\":{\"SESSION\":\"Session\"},\"deletedClasses\":[],\"renamedClasses\":[],\"transferredClasses\":[],\"newSqliteClasses\":[\"Session\"]}",
+      "[08:37:26.698] INFO (#455): [worker] created — Reconciling custom domains (1) ... (6.5s)",
+      "[08:37:26.700] INFO (#661): [recorder] created — Uploading worker (2.00 KB) ... (11.2s)",
+      "[08:37:26.700] INFO (#662): [gateway] created (11.2s)",
+      "[08:37:26.700] INFO (#663): [worker] created — Reconciling custom domains (1) ... (6.5s)",
+      "[08:37:26.701] INFO (#1): ",
+      "[08:37:26.701] INFO (#1): Done: 3 succeeded (11.2s)",
+      "{",
+      "  url: 'https://port-shape-flight-recorder.customer0.dev',",
+      "  worker: 'port-shape-flight-recorder',",
+      "  recorder: 'port-shape-flight-recorder-recorder'",
+      "}"
+    ],
+    "at": "2026-11-06T13:37:26.993Z"
+  },
+  "smoke": {
+    "ok": true,
+    "ms": 34557,
+    "tail": [
+      "{\"slug\":\"flight-recorder\",\"at\":\"2026-11-06T13:38:02.055Z\",\"agent\":\"pi-durable\",\"task\":\"wrote and checked fizzbuzz.py and NOTES.md\",\"passed\":true,\"restarted\":true,\"resumed\":true,\"usd\":0.0018873700000000002,\"tokens\":2004,\"seconds\":34,\"infrastructure\":\"Pi made 4 tool calls (write,write,read,read). A separate Tail Worker, which the agent cannot reach or write to, recorded 4 of them from 13 traces.\",\"infrastructureOk\":true,\"facts\":{\"piToolCalls\":4,\"recordedCalls\":4,\"piTools\":\"write,write,read,read\",\"recordedTools\":\"write,write,read,read\",\"traces\":13,\"agentHasRecorder\":false},\"files\":[\"NOTES.md\",\"fizzbuzz.py\"]}",
+      "PROVED Stock Pi (pi-durable) wrote and checked fizzbuzz.py and NOTES.md on flight-recorder, resumed after a forced restart, and spent $0.0019 by Pi's own count. Pi made 4 tool calls (write,write,read,read). A separate Tail Worker, which the agent cannot reach or write to, recorded 4 of them from 13 traces."
+    ],
+    "at": "2026-11-06T13:38:02.063Z"
+  },
+  "down": {
+    "ok": true,
+    "ms": 5608,
+    "tail": [
+      "[08:38:03.995] INFO (#1): [gateway] delete",
+      "[08:38:03.995] INFO (#1): [recorder] delete",
+      "[08:38:03.995] INFO (#1): [recorder/TAPE] unbind",
+      "[08:38:03.995] INFO (#1): [worker] delete",
+      "[08:38:03.995] INFO (#1): [worker/AI] unbind",
+      "[08:38:03.995] INFO (#1): [worker/GATEWAY] unbind",
+      "[08:38:03.995] INFO (#1): [worker/READER] unbind",
+      "[08:38:03.995] INFO (#1): [worker/SESSION] unbind",
+      "[08:38:03.995] INFO (#1): ",
+      "[08:38:03.996] INFO (#327): [worker] deleting",
+      "[08:38:03.997] INFO (#327): Cloudflare Worker delete: deleting port-shape-flight-recorder",
+      "[08:38:03.998] INFO (#331): Cloudflare: using environment variables (CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN) instead of the profile.",
+      "[08:38:05.272] INFO (#327): [worker] deleted (1.3s)",
+      "[08:38:05.272] INFO (#328): [recorder] deleting",
+      "[08:38:05.272] INFO (#326): [gateway] deleting",
+      "[08:38:05.273] INFO (#328): Cloudflare Worker delete: deleting port-shape-flight-recorder-recorder",
+      "[08:38:05.816] INFO (#328): [recorder] deleted (544ms)",
+      "[08:38:08.000] INFO (#326): [gateway] deleted (2.7s)",
+      "[08:38:08.002] INFO (#1): ",
+      "[08:38:08.002] INFO (#1): Done: 3 succeeded (4.0s)"
+    ],
+    "at": "2026-11-06T13:38:09.874Z"
+  },
+  "sweep": {
+    "at": "2026-11-06T13:38:14.621Z",
+    "prefix": "port-shape-flight-recorder",
+    "leftovers": {},
+    "errors": {}
+  }
+}

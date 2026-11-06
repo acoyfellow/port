@@ -1,0 +1,72 @@
+{
+  "slug": "vector-memory",
+  "up": {
+    "ok": true,
+    "ms": 14837,
+    "tail": [
+      "[08:50:26.641] INFO (#409): [worker] creating",
+      "[08:50:26.641] INFO (#408): [gateway] created (4.8s)",
+      "[08:50:26.642] INFO (#409): Cloudflare Worker read: checking port-shape-vector-memory",
+      "[08:50:26.839] INFO (#409): Cloudflare Worker reconcile: starting port-shape-vector-memory",
+      "[08:50:26.839] INFO (#409): Cloudflare Worker reconcile: durable objects [{\"logicalId\":\"SESSION\",\"className\":\"Session\"}]",
+      "[08:50:27.057] INFO (#409): Cloudflare Worker reconcile: existing durable object tags []",
+      "[08:50:27.057] INFO (#409): Cloudflare Worker reconcile: previous durable object tags []",
+      "[08:50:27.058] INFO (#409): Cloudflare Worker create: preparing bundle for port-shape-vector-memory",
+      "[08:50:27.378] INFO (#409): Cloudflare Worker create: uploading script for port-shape-vector-memory",
+      "[08:50:28.164] INFO (#409): Cloudflare Worker put: durable object reconciliation {\"oldDoClassNameByLogicalId\":{},\"currentDoClassNameByLogicalId\":{\"SESSION\":\"Session\"},\"deletedClasses\":[],\"renamedClasses\":[],\"transferredClasses\":[],\"newSqliteClasses\":[\"Session\"]}",
+      "[08:50:34.154] INFO (#409): [worker] created — Reconciling custom domains (1) ... (7.5s)",
+      "[08:50:34.156] INFO (#567): [memory] created (12.3s)",
+      "[08:50:34.156] INFO (#568): [gateway] created (12.3s)",
+      "[08:50:34.156] INFO (#569): [worker] created — Reconciling custom domains (1) ... (7.5s)",
+      "[08:50:34.157] INFO (#1): ",
+      "[08:50:34.157] INFO (#1): Done: 3 succeeded (12.3s)",
+      "{",
+      "  url: 'https://port-shape-vector-memory.customer0.dev',",
+      "  worker: 'port-shape-vector-memory'",
+      "}"
+    ],
+    "at": "2026-11-06T13:50:34.315Z"
+  },
+  "smoke": {
+    "ok": true,
+    "ms": 127492,
+    "tail": [
+      "{\"slug\":\"vector-memory\",\"at\":\"2026-11-06T13:52:42.175Z\",\"agent\":\"pi-durable\",\"task\":\"stored facts in Vectorize; a fresh session with no shared chat recalled them\",\"passed\":true,\"restarted\":true,\"resumed\":true,\"usd\":0.00277328,\"tokens\":5961,\"seconds\":127,\"infrastructure\":\"Session A stored 3 facts in Vectorize. Session B, a separate Durable Object that never saw A's chat and stored nothing itself, recalled 4 of A's facts by meaning (the project database is D1 | my project code name is ORCA-34827 | I prefer short answers) and answered with the code name and the database.\",\"infrastructureOk\":true,\"facts\":{\"session\":\"<redacted>\",\"stored\":3,\"storedFacts\":\"my project code name is ORCA-34827 | the project database is D1 | I prefer short answers\",\"recalled\":0,\"recalledFromOther\":0,\"recalledFacts\":\"\",\"searches\":0,\"firstStored\":3,\"firstSession\":\"<redacted>\",\"secondSession\":\"<redacted>\",\"secondStatus\":\"done\",\"secondStored\":0,\"secondRecalledFromOther\":4,\"secondRecalledFacts\":\"the project database is D1 | my project code name is ORCA-34827 | I prefer short answers\",\"secondSearches\":2,\"searchableBeforeB\":3,\"indexWaitMs\":64350,\"secondAnswer\":\"- Project code name: ORCA-34827\\n- Database: D1\\n\",\"secondAnswerHasCode\":true,\"secondAnswerHasDatabase\":true},\"files\":[]}",
+      "PROVED Stock Pi (pi-durable) stored facts in Vectorize; a fresh session with no shared chat recalled them on vector-memory, resumed after a forced restart, and spent $0.0028 by Pi's own count. Session A stored 3 facts in Vectorize. Session B, a separate Durable Object that never saw A's chat and stored nothing itself, recalled 4 of A's facts by meaning (the project database is D1 | my project code name is ORCA-34827 | I prefer short answers) and answered with the code name and the database."
+    ],
+    "at": "2026-11-06T13:52:42.183Z"
+  },
+  "down": {
+    "ok": true,
+    "ms": 6348,
+    "tail": [
+      "[08:52:44.381] INFO (#1): Plan ready (771ms)",
+      "[08:52:44.382] INFO (#1): Plan: 3 to delete, 4 binding changes",
+      "[08:52:44.382] INFO (#1): [gateway] delete",
+      "[08:52:44.382] INFO (#1): [memory] delete",
+      "[08:52:44.382] INFO (#1): [worker] delete",
+      "[08:52:44.382] INFO (#1): [worker/AI] unbind",
+      "[08:52:44.382] INFO (#1): [worker/GATEWAY] unbind",
+      "[08:52:44.382] INFO (#1): [worker/MEMORY] unbind",
+      "[08:52:44.382] INFO (#1): [worker/SESSION] unbind",
+      "[08:52:44.382] INFO (#1): ",
+      "[08:52:44.384] INFO (#325): [worker] deleting",
+      "[08:52:44.385] INFO (#325): Cloudflare Worker delete: deleting port-shape-vector-memory",
+      "[08:52:44.386] INFO (#329): Cloudflare: using environment variables (CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN) instead of the profile.",
+      "[08:52:45.517] INFO (#325): [worker] deleted (1.1s)",
+      "[08:52:45.518] INFO (#326): [memory] deleting",
+      "[08:52:45.518] INFO (#324): [gateway] deleting",
+      "[08:52:47.028] INFO (#326): [memory] deleted (1.5s)",
+      "[08:52:48.791] INFO (#324): [gateway] deleted (3.3s)",
+      "[08:52:48.793] INFO (#1): ",
+      "[08:52:48.793] INFO (#1): Done: 3 succeeded (4.4s)"
+    ],
+    "at": "2026-11-06T13:52:50.801Z"
+  },
+  "sweep": {
+    "at": "2026-11-06T13:52:54.680Z",
+    "prefix": "port-shape-vector-memory",
+    "leftovers": {},
+    "errors": {}
+  }
+}

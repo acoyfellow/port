@@ -90,7 +90,15 @@ const SHAPES = [
   'egress-filter',
   'egress-filter/filter',
   'snapshot-rollback',
+  'scheduled-agent',
+  'flight-recorder',
+  'flight-recorder/recorder',
+  'safe-sql',
+  'safe-sql/query',
+  'workflow-plan',
+  'vector-memory',
 ];
+const SEEDS = { 'safe-sql': join(root, 'shapes', 'safe-sql', 'migrations', '0001_shop.sql') };
 const shapeCode = {};
 for (const slug of SHAPES) {
   const [shapeSlug, part] = slug.split('/');
@@ -121,7 +129,7 @@ const shapeVersions = Object.fromEntries(
 );
 writeFileSync(
   join(out, 'shape-bundles.ts'),
-  `export const SHAPE_VERSIONS: Record<string, string> = ${JSON.stringify(shapeVersions)};\n`,
+  `export const SHAPE_VERSIONS: Record<string, string> = ${JSON.stringify(shapeVersions)};\nexport const SHAPE_SEEDS: Record<string, string> = ${JSON.stringify(Object.fromEntries(Object.entries(SEEDS).map(([slug, file]) => [slug, readFileSync(file, 'utf8')])))};\n`,
 );
 
 console.log(`fleet bundle ${version} ${(code.length / 1024).toFixed(0)} KB, ${tasks.length} tasks`);

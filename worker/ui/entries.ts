@@ -14,6 +14,7 @@ const PRODUCT_LABEL: Record<Entry['parts'][number]['product'], string> = {
   'ai-gateway': 'AI Gateway',
   kv: 'KV',
   d1: 'D1',
+  vectorize: 'Vectorize',
   r2: 'R2',
   queue: 'Queues',
   workflow: 'Workflows',

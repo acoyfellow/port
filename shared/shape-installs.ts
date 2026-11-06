@@ -13,6 +13,9 @@ export type ShapeBinding =
   | { readonly kind: 'ai'; readonly binding: string }
   | { readonly kind: 'artifacts'; readonly binding: string }
   | { readonly kind: 'secret'; readonly binding: string }
+  | { readonly kind: 'd1'; readonly binding: string; readonly seed: string }
+  | { readonly kind: 'vectorize'; readonly binding: string; readonly dimensions: number }
+  | { readonly kind: 'workflow'; readonly binding: string; readonly className: string }
   | {
       readonly kind: 'service';
       readonly binding: string;
@@ -24,6 +27,7 @@ export type ShapePart = {
   readonly part: string;
   readonly bindings: readonly ShapeBinding[];
   readonly repos?: readonly string[];
+  readonly tailOfMain?: boolean;
 };
 
 export type ShapeInstall = {
@@ -97,6 +101,29 @@ export const SHAPE_INSTALLS: readonly ShapeInstall[] = [
     ]),
     parts: [{ part: 'filter', bindings: [DO('LOG', 'Log')] }],
   },
+  shape('scheduled-agent', [DO('AGENT', 'Agent'), DO('CLOCK', 'Clock')]),
+  {
+    ...shape('flight-recorder', [
+      DO('SESSION', 'Session'),
+      { kind: 'service', binding: 'READER', part: 'recorder', entrypoint: 'Reader' },
+    ]),
+    parts: [{ part: 'recorder', bindings: [DO('TAPE', 'Tape')], tailOfMain: true }],
+  },
+  {
+    ...shape('safe-sql', [
+      DO('ANALYST', 'Analyst'),
+      { kind: 'service', binding: 'SQL', part: 'query', entrypoint: 'ReadOnly' },
+    ]),
+    parts: [{ part: 'query', bindings: [{ kind: 'd1', binding: 'DB', seed: 'safe-sql' }] }],
+  },
+  shape('workflow-plan', [
+    DO('PLANNER', 'Planner'),
+    { kind: 'workflow', binding: 'PLAN', className: 'PlanWorkflow' },
+  ]),
+  shape('vector-memory', [
+    DO('SESSION', 'Session'),
+    { kind: 'vectorize', binding: 'MEMORY', dimensions: 768 },
+  ]),
 ];
 
 export const shapeInstallOf = (slug: string) => SHAPE_INSTALLS.find((each) => each.slug === slug);
@@ -113,6 +140,14 @@ export type MetadataBinding =
   | { readonly type: 'plain_text'; readonly name: string; readonly text: string }
   | { readonly type: 'secret_text'; readonly name: string; readonly text: string }
   | { readonly type: 'artifacts'; readonly name: string; readonly namespace: string }
+  | { readonly type: 'd1'; readonly name: string; readonly id: string }
+  | { readonly type: 'vectorize'; readonly name: string; readonly index_name: string }
+  | {
+      readonly type: 'workflow';
+      readonly name: string;
+      readonly workflow_name: string;
+      readonly class_name: string;
+    }
   | {
       readonly type: 'service';
       readonly name: string;
@@ -124,6 +159,7 @@ export type PartNames = {
   readonly self: string;
   readonly partName: (part: string) => string;
   readonly secret: string;
+  readonly databaseId?: string;
 };
 
 const metadataBinding = (binding: ShapeBinding, names: PartNames): MetadataBinding => {
@@ -131,6 +167,16 @@ const metadataBinding = (binding: ShapeBinding, names: PartNames): MetadataBindi
     return { type: 'durable_object_namespace', name: binding.binding, class_name: binding.className };
   if (binding.kind === 'worker-loader') return { type: 'worker_loader', name: binding.binding };
   if (binding.kind === 'secret') return { type: 'secret_text', name: binding.binding, text: names.secret };
+  if (binding.kind === 'd1') return { type: 'd1', name: binding.binding, id: names.databaseId ?? '' };
+  if (binding.kind === 'vectorize')
+    return { type: 'vectorize', name: binding.binding, index_name: names.self };
+  if (binding.kind === 'workflow')
+    return {
+      type: 'workflow',
+      name: binding.binding,
+      workflow_name: names.self,
+      class_name: binding.className,
+    };
   if (binding.kind === 'artifacts')
     return { type: 'artifacts', name: binding.binding, namespace: names.self };
   if (binding.kind === 'service')
@@ -182,6 +228,9 @@ export const shapeWorkerMetadata = (
     { type: 'secret_text', name: 'PORT_KEY', text: key },
   ] satisfies readonly MetadataBinding[],
   containers: containerBindings(install).map((binding) => ({ class_name: binding.className })),
+  tail_consumers: (install.parts ?? [])
+    .filter((part) => part.tailOfMain === true)
+    .map((part) => ({ service: names.partName(part.part) })),
   migrations: { new_tag: 'v1', new_sqlite_classes: durableClasses(install) },
   observability: { enabled: true },
 });

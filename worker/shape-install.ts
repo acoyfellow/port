@@ -6,13 +6,21 @@ import {
   type ShapeInstall,
   shapeWorkerMetadata,
 } from '../shared/shape-installs';
-import { SHAPE_VERSIONS } from './generated/shape-bundles';
+import { SHAPE_SEEDS, SHAPE_VERSIONS } from './generated/shape-bundles';
 import { copyImage, deleteImage, type RegistryAuth } from './registry';
 
 const API = 'https://api.cloudflare.com/client/v4';
 
 export type ShapeResource = {
-  readonly kind: 'worker' | 'ai-gateway' | 'container' | 'registry-image' | 'artifacts-namespace';
+  readonly kind:
+    | 'worker'
+    | 'ai-gateway'
+    | 'container'
+    | 'registry-image'
+    | 'artifacts-namespace'
+    | 'd1'
+    | 'vectorize'
+    | 'workflow';
   readonly name: string;
   readonly id?: string;
   readonly existsAfterInstall?: boolean;
@@ -181,7 +189,49 @@ export const installShape = async (
       }
     }
 
-    const names: PartNames = { self: name, partName: (part) => `${name}-${part}`, secret: randomHex(24) };
+    const everyBinding = [...install.bindings, ...(install.parts ?? []).flatMap((part) => part.bindings)];
+    let databaseId: string | undefined;
+    for (const binding of everyBinding) {
+      if (binding.kind === 'd1') {
+        const database = must(
+          'create D1 database',
+          await cloudflare(token, `/accounts/${accountId}/d1/database`, {
+            method: 'POST',
+            body: JSON.stringify({ name }),
+          }),
+        );
+        const uuid = field(database, 'uuid');
+        if (typeof uuid !== 'string') throw new Error('create D1 database: no id returned');
+        databaseId = uuid;
+        created.push({ kind: 'd1', name, id: uuid });
+        must(
+          'seed D1 database',
+          await cloudflare(token, `/accounts/${accountId}/d1/database/${uuid}/query`, {
+            method: 'POST',
+            body: JSON.stringify({ sql: SHAPE_SEEDS[binding.seed] ?? '' }),
+          }),
+        );
+        log.push(`created and seeded D1 database ${name}`);
+      }
+      if (binding.kind === 'vectorize') {
+        must(
+          'create Vectorize index',
+          await cloudflare(token, `/accounts/${accountId}/vectorize/v2/indexes`, {
+            method: 'POST',
+            body: JSON.stringify({ name, config: { dimensions: binding.dimensions, metric: 'cosine' } }),
+          }),
+        );
+        created.push({ kind: 'vectorize', name });
+        log.push(`created Vectorize index ${name}`);
+      }
+    }
+
+    const names: PartNames = {
+      self: name,
+      partName: (part) => `${name}-${part}`,
+      secret: randomHex(24),
+      ...(databaseId === undefined ? {} : { databaseId }),
+    };
     for (const part of install.parts ?? []) {
       if (part.bindings.some((binding) => binding.kind === 'artifacts')) {
         for (const repo of part.repos ?? [])
@@ -221,6 +271,19 @@ export const installShape = async (
     );
     created.push({ kind: 'worker', name });
     log.push(`uploaded Worker ${name}`);
+
+    for (const binding of install.bindings)
+      if (binding.kind === 'workflow') {
+        must(
+          'create Workflow',
+          await cloudflare(token, `/accounts/${accountId}/workflows/${name}`, {
+            method: 'PUT',
+            body: JSON.stringify({ class_name: binding.className, script_name: name }),
+          }),
+        );
+        created.push({ kind: 'workflow', name });
+        log.push(`created Workflow ${name}`);
+      }
 
     for (const box of boxes) {
       const namespace = await namespaceIdOf(token, accountId, name, box.className);
@@ -282,6 +345,12 @@ export const shapeResourceExists = async (token: string, accountId: string, reso
   }
   if (resource.kind === 'artifacts-namespace')
     return (await cloudflare(token, `/accounts/${accountId}/artifacts/namespaces/${resource.name}`)).ok;
+  if (resource.kind === 'd1')
+    return (await cloudflare(token, `/accounts/${accountId}/d1/database/${resource.id ?? resource.name}`)).ok;
+  if (resource.kind === 'vectorize')
+    return (await cloudflare(token, `/accounts/${accountId}/vectorize/v2/indexes/${resource.name}`)).ok;
+  if (resource.kind === 'workflow')
+    return (await cloudflare(token, `/accounts/${accountId}/workflows/${resource.name}`)).ok;
   const auth = await registryAuth(token, accountId);
   const tags = await fetch(`https://registry.cloudflare.com/v2/${resource.name}/tags/list`, {
     headers: { authorization: `Basic ${auth.basic}` },
@@ -296,6 +365,16 @@ export const shapeResourceExists = async (token: string, accountId: string, reso
 };
 
 const removeResource = async (token: string, accountId: string, resource: ShapeResource) => {
+  if (resource.kind === 'd1')
+    return cloudflare(token, `/accounts/${accountId}/d1/database/${resource.id ?? resource.name}`, {
+      method: 'DELETE',
+    });
+  if (resource.kind === 'vectorize')
+    return cloudflare(token, `/accounts/${accountId}/vectorize/v2/indexes/${resource.name}`, {
+      method: 'DELETE',
+    });
+  if (resource.kind === 'workflow')
+    return cloudflare(token, `/accounts/${accountId}/workflows/${resource.name}`, { method: 'DELETE' });
   if (resource.kind === 'worker')
     return cloudflare(token, `/accounts/${accountId}/workers/scripts/${resource.name}?force=true`, {
       method: 'DELETE',
@@ -343,9 +422,12 @@ export const teardownShape = async (
 ): Promise<ShapeInstallRecord> => {
   const log = [...record.log];
   const order: ShapeResource['kind'][] = [
+    'workflow',
     'container',
     'worker',
     'artifacts-namespace',
+    'd1',
+    'vectorize',
     'registry-image',
     'ai-gateway',
   ];

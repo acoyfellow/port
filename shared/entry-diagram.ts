@@ -110,6 +110,7 @@ const THUMB_PRODUCT: Readonly<Record<Part['product'], string>> = {
   'ai-gateway': 'model',
   kv: 'store',
   d1: 'store',
+  vectorize: 'store',
   r2: 'store',
   queue: 'store',
   browser: 'isolate',

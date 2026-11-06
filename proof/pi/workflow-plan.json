@@ -1,0 +1,24 @@
+{
+  "slug": "workflow-plan",
+  "at": "2026-11-06T13:38:31.391Z",
+  "agent": "pi-durable",
+  "task": "planned three steps, then a Workflow ran each step as its own durable step with one forced retry",
+  "passed": true,
+  "restarted": true,
+  "resumed": true,
+  "usd": 0.00144481,
+  "tokens": 1845,
+  "seconds": 63,
+  "infrastructure": "A Cloudflare Workflow ran Pi's 3-step plan as durable steps and finished \"complete\". Step 2 failed once on purpose and the Workflow retried it on its own. Attempts: 1:ran,2:failed,2:ran,3:ran. No step's work ran twice.",
+  "infrastructureOk": true,
+  "facts": {
+    "workflow": "complete",
+    "planSteps": 3,
+    "completedSteps": 3,
+    "failedOnPurpose": 1,
+    "retriedStep": true,
+    "maxRunsPerStep": 1,
+    "attempts": "1:ran,2:failed,2:ran,3:ran",
+    "workflowError": ""
+  }
+}

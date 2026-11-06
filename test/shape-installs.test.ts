@@ -30,6 +30,8 @@ const declared = (slug: string) => {
       /([A-Z_]+): (durableObject|container|workerLoader|workersAi)<?[A-Za-z]*>?\(([^)]*)\)/g,
     ),
     ...source.matchAll(/([A-Z_]+): Cloudflare\.(WorkerEntrypoint)\(([^)]*)\)/g),
+    ...source.matchAll(/([A-Z_]+): Cloudflare\.(Workflow)\(('[A-Za-z]+')/g),
+    ...[...source.matchAll(/([A-Z_]+): memory,?$/gm)].map((match) => [match[0], match[1], 'vectorize', '']),
   ];
   return bindings.map(([, binding, kind, args]) => ({
     binding,
@@ -65,13 +67,17 @@ describe('shape install recipes', () => {
           ai: 'workersAi',
           service: 'WorkerEntrypoint',
           artifacts: 'artifacts',
+          workflow: 'Workflow',
+          vectorize: 'vectorize',
         }[binding.kind],
         className:
-          binding.kind === 'durable-object' || binding.kind === 'container'
+          binding.kind === 'durable-object' || binding.kind === 'container' || binding.kind === 'workflow'
             ? binding.className
-            : binding.kind === 'service'
-              ? binding.entrypoint
-              : binding.binding,
+            : binding.kind === 'vectorize'
+              ? undefined
+              : binding.kind === 'service'
+                ? binding.entrypoint
+                : binding.binding,
       }));
       expect(ours.sort((a, b) => a.binding.localeCompare(b.binding))).toEqual(
         declared(slug).sort((a, b) => a.binding.localeCompare(b.binding)),

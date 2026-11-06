@@ -1,0 +1,22 @@
+{
+  "slug": "flight-recorder",
+  "at": "2026-11-06T13:38:02.055Z",
+  "agent": "pi-durable",
+  "task": "wrote and checked fizzbuzz.py and NOTES.md",
+  "passed": true,
+  "restarted": true,
+  "resumed": true,
+  "usd": 0.0018873700000000002,
+  "tokens": 2004,
+  "seconds": 34,
+  "infrastructure": "Pi made 4 tool calls (write,write,read,read). A separate Tail Worker, which the agent cannot reach or write to, recorded 4 of them from 13 traces.",
+  "infrastructureOk": true,
+  "facts": {
+    "piToolCalls": 4,
+    "recordedCalls": 4,
+    "piTools": "write,write,read,read",
+    "recordedTools": "write,write,read,read",
+    "traces": 13,
+    "agentHasRecorder": false
+  }
+}

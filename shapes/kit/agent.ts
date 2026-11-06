@@ -146,6 +146,15 @@ const workspaceOf = async (env: ExecutionEnv | undefined) => {
   return files;
 };
 
+const toolCallParts = (message: unknown): string[] => {
+  const content =
+    typeof message === 'object' && message !== null ? Reflect.get(message, 'content') : undefined;
+  if (Reflect.get(Object(message), 'role') !== 'assistant' || !Array.isArray(content)) return [];
+  return content.flatMap((part: unknown) =>
+    Reflect.get(Object(part), 'type') === 'toolCall' ? [String(Reflect.get(Object(part), 'name'))] : [],
+  );
+};
+
 export const piAgent = <Env extends AgentEnv>(shape: AgentShape<Env>) =>
   class PiAgent extends DurableObject<Env> {
     #harness: Harness | undefined;
@@ -250,6 +259,19 @@ export const piAgent = <Env extends AgentEnv>(shape: AgentShape<Env>) =>
 
     async restart() {
       this.ctx.abort('restart on purpose');
+    }
+
+    async toolCalls() {
+      const conversation = await this.#conversation(DEFAULT_MODEL);
+      const names: string[] = [];
+      let cursor: Parameters<typeof conversation.entries>[2];
+      do {
+        const page = await conversation.entries({}, 200, cursor, context);
+        for (const entry of page.items)
+          for (const message of entry.model ?? []) names.push(...toolCallParts(message));
+        cursor = page.next;
+      } while (cursor !== undefined);
+      return names;
     }
 
     async workspace() {
