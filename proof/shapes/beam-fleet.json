@@ -1,0 +1,73 @@
+{
+  "slug": "beam-fleet",
+  "down": {
+    "ok": true,
+    "ms": 5699,
+    "tail": [
+      "[16:11:07.883] INFO (#1): [Fleet] delete",
+      "[16:11:07.883] INFO (#1): [Fleet/BOX] unbind",
+      "[16:11:07.883] INFO (#1): [gateway] delete",
+      "[16:11:07.883] INFO (#1): [worker] delete",
+      "[16:11:07.883] INFO (#1): [worker/AI] unbind",
+      "[16:11:07.883] INFO (#1): [worker/BOX] unbind",
+      "[16:11:07.883] INFO (#1): [worker/GATEWAY] unbind",
+      "[16:11:07.883] INFO (#1): [worker/SEAT] unbind",
+      "[16:11:07.883] INFO (#1): ",
+      "[16:11:07.884] INFO (#324): [Fleet] deleting",
+      "[16:11:07.885] INFO (#326): [worker] deleting",
+      "[16:11:07.886] INFO (#324): Cloudflare Container delete: deleting port-shape-beam-fleet-fleet",
+      "[16:11:07.886] INFO (#328): Cloudflare: using environment variables (CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN) instead of the profile.",
+      "[16:11:07.893] INFO (#326): Cloudflare Worker delete: deleting port-shape-beam-fleet",
+      "[16:11:08.765] INFO (#324): [Fleet] deleted (880ms)",
+      "[16:11:08.962] INFO (#326): [worker] deleted (1.1s)",
+      "[16:11:08.962] INFO (#325): [gateway] deleting",
+      "[16:11:12.053] INFO (#325): [gateway] deleted (3.1s)",
+      "[16:11:12.054] INFO (#1): ",
+      "[16:11:12.055] INFO (#1): Done: 3 succeeded (4.2s)",
+      "removed registry images and repos: port-shape-beam-fleet-fleet"
+    ],
+    "at": "2026-11-07T21:11:18.203Z"
+  },
+  "up": {
+    "ok": true,
+    "ms": 18459,
+    "tail": [
+      "[15:53:47.314] INFO (#450): [Fleet] creating",
+      "[15:53:47.314] INFO (#450): Cloudflare Container reconcile: starting port-shape-beam-fleet-fleet",
+      "[15:53:47.532] INFO (#449): Cloudflare Worker reconcile: existing durable object tags [\"alchemy:dos:BOX=Fleet;SEAT=Seat\"]",
+      "[15:53:47.533] INFO (#449): Cloudflare Worker reconcile: previous durable object tags [\"alchemy:dos:BOX=Fleet;SEAT=Seat\"]",
+      "[15:53:47.534] INFO (#449): Cloudflare Worker create: preparing bundle for port-shape-beam-fleet",
+      "[15:53:47.778] INFO (#449): Cloudflare Worker create: uploading script for port-shape-beam-fleet",
+      "[15:53:48.144] INFO (#449): Cloudflare Worker put: durable object reconciliation {\"oldDoClassNameByLogicalId\":{\"BOX\":\"Fleet\",\"SEAT\":\"Seat\"},\"currentDoClassNameByLogicalId\":{\"BOX\":\"Fleet\",\"SEAT\":\"Seat\"},\"deletedClasses\":[],\"renamedClasses\":[],\"transferredClasses\":[],\"newSqliteClasses\":[]}",
+      "[15:53:48.761] INFO (#450): Cloudflare Container reconcile: recreating port-shape-beam-fleet-fleet to attach durable object binding",
+      "[15:53:48.761] INFO (#450): [Fleet] Recreating container application port-shape-beam-fleet-fleet with durable object binding...",
+      "[15:53:50.265] INFO (#450): Cloudflare Container create: creating application port-shape-beam-fleet-fleet",
+      "[15:53:50.265] INFO (#450): [Fleet] Creating container application port-shape-beam-fleet-fleet...",
+      "[15:53:52.255] INFO (#652): [gateway] created (15.7s)",
+      "[15:53:52.255] INFO (#653): [Fleet] created (15.7s)",
+      "[15:53:52.255] INFO (#654): [worker] created — Reconciling custom domains (1) ... (15.7s)",
+      "[15:53:52.255] INFO (#1): ",
+      "[15:53:52.255] INFO (#1): Done: 3 succeeded (15.7s)",
+      "{",
+      "  url: 'https://port-shape-beam-fleet.customer0.dev',",
+      "  worker: 'port-shape-beam-fleet'",
+      "}"
+    ],
+    "at": "2026-11-07T20:53:52.442Z"
+  },
+  "smoke": {
+    "ok": true,
+    "ms": 111804,
+    "tail": [
+      "{\"slug\":\"beam-fleet\",\"at\":\"2026-11-07T20:52:10.143Z\",\"agent\":\"pi-durable\",\"task\":\"wrote and checked fizzbuzz.py and NOTES.md\",\"passed\":true,\"restarted\":true,\"resumed\":true,\"usd\":0.00311415,\"tokens\":4799,\"seconds\":112,\"infrastructure\":\"A Gleam supervisor (one_for_one) ran 5 tool processes in one container, each as its own Unix user. Mid-task, the tool process of seat 1 (pid 25) was killed: the supervisor restarted only that seat (starts 1 to 2), 0 other seats restarted, and 2 of 2 other agents running at the same time (seats 3, 1) finished their task. Seat 1 ran as agent1 and reading /home/agent2 was denied.\",\"infrastructureOk\":true,\"facts\":{\"seat\":1,\"user\":\"agent1\",\"neighbour\":\"/home/agent2\",\"neighbourDenied\":true,\"supervisor\":\"one_for_one\",\"seats\":\"[{\\\"seat\\\":1,\\\"user\\\":\\\"agent1\\\",\\\"osPid\\\":81,\\\"starts\\\":2,\\\"startedAt\\\":1794084723989},{\\\"seat\\\":2,\\\"user\\\":\\\"agent2\\\",\\\"osPid\\\":26,\\\"starts\\\":1,\\\"startedAt\\\":1794084720799},{\\\"seat\\\":3,\\\"user\\\":\\\"agent3\\\",\\\"osPid\\\":27,\\\"starts\\\":1,\\\"startedAt\\\":1794084720802},{\\\"seat\\\":4,\\\"user\\\":\\\"agent4\\\",\\\"osPid\\\":28,\\\"starts\\\":1,\\\"startedAt\\\":1794084720806},{\\\"seat\\\":5,\\\"user\\\":\\\"agent5\\\",\\\"osPid\\\":29,\\\"starts\\\":1,\\\"startedAt\\\":1794084720816}]\",\"killedSeat\":1,\"killedPid\":25,\"killedStartsBefore\":1,\"killedStartsAfter\":2,\"otherSeatsRestarted\":0,\"neighbourSeats\":\"3, 1\",\"neighboursDone\":2,\"neighboursPassed\":2},\"files\":[\"NOTES.md\",\"fizzbuzz.py\"]}",
+      "PROVED Stock Pi (pi-durable) wrote and checked fizzbuzz.py and NOTES.md on beam-fleet, resumed after a forced restart, and spent $0.0031 by Pi's own count. A Gleam supervisor (one_for_one) ran 5 tool processes in one container, each as its own Unix user. Mid-task, the tool process of seat 1 (pid 25) was killed: the supervisor restarted only that seat (starts 1 to 2), 0 other seats restarted, and 2 of 2 other agents running at the same time (seats 3, 1) finished their task. Seat 1 ran as agent1 and reading /home/agent2 was denied."
+    ],
+    "at": "2026-11-07T20:52:10.153Z"
+  },
+  "sweep": {
+    "at": "2026-11-07T21:11:22.946Z",
+    "prefix": "port-shape-beam-fleet",
+    "leftovers": {},
+    "errors": {}
+  }
+}

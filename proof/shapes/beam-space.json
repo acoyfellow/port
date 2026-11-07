@@ -1,0 +1,73 @@
+{
+  "slug": "beam-space",
+  "up": {
+    "ok": true,
+    "ms": 19413,
+    "tail": [
+      "[17:30:41.980] INFO (#477): [Fleet] creating",
+      "[17:30:41.980] INFO (#477): Cloudflare Container reconcile: starting port-shape-beam-space-fleet",
+      "[17:30:42.310] INFO (#476): Cloudflare Worker reconcile: existing durable object tags [\"alchemy:dos:BOX=Fleet;SPACE=Space;THREAD=Thread\"]",
+      "[17:30:42.310] INFO (#476): Cloudflare Worker reconcile: previous durable object tags [\"alchemy:dos:BOX=Fleet;SPACE=Space;THREAD=Thread\"]",
+      "[17:30:42.311] INFO (#476): Cloudflare Worker create: preparing bundle for port-shape-beam-space",
+      "[17:30:42.694] INFO (#476): Cloudflare Worker create: uploading script for port-shape-beam-space",
+      "[17:30:42.885] INFO (#477): Cloudflare Container reconcile: recreating port-shape-beam-space-fleet to attach durable object binding",
+      "[17:30:42.885] INFO (#477): [Fleet] Recreating container application port-shape-beam-space-fleet with durable object binding...",
+      "[17:30:43.302] INFO (#476): Cloudflare Worker put: durable object reconciliation {\"oldDoClassNameByLogicalId\":{\"BOX\":\"Fleet\",\"SPACE\":\"Space\",\"THREAD\":\"Thread\"},\"currentDoClassNameByLogicalId\":{\"BOX\":\"Fleet\",\"SPACE\":\"Space\",\"THREAD\":\"Thread\"},\"deletedClasses\":[],\"renamedClasses\":[],\"transferredClasses\":[],\"newSqliteClasses\":[]}",
+      "[17:30:44.553] INFO (#477): Cloudflare Container create: creating application port-shape-beam-space-fleet",
+      "[17:30:44.553] INFO (#477): [Fleet] Creating container application port-shape-beam-space-fleet...",
+      "[17:30:48.355] INFO (#699): [gateway] created (16.8s)",
+      "[17:30:48.355] INFO (#700): [Fleet] created (16.8s)",
+      "[17:30:48.355] INFO (#701): [worker] created — Reconciling custom domains (1) ... (16.8s)",
+      "[17:30:48.356] INFO (#1): ",
+      "[17:30:48.356] INFO (#1): Done: 3 succeeded (16.8s)",
+      "{",
+      "  url: 'https://port-shape-beam-space.customer0.dev',",
+      "  worker: 'port-shape-beam-space'",
+      "}"
+    ],
+    "at": "2026-11-07T22:30:48.589Z"
+  },
+  "smoke": {
+    "ok": true,
+    "ms": 84849,
+    "tail": [
+      "{\"slug\":\"beam-space\",\"at\":\"2026-11-07T21:37:50.453Z\",\"agent\":\"pi-durable\",\"task\":\"coordinated three worker threads and three checker threads that built and checked three helpers\",\"passed\":true,\"restarted\":true,\"resumed\":true,\"usd\":0.04301094999999999,\"tokens\":139163,\"seconds\":85,\"infrastructure\":\"The coordinator, restarted mid-job, started 3 worker threads and 3 checker threads (slug-worker, initials-worker, clamp-worker, slug-checker, initials-checker, clamp-checker), each a Pi agent whose tools ran as its own Unix user under a Gleam supervisor. After the restart it reused the threads it had started: 0 threads were started twice and 0 workers repeated a part. 6 of 6 threads finished. The checked files were adopted into the space (README.md, package.json, src/clamp.js, src/initials.js, src/slug.js, test/clamp.test.js, test/initials.test.js, test/slug.test.js) and the summary was saved.\",\"infrastructureOk\":true,\"facts\":{\"sharedFiles\":\"README.md, package.json, src/clamp.js, src/initials.js, src/slug.js, test/clamp.test.js, test/initials.test.js, test/slug.test.js\",\"threads\":6,\"workers\":3,\"checkers\":3,\"done\":6,\"restartedThreads\":0,\"repeatedWorkers\":0,\"names\":\"slug-worker, initials-worker, clamp-worker, slug-checker, initials-checker, clamp-checker\",\"summary\":\"- slug-worker: checker PASS (6/6 tests)\\n- initials-worker: checker PASS (5/5 tests)\\n- clamp-worker: checker PASS (3/3 tests)\\n\\nAll three helpers and their tests were adopted successfully.\",\"notes\":3},\"files\":[\"README.md\",\"package.json\",\"src/clamp.js\",\"src/initials.js\",\"src/slug.js\",\"test/clamp.test.js\",\"test/initials.test.js\",\"test/slug.test.js\"]}",
+      "PROVED Stock Pi (pi-durable) coordinated three worker threads and three checker threads that built and checked three helpers on beam-space, resumed after a forced restart, and spent $0.0430 by Pi's own count. The coordinator, restarted mid-job, started 3 worker threads and 3 checker threads (slug-worker, initials-worker, clamp-worker, slug-checker, initials-checker, clamp-checker), each a Pi agent whose tools ran as its own Unix user under a Gleam supervisor. After the restart it reused the threads it had started: 0 threads were started twice and 0 workers repeated a part. 6 of 6 threads finished. The checked files were adopted into the space (README.md, package.json, src/clamp.js, src/initials.js, src/slug.js, test/clamp.test.js, test/initials.test.js, test/slug.test.js) and the summary was saved."
+    ],
+    "at": "2026-11-07T21:37:50.462Z"
+  },
+  "down": {
+    "ok": true,
+    "ms": 6399,
+    "tail": [
+      "[17:34:09.987] INFO (#1): [Fleet/BOX] unbind",
+      "[17:34:09.987] INFO (#1): [gateway] delete",
+      "[17:34:09.987] INFO (#1): [worker] delete",
+      "[17:34:09.987] INFO (#1): [worker/AI] unbind",
+      "[17:34:09.987] INFO (#1): [worker/BOX] unbind",
+      "[17:34:09.987] INFO (#1): [worker/GATEWAY] unbind",
+      "[17:34:09.987] INFO (#1): [worker/SPACE] unbind",
+      "[17:34:09.988] INFO (#1): [worker/THREAD] unbind",
+      "[17:34:09.988] INFO (#1): ",
+      "[17:34:09.990] INFO (#324): [Fleet] deleting",
+      "[17:34:09.990] INFO (#326): [worker] deleting",
+      "[17:34:09.991] INFO (#326): Cloudflare Worker delete: deleting port-shape-beam-space",
+      "[17:34:09.992] INFO (#328): Cloudflare: using environment variables (CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN) instead of the profile.",
+      "[17:34:09.999] INFO (#324): Cloudflare Container delete: deleting port-shape-beam-space-fleet",
+      "[17:34:10.964] INFO (#324): [Fleet] deleted (975ms)",
+      "[17:34:11.285] INFO (#326): [worker] deleted (1.3s)",
+      "[17:34:11.286] INFO (#325): [gateway] deleting",
+      "[17:34:14.267] INFO (#325): [gateway] deleted (3.0s)",
+      "[17:34:14.269] INFO (#1): ",
+      "[17:34:14.270] INFO (#1): Done: 3 succeeded (4.3s)",
+      "removed registry images and repos: port-shape-beam-space-fleet"
+    ],
+    "at": "2026-11-07T22:34:20.146Z"
+  },
+  "sweep": {
+    "at": "2026-11-07T22:34:24.713Z",
+    "prefix": "port-shape-beam-space",
+    "leftovers": {},
+    "errors": {}
+  }
+}

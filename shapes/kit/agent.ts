@@ -129,7 +129,7 @@ export type AgentShape<Env extends AgentEnv> = {
 
 const WORKSPACE_LIMIT = 200;
 
-const workspaceOf = async (env: ExecutionEnv | undefined) => {
+export const workspaceOf = async (env: ExecutionEnv | undefined) => {
   const files: Record<string, string> = {};
   if (env === undefined) return files;
   const walk = async (dir: string) => {
@@ -154,7 +154,7 @@ const workspaceOf = async (env: ExecutionEnv | undefined) => {
 
 const parentDir = (path: string) => path.slice(0, Math.max(0, path.lastIndexOf('/')));
 
-const seedWorkspace = async (env: ExecutionEnv | undefined, files: Record<string, string>) => {
+export const seedWorkspace = async (env: ExecutionEnv | undefined, files: Record<string, string>) => {
   if (env === undefined) return false;
   for (const [relative, content] of Object.entries(files)) {
     const path = `${env.cwd}/${relative}`;

@@ -60,10 +60,12 @@ const shape = (slug: string, bindings: readonly ShapeBinding[]): ShapeInstall =>
 
 export const PI_BOX_IMAGE = 'pi-box';
 export const SHARED_BOX_IMAGE = 'pi-shared-box';
+export const BEAM_BOX_IMAGE = 'pi-beam-box';
 
 export const SHAPE_INSTALLS: readonly ShapeInstall[] = [
   shape('isolate-agents', [DO('AGENT', 'Agent'), LOADER]),
   shape('durable-session', [DO('SESSION', 'Session')]),
+  shape('write-list', [DO('SESSION', 'Session')]),
   shape('agent-room', [DO('ROOM', 'Room'), DO('AGENT', 'RoomAgent')]),
   shape('self-editing-app', [DO('BODY', 'Body'), LOADER]),
   shape('self-observe', [DO('AGENT', 'Observer'), LOADER]),
@@ -73,6 +75,8 @@ export const SHAPE_INSTALLS: readonly ShapeInstall[] = [
   shape('sealed-box', [BOX('BOX', 'Box', PI_BOX_IMAGE)]),
   shape('person-with-computer', [DO('DIRECTORY', 'Directory'), BOX('PERSON', 'Person', PI_BOX_IMAGE)]),
   shape('shared-container', [DO('SEAT', 'Seat'), BOX('BOX', 'Box', SHARED_BOX_IMAGE)]),
+  shape('beam-fleet', [DO('SEAT', 'Seat'), BOX('BOX', 'Fleet', BEAM_BOX_IMAGE)]),
+  shape('beam-space', [DO('SPACE', 'Space'), DO('THREAD', 'Thread'), BOX('BOX', 'Fleet', BEAM_BOX_IMAGE)]),
   {
     ...shape('git-gatekeeper', [
       BOX('SESSION', 'Session', PI_BOX_IMAGE),

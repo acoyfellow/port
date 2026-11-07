@@ -36,6 +36,8 @@ export type PiSmoke = {
     readonly claim: string;
   };
   readonly restartAfterMs?: number;
+  readonly seedFiles?: Record<string, string>;
+  readonly midTask?: (api: Client, agent: string) => Promise<void>;
   readonly afterTask?: (api: Client, agent: string) => Promise<Record<string, unknown>>;
 };
 
@@ -72,8 +74,11 @@ export const runPiSmoke = async (smoke: PiSmoke) => {
   const started = Date.now();
   const health = await api.get('/health', Health, { tries: 150 });
   const agent = `smoke-${Date.now()}`;
-  await api.post(`/run?agent=${agent}`, Started, { body: { prompt: smoke.task.prompt } });
+  await api.post(`/run?agent=${agent}`, Started, {
+    body: { prompt: smoke.task.prompt, ...(smoke.seedFiles === undefined ? {} : { files: smoke.seedFiles }) },
+  });
   await pause(smoke.restartAfterMs ?? 3000);
+  await smoke.midTask?.(api, agent);
   const before = await api.get(`/status?agent=${agent}`, Status);
   const runningAtRestart = before.status === 'running';
   const restarted = (await api.get(`/restart?agent=${agent}`, Restarted)).restarted;

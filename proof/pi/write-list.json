@@ -1,0 +1,20 @@
+{
+  "slug": "write-list",
+  "at": "2026-11-07T20:16:53.899Z",
+  "agent": "pi-durable",
+  "task": "wrote and tested src/slug.js, was refused on README.md and package.json, and said so in NOTES.md",
+  "passed": true,
+  "restarted": true,
+  "resumed": true,
+  "usd": 0.0495843,
+  "tokens": 148827,
+  "seconds": 91,
+  "infrastructure": "Pi could write only src/**, test/**, NOTES.md. The workspace refused and counted 7 writes outside that list (/workspace/README.md, /workspace/package.json; shell, write), and those files were left unchanged.",
+  "infrastructureOk": true,
+  "facts": {
+    "allowed": "src/**, test/**, NOTES.md",
+    "refusals": 7,
+    "refusedPaths": "/workspace/README.md, /workspace/package.json",
+    "refusedOperations": "shell, write"
+  }
+}

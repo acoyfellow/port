@@ -1,0 +1,30 @@
+{
+  "slug": "beam-fleet",
+  "at": "2026-11-07T20:52:10.143Z",
+  "agent": "pi-durable",
+  "task": "wrote and checked fizzbuzz.py and NOTES.md",
+  "passed": true,
+  "restarted": true,
+  "resumed": true,
+  "usd": 0.00311415,
+  "tokens": 4799,
+  "seconds": 112,
+  "infrastructure": "A Gleam supervisor (one_for_one) ran 5 tool processes in one container, each as its own Unix user. Mid-task, the tool process of seat 1 (pid 25) was killed: the supervisor restarted only that seat (starts 1 to 2), 0 other seats restarted, and 2 of 2 other agents running at the same time (seats 3, 1) finished their task. Seat 1 ran as agent1 and reading /home/agent2 was denied.",
+  "infrastructureOk": true,
+  "facts": {
+    "seat": 1,
+    "user": "agent1",
+    "neighbour": "/home/agent2",
+    "neighbourDenied": true,
+    "supervisor": "one_for_one",
+    "seats": "[{\"seat\":1,\"user\":\"agent1\",\"osPid\":81,\"starts\":2,\"startedAt\":1794084723989},{\"seat\":2,\"user\":\"agent2\",\"osPid\":26,\"starts\":1,\"startedAt\":1794084720799},{\"seat\":3,\"user\":\"agent3\",\"osPid\":27,\"starts\":1,\"startedAt\":1794084720802},{\"seat\":4,\"user\":\"agent4\",\"osPid\":28,\"starts\":1,\"startedAt\":1794084720806},{\"seat\":5,\"user\":\"agent5\",\"osPid\":29,\"starts\":1,\"startedAt\":1794084720816}]",
+    "killedSeat": 1,
+    "killedPid": 25,
+    "killedStartsBefore": 1,
+    "killedStartsAfter": 2,
+    "otherSeatsRestarted": 0,
+    "neighbourSeats": "3, 1",
+    "neighboursDone": 2,
+    "neighboursPassed": 2
+  }
+}

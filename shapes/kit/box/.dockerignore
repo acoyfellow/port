@@ -1,0 +1,5 @@
+beam/build/dev
+beam/build/lsp
+beam/build/prod
+beam/build/packages
+beam/test

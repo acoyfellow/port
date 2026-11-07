@@ -33,6 +33,9 @@ const ALL_SHAPES = [
   'safe-sql',
   'workflow-plan',
   'vector-memory',
+  'write-list',
+  'beam-fleet',
+  'beam-space',
 ];
 const EXCLUDED = {
   'agent-room': 'excluded: no file tools (environment is undefined)',

@@ -1,0 +1,26 @@
+{
+  "slug": "beam-space",
+  "at": "2026-11-07T21:37:50.453Z",
+  "agent": "pi-durable",
+  "task": "coordinated three worker threads and three checker threads that built and checked three helpers",
+  "passed": true,
+  "restarted": true,
+  "resumed": true,
+  "usd": 0.04301094999999999,
+  "tokens": 139163,
+  "seconds": 85,
+  "infrastructure": "The coordinator, restarted mid-job, started 3 worker threads and 3 checker threads (slug-worker, initials-worker, clamp-worker, slug-checker, initials-checker, clamp-checker), each a Pi agent whose tools ran as its own Unix user under a Gleam supervisor. After the restart it reused the threads it had started: 0 threads were started twice and 0 workers repeated a part. 6 of 6 threads finished. The checked files were adopted into the space (README.md, package.json, src/clamp.js, src/initials.js, src/slug.js, test/clamp.test.js, test/initials.test.js, test/slug.test.js) and the summary was saved.",
+  "infrastructureOk": true,
+  "facts": {
+    "sharedFiles": "README.md, package.json, src/clamp.js, src/initials.js, src/slug.js, test/clamp.test.js, test/initials.test.js, test/slug.test.js",
+    "threads": 6,
+    "workers": 3,
+    "checkers": 3,
+    "done": 6,
+    "restartedThreads": 0,
+    "repeatedWorkers": 0,
+    "names": "slug-worker, initials-worker, clamp-worker, slug-checker, initials-checker, clamp-checker",
+    "summary": "- slug-worker: checker PASS (6/6 tests)\n- initials-worker: checker PASS (5/5 tests)\n- clamp-worker: checker PASS (3/3 tests)\n\nAll three helpers and their tests were adopted successfully.",
+    "notes": 3
+  }
+}

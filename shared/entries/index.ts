@@ -1,4 +1,6 @@
 import { SHAPE as agent_room } from '../../shapes/agent-room/shape';
+import { SHAPE as beam_fleet } from '../../shapes/beam-fleet/shape';
+import { SHAPE as beam_space } from '../../shapes/beam-space/shape';
 import { SHAPE as chat_with_sandbox } from '../../shapes/chat-with-sandbox/shape';
 import { SHAPE as container_per_thread } from '../../shapes/container-per-thread/shape';
 import { SHAPE as durable_session } from '../../shapes/durable-session/shape';
@@ -17,6 +19,7 @@ import { SHAPE as shared_container } from '../../shapes/shared-container/shape';
 import { SHAPE as snapshot_rollback } from '../../shapes/snapshot-rollback/shape';
 import { SHAPE as vector_memory } from '../../shapes/vector-memory/shape';
 import { SHAPE as workflow_plan } from '../../shapes/workflow-plan/shape';
+import { SHAPE as write_list } from '../../shapes/write-list/shape';
 import type { Entry, EvalAll, ShapeBuild } from '../entry.ts';
 
 const BUILDS: Readonly<Record<string, ShapeBuild>> = {
@@ -29,6 +32,26 @@ const BUILDS: Readonly<Record<string, ShapeBuild>> = {
     seconds: 17,
     resumed: true,
     on: '2026-10-31',
+  },
+  'beam-fleet': {
+    task: 'wrote and checked fizzbuzz.py and NOTES.md',
+    infrastructure:
+      'A Gleam supervisor (one_for_one) ran 5 tool processes in one container, each as its own Unix user. Mid-task, the tool process of seat 1 (pid 25) was killed: the supervisor restarted only that seat (starts 1 to 2), 0 other seats restarted, and 2 of 2 other agents running at the same time (seats 3, 1) finished their task. Seat 1 ran as agent1 and reading /home/agent2 was denied.',
+    usd: 0.00311415,
+    tokens: 4799,
+    seconds: 112,
+    resumed: true,
+    on: '2026-11-07',
+  },
+  'beam-space': {
+    task: 'coordinated three worker threads and three checker threads that built and checked three helpers',
+    infrastructure:
+      'The coordinator, restarted mid-job, started 3 worker threads and 3 checker threads (slug-worker, initials-worker, clamp-worker, slug-checker, initials-checker, clamp-checker), each a Pi agent whose tools ran as its own Unix user under a Gleam supervisor. After the restart it reused the threads it had started: 0 threads were started twice and 0 workers repeated a part. 6 of 6 threads finished. The checked files were adopted into the space (README.md, package.json, src/clamp.js, src/initials.js, src/slug.js, test/clamp.test.js, test/initials.test.js, test/slug.test.js) and the summary was saved.',
+    usd: 0.04301094999999999,
+    tokens: 139163,
+    seconds: 85,
+    resumed: true,
+    on: '2026-11-07',
   },
   'chat-with-sandbox': {
     task: 'wrote and checked fizzbuzz.py and NOTES.md',
@@ -208,9 +231,37 @@ const BUILDS: Readonly<Record<string, ShapeBuild>> = {
     resumed: true,
     on: '2026-11-06',
   },
+  'write-list': {
+    task: 'wrote and tested src/slug.js, was refused on README.md and package.json, and said so in NOTES.md',
+    infrastructure:
+      'Pi could write only src/**, test/**, NOTES.md. The workspace refused and counted 7 writes outside that list (/workspace/README.md, /workspace/package.json; shell, write), and those files were left unchanged.',
+    usd: 0.0495843,
+    tokens: 148827,
+    seconds: 91,
+    resumed: true,
+    on: '2026-11-07',
+  },
 };
 
 const EVALS: Readonly<Record<string, EvalAll>> = {
+  'beam-fleet': {
+    passed: 5,
+    of: 5,
+    usdPerTask: 0.1146,
+    capped: 0,
+    medianSeconds: 195,
+    note: '',
+    on: '2026-11-07',
+  },
+  'beam-space': {
+    passed: 5,
+    of: 5,
+    usdPerTask: 0.3944,
+    capped: 0,
+    medianSeconds: 331,
+    note: '',
+    on: '2026-11-07',
+  },
   'chat-with-sandbox': {
     passed: 4,
     of: 5,
@@ -373,6 +424,15 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     note: '',
     on: '2026-11-07',
   },
+  'write-list': {
+    passed: 5,
+    of: 5,
+    usdPerTask: 0.1101,
+    capped: 0,
+    medianSeconds: 157,
+    note: '',
+    on: '2026-11-07',
+  },
 };
 
 export const ENTRIES: readonly Entry[] = [
@@ -454,5 +514,8 @@ export const ENTRIES: readonly Entry[] = [
   { ...safe_sql, added: '2026-11-06', build: BUILDS['safe-sql'], evalAll: EVALS['safe-sql'] },
   { ...workflow_plan, added: '2026-11-06', build: BUILDS['workflow-plan'], evalAll: EVALS['workflow-plan'] },
   { ...vector_memory, added: '2026-11-06', build: BUILDS['vector-memory'], evalAll: EVALS['vector-memory'] },
+  { ...write_list, added: '2026-11-07', build: BUILDS['write-list'], evalAll: EVALS['write-list'] },
+  { ...beam_fleet, added: '2026-11-07', build: BUILDS['beam-fleet'], evalAll: EVALS['beam-fleet'] },
+  { ...beam_space, added: '2026-11-07', build: BUILDS['beam-space'], evalAll: EVALS['beam-space'] },
   { ...self_observe, added: '2026-10-30', build: BUILDS['self-observe'], evalAll: EVALS['self-observe'] },
 ];

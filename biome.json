@@ -10,7 +10,8 @@
       "!.alchemy",
       "!.pi",
       "!static/**/*.svg",
-      "!static/shape-bundles"
+      "!static/shape-bundles",
+      "!shapes/kit/box/beam/build"
     ]
   },
   "formatter": { "enabled": true, "indentStyle": "space", "indentWidth": 2, "lineWidth": 110 },

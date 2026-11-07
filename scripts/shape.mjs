@@ -55,6 +55,15 @@ export const api = async (path, init = {}) => {
   return { status: response.status, body };
 };
 
+export const graphql = async (query, variables) => {
+  const response = await fetch('https://api.cloudflare.com/client/v4/graphql', {
+    method: 'POST',
+    headers: { authorization: `Bearer ${token()}`, 'content-type': 'application/json' },
+    body: JSON.stringify({ query, variables: { account: accountId(), ...variables } }),
+  });
+  return response.json();
+};
+
 const listed = async (path, pick, key = 'name') => {
   const { status, body } = await api(path);
   if (status < 200 || status > 299 || body.success === false)
@@ -204,9 +213,18 @@ const shapeKey = (slug) => {
   return readFileSync(file, 'utf8').trim();
 };
 
+const BEAM_SHAPES = ['beam-fleet', 'beam-space'];
+
+const exportBeamShipment = () =>
+  execFileSync('gleam', ['export', 'erlang-shipment'], {
+    cwd: join(root, 'shapes', 'kit', 'box', 'beam'),
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+
 const runStep = (slug, step, sub) => {
   const dir = join(root, 'shapes', slug);
   if (!existsSync(join(dir, 'alchemy.run.ts'))) throw new Error(`shapes/${slug}/alchemy.run.ts is missing`);
+  if (step === 'up' && BEAM_SHAPES.includes(slug)) exportBeamShipment();
   const alchemy = join(root, 'shapes', 'node_modules', '.bin', 'alchemy');
   const command = {
     up: [alchemy, ['deploy', '--stage', 'shape', '--yes', '--no-input']],

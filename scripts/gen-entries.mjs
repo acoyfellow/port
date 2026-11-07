@@ -24,6 +24,9 @@ const order = [
   'safe-sql',
   'workflow-plan',
   'vector-memory',
+  'write-list',
+  'beam-fleet',
+  'beam-space',
 ];
 const rank = (slug) => order.indexOf(slug) + 1 || 99;
 
