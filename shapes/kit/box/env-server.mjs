@@ -8,7 +8,10 @@ const port = Number(process.env.PI_ENV_PORT ?? 8080);
 const boot = crypto.randomUUID();
 mkdirSync(root, { recursive: true });
 
-const envFor = (cwd) => new NodeExecutionEnv({ cwd: cwd ?? root });
+const envFor = (cwd) => {
+  mkdirSync(cwd ?? root, { recursive: true });
+  return new NodeExecutionEnv({ cwd: cwd ?? root });
+};
 
 const encodeError = (error) => ({
   code: error?.code ?? 'unknown',

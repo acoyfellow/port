@@ -1,0 +1,73 @@
+{
+  "slug": "git-gatekeeper",
+  "up": {
+    "ok": true,
+    "ms": 24240,
+    "tail": [
+      "[10:05:44.551] INFO (#488): Cloudflare Worker reconcile: existing durable object tags [\"alchemy:dos:SESSION=Session\"]",
+      "[10:05:44.551] INFO (#488): Cloudflare Worker reconcile: previous durable object tags [\"alchemy:dos:SESSION=Session\"]",
+      "[10:05:44.551] INFO (#488): Cloudflare Worker create: preparing bundle for port-shape-git-gatekeeper",
+      "[10:05:44.749] INFO (#488): Cloudflare Worker create: uploading script for port-shape-git-gatekeeper",
+      "[10:05:45.351] INFO (#488): Cloudflare Worker put: durable object reconciliation {\"oldDoClassNameByLogicalId\":{\"SESSION\":\"Session\"},\"currentDoClassNameByLogicalId\":{\"SESSION\":\"Session\"},\"deletedClasses\":[],\"renamedClasses\":[],\"transferredClasses\":[],\"newSqliteClasses\":[]}",
+      "[10:05:46.933] INFO (#489): Cloudflare Container reconcile: recreating port-shape-git-gatekeeper-session to attach durable object binding",
+      "[10:05:46.933] INFO (#489): [Session] Recreating container application port-shape-git-gatekeeper-session with durable object binding...",
+      "[10:05:50.943] INFO (#489): Cloudflare Container create: creating application port-shape-git-gatekeeper-session",
+      "[10:05:50.943] INFO (#489): [Session] Creating container application port-shape-git-gatekeeper-session...",
+      "[10:05:52.988] INFO (#765): [gate] created — Uploading worker (459.92 KB) ... (21.6s)",
+      "[10:05:52.988] INFO (#766): [gateway] created (21.6s)",
+      "[10:05:52.988] INFO (#767): [worker] created — Reconciling custom domains (1) ... (21.6s)",
+      "[10:05:52.988] INFO (#768): [Session] created (21.6s)",
+      "[10:05:52.988] INFO (#1): ",
+      "[10:05:52.988] INFO (#1): Done: 4 succeeded (21.6s)",
+      "{",
+      "  url: 'https://port-shape-git-gatekeeper.customer0.dev',",
+      "  worker: 'port-shape-git-gatekeeper',",
+      "  gate: 'port-shape-git-gatekeeper-gate'",
+      "}"
+    ],
+    "at": "2026-11-06T15:05:53.243Z"
+  },
+  "smoke": {
+    "ok": true,
+    "ms": 71828,
+    "tail": [
+      "{\"slug\":\"git-gatekeeper\",\"at\":\"2026-11-03T14:26:11.976Z\",\"agent\":\"pi-durable\",\"task\":\"wrote fizzbuzz.py, published it through the gatekeeper and was refused on main\",\"passed\":true,\"restarted\":true,\"resumed\":true,\"usd\":0.00354462,\"tokens\":7704,\"seconds\":72,\"infrastructure\":\"The gatekeeper Worker alone holds the Artifacts binding. It pushed a session branch and opened merge request record 1; main has only gatekeeper commits; the sandbox had 0 credentials in its environment or on disk. Branches: main,session/b2fa1657a50e8dc3.\",\"infrastructureOk\":true,\"files\":[\"fizzbuzz.py\"]}",
+      "PROVED Stock Pi (pi-durable) wrote fizzbuzz.py, published it through the gatekeeper and was refused on main on git-gatekeeper, resumed after a forced restart, and spent $0.0035 by Pi's own count. The gatekeeper Worker alone holds the Artifacts binding. It pushed a session branch and opened merge request record 1; main has only gatekeeper commits; the sandbox had 0 credentials in its environment or on disk. Branches: main,session/b2fa1657a50e8dc3."
+    ],
+    "at": "2026-11-03T14:26:11.986Z"
+  },
+  "down": {
+    "ok": true,
+    "ms": 6354,
+    "tail": [
+      "[10:40:38.404] INFO (#1): [worker] delete",
+      "[10:40:38.404] INFO (#1): [worker/AI] unbind",
+      "[10:40:38.404] INFO (#1): [worker/GATE] unbind",
+      "[10:40:38.404] INFO (#1): [worker/GATEWAY] unbind",
+      "[10:40:38.404] INFO (#1): [worker/SESSION] unbind",
+      "[10:40:38.404] INFO (#1): ",
+      "[10:40:38.406] INFO (#329): [Session] deleting",
+      "[10:40:38.406] INFO (#331): [worker] deleting",
+      "[10:40:38.407] INFO (#329): Cloudflare Container delete: deleting port-shape-git-gatekeeper-session",
+      "[10:40:38.408] INFO (#335): Cloudflare: using environment variables (CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN) instead of the profile.",
+      "[10:40:38.417] INFO (#331): Cloudflare Worker delete: deleting port-shape-git-gatekeeper",
+      "[10:40:39.508] INFO (#329): [Session] deleted (1.1s)",
+      "[10:40:39.990] INFO (#331): [worker] deleted (1.6s)",
+      "[10:40:39.990] INFO (#332): [gateway] deleting",
+      "[10:40:39.991] INFO (#330): [gate] deleting",
+      "[10:40:39.992] INFO (#330): Cloudflare Worker delete: deleting port-shape-git-gatekeeper-gate",
+      "[10:40:40.809] INFO (#330): [gate] deleted (818ms)",
+      "[10:40:43.203] INFO (#332): [gateway] deleted (3.2s)",
+      "[10:40:43.204] INFO (#1): ",
+      "[10:40:43.204] INFO (#1): Done: 4 succeeded (4.8s)",
+      "removed registry images and repos: port-shape-git-gatekeeper-session"
+    ],
+    "at": "2026-11-06T15:40:50.554Z"
+  },
+  "sweep": {
+    "at": "2026-11-06T15:40:55.932Z",
+    "prefix": "port-shape-git-gatekeeper",
+    "leftovers": {},
+    "errors": {}
+  }
+}

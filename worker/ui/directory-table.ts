@@ -49,11 +49,27 @@ const COLUMNS: readonly Column[] = [
     value: (entry) => (entry.traits === undefined ? undefined : INTERNET_RANK[entry.traits.internet]),
   },
   {
-    key: 'cost',
-    label: 'AI cost / run',
+    key: 'eval',
+    label: 'Coding eval',
     numeric: true,
-    cell: (entry) => (entry.build === undefined ? DASH : cents(entry.build.usd)),
-    value: (entry) => entry.build?.usd,
+    cell: (entry) =>
+      entry.evalAll === undefined
+        ? DASH
+        : pill(
+            entry.evalAll.passed === entry.evalAll.of ? 'ok' : 'warn',
+            `${entry.evalAll.passed}/${entry.evalAll.of}`,
+          ),
+    value: (entry) => (entry.evalAll === undefined ? undefined : entry.evalAll.passed / entry.evalAll.of),
+  },
+  {
+    key: 'cost',
+    label: 'AI cost / task',
+    numeric: true,
+    cell: (entry) =>
+      entry.evalAll === undefined
+        ? DASH
+        : html`${cents(entry.evalAll.usdPerTask)}${entry.evalAll.capped > 0 ? html`<sup title="${entry.evalAll.capped} of ${entry.evalAll.of} tasks hit the 15 min cap and are not in this average">*</sup>` : ''}`,
+    value: (entry) => entry.evalAll?.usdPerTask,
   },
   {
     key: 'added',

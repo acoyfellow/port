@@ -146,6 +146,20 @@ const workspaceOf = async (env: ExecutionEnv | undefined) => {
   return files;
 };
 
+const parentDir = (path: string) => path.slice(0, Math.max(0, path.lastIndexOf('/')));
+
+const seedWorkspace = async (env: ExecutionEnv | undefined, files: Record<string, string>) => {
+  if (env === undefined) return false;
+  for (const [relative, content] of Object.entries(files)) {
+    const path = `${env.cwd}/${relative}`;
+    const parent = parentDir(path);
+    if (parent !== '') await env.createDir(parent, { recursive: true }, context);
+    const written = await env.writeFile(path, content, context);
+    if (!written.ok) throw new Error(`could not write ${relative}: ${written.error.message}`);
+  }
+  return true;
+};
+
 const toolCallParts = (message: unknown): string[] => {
   const content =
     typeof message === 'object' && message !== null ? Reflect.get(message, 'content') : undefined;
@@ -276,6 +290,10 @@ export const piAgent = <Env extends AgentEnv>(shape: AgentShape<Env>) =>
 
     async workspace() {
       return workspaceOf(shape.environment(this.env, this.ctx, 'workspace'));
+    }
+
+    async writeWorkspace(files: Record<string, string>) {
+      return seedWorkspace(shape.environment(this.env, this.ctx, 'workspace'), files);
     }
 
     async probe() {

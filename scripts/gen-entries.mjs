@@ -47,6 +47,26 @@ const buildOf = (slug) => {
   };
 };
 
+const evalReport = JSON.parse(readFileSync(join(root, 'proof', 'eval-all.json'), 'utf8'));
+
+const evalOf = (slug) => {
+  const summary = evalReport.summary[slug];
+  if (summary === undefined || !(summary.ran > 0) || typeof summary.passed !== 'number') return undefined;
+  const rows = evalReport.rows.filter((row) => row.slug === slug);
+  const counted = rows.filter((row) => row.usd > 0);
+  return {
+    passed: summary.passed,
+    of: summary.of,
+    usdPerTask: Number(
+      (counted.reduce((sum, row) => sum + row.usd, 0) / Math.max(1, counted.length)).toFixed(4),
+    ),
+    capped: rows.length - counted.length,
+    medianSeconds: summary.medianSeconds,
+    note: summary.note ?? '',
+    on: evalReport.at.slice(0, 10),
+  };
+};
+
 const addedOn = (slug) => {
   const dates = execFileSync(
     'git',
@@ -73,13 +93,16 @@ const builds = Object.fromEntries(
   shapeSlugs.map((slug) => [slug, buildOf(slug)]).filter(([, build]) => build !== undefined),
 );
 const added = Object.fromEntries(shapeSlugs.map((slug) => [slug, addedOn(slug)]));
+const evals = Object.fromEntries(
+  shapeSlugs.map((slug) => [slug, evalOf(slug)]).filter(([, result]) => result !== undefined),
+);
 const items = all.map(
   ({ slug }) =>
-    `{ ...${ident(slug)}${added[slug] === undefined ? '' : `, added: ${JSON.stringify(added[slug])}`}${builds[slug] === undefined ? '' : `, build: BUILDS[${JSON.stringify(slug)}]`} }`,
+    `{ ...${ident(slug)}${added[slug] === undefined ? '' : `, added: ${JSON.stringify(added[slug])}`}${builds[slug] === undefined ? '' : `, build: BUILDS[${JSON.stringify(slug)}]`}${evals[slug] === undefined ? '' : `, evalAll: EVALS[${JSON.stringify(slug)}]`} }`,
 );
 
 writeFileSync(
   join(entriesDir, 'index.ts'),
-  `import type { Entry, ShapeBuild } from '../entry.ts';\n${imports.join('\n')}\n\nconst BUILDS: Readonly<Record<string, ShapeBuild>> = ${JSON.stringify(builds, null, 2)};\n\nexport const ENTRIES: readonly Entry[] = [\n  ${items.join(',\n  ')},\n];\n`,
+  `import type { Entry, EvalAll, ShapeBuild } from '../entry.ts';\n${imports.join('\n')}\n\nconst BUILDS: Readonly<Record<string, ShapeBuild>> = ${JSON.stringify(builds, null, 2)};\n\nconst EVALS: Readonly<Record<string, EvalAll>> = ${JSON.stringify(evals, null, 2)};\n\nexport const ENTRIES: readonly Entry[] = [\n  ${items.join(',\n  ')},\n];\n`,
 );
 console.log(`entries: ${all.map(({ slug }) => slug).join(', ')}; builds: ${Object.keys(builds).length}`);

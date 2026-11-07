@@ -45,10 +45,10 @@ const seatOf = (name: string) => {
   return (hash % SEATS) + 1;
 };
 
-const seatEnv = (env: Env, seat: number) =>
+const seatEnv = (env: Env, seat: number, conversation: string) =>
   new RemoteHttpEnv({
-    id: `shared-container:seat-${seat}`,
-    cwd: `/home/agent${seat}`,
+    id: `shared-container:seat-${seat}:${conversation}`,
+    cwd: `/home/agent${seat}/${conversation}`,
     transport: async (path, init) => {
       const box = env.BOX.get(env.BOX.idFromName(BOX_NAME));
       const body = typeof init.body === 'string' ? init.body : '';
@@ -63,12 +63,12 @@ export class Seat extends piAgent<Env>({
   name: 'shared-container',
   instructions:
     'You are one of five coding agents sharing a Linux container. Your home directory is your workspace; you run as your own Unix user and cannot read the other agents. Do the task with the tools, check it, then reply in one short sentence.',
-  environment: (env, ctx) => seatEnv(env, seatOf(ctx.id.toString())),
+  environment: (env, ctx) => seatEnv(env, seatOf(ctx.id.toString()), ctx.id.toString()),
   probe: async (env, ctx) => {
     const seat = seatOf(ctx.id.toString());
     const neighbour = `/home/agent${otherSeat(seat)}`;
     let output = '';
-    const result = await seatEnv(env, seat).exec(
+    const result = await seatEnv(env, seat, ctx.id.toString()).exec(
       `id -un; ls ${neighbour} 2>&1 || true`,
       {
         timeout: 20,

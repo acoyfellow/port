@@ -5,6 +5,7 @@ export type RoutedAgent = {
   status(requestId: string, input: string): Promise<Answer | { readonly status: 'running' }>;
   restart(): Promise<void>;
   workspace(): Promise<Record<string, string>>;
+  writeWorkspace?(files: Record<string, string>): Promise<boolean>;
   probe(): Promise<Probe>;
 };
 
@@ -22,6 +23,18 @@ const json = (body: unknown, status = 200) => Response.json(body, { status });
 const stringField = (value: unknown, key: string) => {
   const found = typeof value === 'object' && value !== null ? Reflect.get(value, key) : undefined;
   return typeof found === 'string' ? found : undefined;
+};
+
+const filesField = (value: unknown): Record<string, string> | undefined | 'invalid' => {
+  const found = typeof value === 'object' && value !== null ? Reflect.get(value, 'files') : undefined;
+  if (found === undefined) return undefined;
+  if (typeof found !== 'object' || found === null) return 'invalid';
+  const files: Record<string, string> = {};
+  for (const [path, text] of Object.entries(found)) {
+    if (typeof text !== 'string' || path.startsWith('/') || path.split('/').includes('..')) return 'invalid';
+    files[path] = text;
+  }
+  return files;
 };
 
 const NAME = /^[a-z0-9-]{1,64}$/;
@@ -60,6 +73,10 @@ export const piRouter = <Env>(options: RouterOptions<Env>): ExportedHandler<Env>
         const body: unknown = await request.json();
         const prompt = stringField(body, 'prompt');
         if (prompt === undefined) return json({ error: 'prompt is required' }, 400);
+        const files = filesField(body);
+        if (files === 'invalid') return json({ error: 'files must map relative paths to strings' }, 400);
+        if (files !== undefined && !(await agent.writeWorkspace?.(files)))
+          return json({ error: 'files not supported' }, 400);
         return json({ request: await agent.submit(prompt, requestId, stringField(body, 'model')) });
       }
       if (url.pathname === '/status') return json(await agent.status(requestId, ''));

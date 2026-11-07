@@ -275,7 +275,7 @@ const save = () => {
       ran: mine.length,
       usd: Number(mine.reduce((sum, row) => sum + row.usd, 0).toFixed(4)),
       medianSeconds: median(mine.map((row) => row.seconds)),
-      coldStartS: note.coldStartS ?? null,
+      coldStartS: note.coldStartS ?? mine.find((row) => row.coldStartS != null)?.coldStartS ?? null,
       resumed: mine.filter((row) => row.resumed).length,
       note: note.note ?? '',
       swept: note.swept ?? null,
@@ -285,7 +285,7 @@ const save = () => {
   mkdirSync(dirname(outFile), { recursive: true });
   writeFileSync(
     outFile,
-    `${JSON.stringify({ at: new Date().toISOString(), model: MODEL, tasks: ALL_TASKS, grader: 'node --test on test/hidden/TASK.test.ts and test/*.test.ts, 120 s cap, local', summary, rows }, null, 2)}\n`,
+    `${JSON.stringify({ at: new Date().toISOString(), model: MODEL, tasks: ALL_TASKS, shapes: shapeNotes, grader: 'node --test on test/hidden/TASK.test.ts and test/*.test.ts, 120 s cap, local', summary, rows }, null, 2)}\n`,
   );
 };
 
@@ -330,7 +330,8 @@ for (const slug of shapes) {
       log(`${slug}: healthy, cold start ${note.coldStartS}s`);
       for (const task of tasks) {
         log(`${slug}/${task}: run`);
-        const row = { ...(await runTask(slug, task, auth)), coldStartS: note.coldStartS };
+        const taskAuth = slug === 'person-with-computer' ? await authFor(slug) : auth;
+        const row = { ...(await runTask(slug, task, taskAuth)), coldStartS: note.coldStartS };
         rows.push(row);
         log(
           `${slug}/${task}: passed=${row.passed} hidden ${row.hiddenPassed}/${row.hiddenTotal} visible ${row.visiblePassed}/${row.visibleTotal} $${row.usd.toFixed(4)} ${row.seconds}s resumed=${row.resumed} ${row.reason}`,

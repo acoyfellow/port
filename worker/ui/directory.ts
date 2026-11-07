@@ -39,7 +39,7 @@ export const homePage = (viewer: Viewer, sort: Sort = { key: '', dir: 'asc' }) =
     title: 'Agent infra for your Cloudflare account',
     viewer,
     section: 'home',
-    body: html`${howItWorks}<section id="directory"><div class="section-head"><div><h2>Directory</h2><p>Every shape runs stock Pi. Open a shape for the full details.</p><p class="cost-note"><strong>AI cost / run</strong> is what the AI model charged for one full test of the shape (100¢ = $1). It does not include the Cloudflare products the shape runs on.</p></div></div>${directoryTable(ENTRIES, sort)}</section></div>`,
+    body: html`${howItWorks}<section id="directory"><div class="section-head"><div><h2>Directory</h2><p>Every shape runs stock Pi. Open a shape for the full details.</p><p class="cost-note"><strong>Coding eval</strong>: every shape that has file tools got the same 5 coding tasks, the same model (Kimi K2.6) and the same hidden tests. <strong>AI cost / task</strong> is the average the AI model charged per task (100¢ = $1), not counting the Cloudflare products the shape runs on. * means some tasks hit the 15 minute cap and are left out of the average. A dash means the shape has no file tools, so it was not in this eval.</p></div></div>${directoryTable(ENTRIES, sort)}</section></div>`,
   });
 
 export const fleetPage = (viewer: Viewer) =>

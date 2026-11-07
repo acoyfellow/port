@@ -40,6 +40,7 @@ export type Entry = {
   readonly source: string;
   readonly links?: readonly { readonly label: string; readonly href: string }[];
   readonly build?: ShapeBuild;
+  readonly evalAll?: EvalAll;
   readonly added?: string;
   readonly tools?: string;
   readonly traits?: Traits;
@@ -52,6 +53,16 @@ export type ShapeBuild = {
   readonly tokens: number;
   readonly seconds: number;
   readonly resumed: boolean;
+  readonly on: string;
+};
+
+export type EvalAll = {
+  readonly passed: number;
+  readonly of: number;
+  readonly usdPerTask: number;
+  readonly capped: number;
+  readonly medianSeconds: number;
+  readonly note: string;
   readonly on: string;
 };
 

@@ -402,6 +402,7 @@ pre { background: var(--raised); padding: 12px; border-radius: 8px; overflow: au
 .dir-table .col-isolation { width: 26%; }
 .dir-table .col-internet { width: 12%; }
 .dir-table .col-cost { width: 13%; white-space: nowrap; }
+.dir-table .col-eval { width: 10%; white-space: nowrap; }
 .dir-table .col-added { width: 9%; }
 .dir-table .col-added { white-space: nowrap; color: var(--dim); }
 
@@ -416,7 +417,8 @@ pre { background: var(--raised); padding: 12px; border-radius: 8px; overflow: au
   .dir-table td.col-name { flex-basis: 100%; color: inherit; margin-bottom: 4px; }
   .dir-table td.col-isolation { flex-basis: 100%; }
   .dir-table td.col-cost, .dir-table td.col-added { font-family: var(--mono); font-size: 12px; }
-  .dir-table td.col-cost::before { content: 'AI cost / run '; font-family: inherit; }
+  .dir-table td.col-cost::before { content: 'AI cost / task '; font-family: inherit; }
+  .dir-table td.col-eval::before { content: 'Coding eval '; font-family: inherit; }
   .dir-table td.col-added::before { content: '· added '; }
   .dir-table .num { text-align: left; }
 }
