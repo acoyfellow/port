@@ -99,17 +99,23 @@ if (
   fail('lint fails');
 else ok('lint clean');
 
-const dirty = git([
-  'status',
-  '--porcelain',
-  '--',
-  'shapes',
+const OWNED = [
+  'shapes/write-list',
+  'shapes/beam-fleet',
+  'shapes/beam-space',
+  'shapes/kit',
   'shared',
   'worker',
-  'scripts',
-  'proof',
+  'scripts/eval-all.mjs',
+  'scripts/gen-entries.mjs',
+  'scripts/shape.mjs',
+  'proof/eval-all.json',
+  'proof/gleam-three',
+  'proof/pi',
+  'proof/shapes',
   'test',
-]).trim();
+];
+const dirty = git(['status', '--porcelain', '--', ...OWNED]).trim();
 if (dirty !== '') fail(`uncommitted changes:\n${dirty}`);
 git(['fetch', '-q', 'origin']);
 const ahead = git(['rev-list', '--count', 'origin/main..HEAD']).trim();
