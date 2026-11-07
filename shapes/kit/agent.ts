@@ -40,6 +40,12 @@ export type Answer = {
   readonly tokens: number;
 };
 
+export type RunningAnswer = {
+  readonly status: 'running';
+  readonly usd?: number;
+  readonly tokens?: number;
+};
+
 const gatewayModels = (gateway: string): Model<'openai-completions'>[] =>
   Object.values(CLOUDFLARE_AI_GATEWAY_MODELS)
     .filter((model) => model.api === 'openai-completions' && model.id.startsWith('workers-ai/'))
@@ -243,16 +249,22 @@ export const piAgent = <Env extends AgentEnv>(shape: AgentShape<Env>) =>
       return requestId;
     }
 
-    async status(
-      requestId: string,
-      input: string,
-      model = DEFAULT_MODEL,
-    ): Promise<Answer | { readonly status: 'running' }> {
+    async status(requestId: string, input: string, model = DEFAULT_MODEL): Promise<Answer | RunningAnswer> {
       const conversation = await this.#conversation(model);
       const submission = await conversation.submit({ type: 'input', content: input, requestId }, context);
       const record = await submission.status(context);
-      if (record.status !== 'done' && record.status !== 'unanswered') return { status: 'running' };
+      if (record.status !== 'done' && record.status !== 'unanswered')
+        return { status: 'running', ...(await this.#spent()) };
       return this.#answer(record.status, record.status === 'unanswered' ? record.reason : undefined);
+    }
+
+    async #spent() {
+      const usage = await this.#opened().usage(context);
+      const totals = Object.values(usage.models);
+      return {
+        usd: totals.reduce((sum, each) => sum + each.cost.total, 0),
+        tokens: totals.reduce((sum, each) => sum + each.totalTokens, 0),
+      };
     }
 
     async #answer(status: 'done' | 'unanswered', reason: string | undefined): Promise<Answer> {

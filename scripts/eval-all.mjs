@@ -25,10 +25,17 @@ const ALL_SHAPES = [
   'self-editing-app',
   'isolate-agents',
   'self-observe',
+  'gadget-workspace',
+  'egress-filter',
+  'snapshot-rollback',
+  'scheduled-agent',
+  'flight-recorder',
+  'safe-sql',
+  'workflow-plan',
+  'vector-memory',
 ];
 const EXCLUDED = {
   'agent-room': 'excluded: no file tools (environment is undefined)',
-  'gadget-workspace': 'excluded: no file tools',
 };
 const ALL_TASKS = readdirSync(join(evals, 'tasks')).sort();
 
@@ -231,7 +238,8 @@ const runTask = async (slug, task, auth) => {
     row.usd = status.usd ?? 0;
     row.tokens = status.tokens ?? 0;
     row.resumed = runningAtRestart && status.status === 'done';
-    if (status.status === 'running') row.reason = 'still running at the 15 min cap';
+    row.capped = status.status === 'running';
+    if (row.capped) row.reason = 'still running at the 15 min cap';
     else if (status.status === 'unanswered') row.reason = `unanswered: ${status.reason ?? ''}`.slice(0, 200);
     const files = await retrying(slug, auth, 'GET', `/files?agent=${agent}`);
     const { hidden, visible } = grade(slug, task, files);

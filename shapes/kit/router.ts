@@ -1,8 +1,8 @@
-import type { Answer, Probe } from './agent.ts';
+import type { Answer, Probe, RunningAnswer } from './agent.ts';
 
 export type RoutedAgent = {
   submit(input: string, requestId: string, model?: string): Promise<string>;
-  status(requestId: string, input: string): Promise<Answer | { readonly status: 'running' }>;
+  status(requestId: string, input: string): Promise<Answer | RunningAnswer>;
   restart(): Promise<void>;
   workspace(): Promise<Record<string, string>>;
   writeWorkspace?(files: Record<string, string>): Promise<boolean>;

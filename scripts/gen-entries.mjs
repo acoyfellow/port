@@ -54,13 +54,14 @@ const evalOf = (slug) => {
   if (summary === undefined || !(summary.ran > 0) || typeof summary.passed !== 'number') return undefined;
   const rows = evalReport.rows.filter((row) => row.slug === slug);
   const counted = rows.filter((row) => row.usd > 0);
+  const capped = rows.filter((row) => row.capped === true || row.usd === 0).length;
   return {
     passed: summary.passed,
     of: summary.of,
     usdPerTask: Number(
       (counted.reduce((sum, row) => sum + row.usd, 0) / Math.max(1, counted.length)).toFixed(4),
     ),
-    capped: rows.length - counted.length,
+    capped,
     medianSeconds: summary.medianSeconds,
     note: summary.note ?? '',
     on: evalReport.at.slice(0, 10),
