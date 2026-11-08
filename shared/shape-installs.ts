@@ -66,6 +66,7 @@ export const SHAPE_INSTALLS: readonly ShapeInstall[] = [
   shape('isolate-agents', [DO('AGENT', 'Agent'), LOADER]),
   shape('durable-session', [DO('SESSION', 'Session')]),
   shape('write-list', [DO('SESSION', 'Session')]),
+  shape('facet-probe', [DO('HOST', 'Host')]),
   shape('agent-room', [DO('ROOM', 'Room'), DO('AGENT', 'RoomAgent')]),
   shape('self-editing-app', [DO('BODY', 'Body'), LOADER]),
   shape('self-observe', [DO('AGENT', 'Observer'), LOADER]),

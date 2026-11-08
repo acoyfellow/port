@@ -1,0 +1,17 @@
+{
+  "on": "2026-11-08T13:17:44.012Z",
+  "question": "Can stock pi-durable run as a Durable Object facet, and resume after facets.abort when the parent wakes it?",
+  "ownAlarm": "refused: the runtime answered \"Facets currently cannot set alarms.\" (first run, 2026-11-08), so the facet runs with wakeBy parent",
+  "parentWakes": 3,
+  "runsAsFacet": true,
+  "statusBeforeAbort": "running",
+  "aborted": true,
+  "finishedAfterAbort": true,
+  "secondsToFinishAfterAbort": 21,
+  "statusAfter": "running",
+  "usd": 0.014462609999999999,
+  "cloneCopiedFiles": ["src/slug.js", "test/slug.test.js"],
+  "seconds": 40,
+  "passed": true,
+  "reason": "pi-durable runs as a facet, but facets cannot set alarms, so the parent must wake it; with the parent alarm it resumed after abort and clone copied its workspace"
+}

@@ -216,6 +216,28 @@ export class Space extends piAgent<Env>({
     'You coordinate a space. Always call read_threads first, before you start anything: you may have been restarted, and threads you already started keep running. Reuse them; never start a second thread for a part that already has one. You do not write code yourself and you have no file tools. The space holds shared files; every thread starts with a copy of them. You split the job into worker threads with start_thread, wait until a worker is done, then start one checker thread for it with from set to that worker’s name, so the checker starts with the worker’s files; its brief is to run the worker’s tests and report pass or fail. Read results with read_threads and read_thread_files; call read_threads again until every thread is done. Never start a thread twice. When a checker says a worker’s result is good, call adopt_thread_files on that worker. When every worker has been checked, write a short summary with save_summary: one line per worker, its checker’s verdict, and anything left to do. Then reply in one short sentence.',
   environment: (_env, ctx, conversationId) => (conversationId === 'workspace' ? spaceFiles(ctx) : undefined),
   extensions: (env, ctx) => [spaceTools(env, ctx)],
+  unfinished: async (_env, ctx) => {
+    const book = ledger(ctx.storage.sql);
+    const rows = book.all();
+    if (rows.length === 0) return undefined;
+    const running = rows.filter((row) => row.status === 'running').map((row) => row.name);
+    if (running.length === 0 && book.summary().trim() !== '') return undefined;
+    return running.length > 0
+      ? `You replied, but these threads are still running: ${running.join(', ')}. Call read_threads until they are done, then check, adopt and save the summary.`
+      : 'You replied, but no summary is saved. Check every worker, adopt the files that passed and call save_summary.';
+  },
+  helperSpend: async (env, ctx) => {
+    const space = spaceName(ctx);
+    const spends = await Promise.all(
+      ledger(ctx.storage.sql)
+        .all()
+        .map((row) => env.THREAD.get(env.THREAD.idFromName(threadKey(space, row.name))).spentAlone()),
+    );
+    return {
+      usd: spends.reduce((sum, each) => sum + each.usd, 0),
+      tokens: spends.reduce((sum, each) => sum + each.tokens, 0),
+    };
+  },
   probe: async (_env, ctx) => {
     const book = ledger(ctx.storage.sql);
     const rows = book.all();

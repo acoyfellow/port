@@ -125,7 +125,14 @@ export type AgentShape<Env extends AgentEnv> = {
   ) => ExecutionEnv | undefined;
   readonly extensions?: (env: Env, ctx: DurableObjectState) => readonly Extension[];
   readonly probe?: (env: Env, ctx: DurableObjectState) => Promise<Probe>;
+  readonly helperSpend?: (env: Env, ctx: DurableObjectState) => Promise<Spend>;
+  readonly unfinished?: (env: Env, ctx: DurableObjectState) => Promise<string | undefined>;
+  readonly wakeBy?: 'own-alarm' | 'parent';
 };
+
+export type Spend = { readonly usd: number; readonly tokens: number };
+
+const CONTINUE_ROUNDS = 3;
 
 const WORKSPACE_LIMIT = 200;
 
@@ -183,9 +190,11 @@ export const piAgent = <Env extends AgentEnv>(shape: AgentShape<Env>) =>
     constructor(ctx: DurableObjectState, env: Env) {
       super(ctx, env);
       void ctx.blockConcurrencyWhile(async () => {
-        const fallback = Date.now() + HEARTBEAT_MS;
-        const current = await ctx.storage.getAlarm();
-        if (current === null || current > fallback) await ctx.storage.setAlarm(fallback);
+        if (shape.wakeBy !== 'parent') {
+          const fallback = Date.now() + HEARTBEAT_MS;
+          const current = await ctx.storage.getAlarm();
+          if (current === null || current > fallback) await ctx.storage.setAlarm(fallback);
+        }
         const models = createModels();
         models.setProvider(gatewayProvider(env.AI, env.GATEWAY));
         const registry = createRegistry();
@@ -213,6 +222,7 @@ export const piAgent = <Env extends AgentEnv>(shape: AgentShape<Env>) =>
     }
 
     async #arm(wake: Wake) {
+      if (shape.wakeBy === 'parent') return;
       const heartbeat = wake.active ? Date.now() + HEARTBEAT_MS : undefined;
       const at =
         heartbeat === undefined || wake.at === undefined
@@ -220,6 +230,12 @@ export const piAgent = <Env extends AgentEnv>(shape: AgentShape<Env>) =>
           : Math.min(heartbeat, wake.at);
       if (at === undefined) await this.ctx.storage.deleteAlarm();
       else await this.ctx.storage.setAlarm(at);
+    }
+
+    async wake() {
+      const harness = this.#opened();
+      harness.resume();
+      return harness.wake();
     }
 
     override async alarm() {
@@ -255,10 +271,32 @@ export const piAgent = <Env extends AgentEnv>(shape: AgentShape<Env>) =>
       const record = await submission.status(context);
       if (record.status !== 'done' && record.status !== 'unanswered')
         return { status: 'running', ...(await this.#spent()) };
+      for (let round = 1; round <= CONTINUE_ROUNDS; round += 1) {
+        const left = shape.unfinished === undefined ? undefined : await shape.unfinished(this.env, this.ctx);
+        if (left === undefined) break;
+        const roundId = `${requestId}:continue-${round}`;
+        await this.submit(left, roundId, model);
+        const roundRecord = await (
+          await conversation.submit({ type: 'input', content: left, requestId: roundId }, context)
+        ).status(context);
+        if (roundRecord.status !== 'done' && roundRecord.status !== 'unanswered')
+          return { status: 'running', ...(await this.#spent()) };
+      }
       return this.#answer(record.status, record.status === 'unanswered' ? record.reason : undefined);
     }
 
-    async #spent() {
+    async #spent(): Promise<Spend> {
+      const usage = await this.#opened().usage(context);
+      const totals = Object.values(usage.models);
+      const helpers =
+        shape.helperSpend === undefined ? { usd: 0, tokens: 0 } : await shape.helperSpend(this.env, this.ctx);
+      return {
+        usd: totals.reduce((sum, each) => sum + each.cost.total, 0) + helpers.usd,
+        tokens: totals.reduce((sum, each) => sum + each.totalTokens, 0) + helpers.tokens,
+      };
+    }
+
+    async spentAlone(): Promise<Spend> {
       const usage = await this.#opened().usage(context);
       const totals = Object.values(usage.models);
       return {
@@ -268,18 +306,14 @@ export const piAgent = <Env extends AgentEnv>(shape: AgentShape<Env>) =>
     }
 
     async #answer(status: 'done' | 'unanswered', reason: string | undefined): Promise<Answer> {
-      const harness = this.#opened();
       const conversation = await this.#conversation(DEFAULT_MODEL);
       const page = await conversation.entries({}, 50, undefined, context);
       const messages = [...page.items].reverse().flatMap((entry) => entry.model ?? []);
-      const usage = await harness.usage(context);
-      const totals = Object.values(usage.models);
       return {
         status,
         ...(reason === undefined ? {} : { reason }),
         text: lastText(messages),
-        usd: totals.reduce((sum, each) => sum + each.cost.total, 0),
-        tokens: totals.reduce((sum, each) => sum + each.totalTokens, 0),
+        ...(await this.#spent()),
       };
     }
 
