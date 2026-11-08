@@ -35,17 +35,18 @@ const summary = report?.summary?.['beam-space'];
 const rows = (report?.rows ?? []).filter((row) => row.slug === 'beam-space');
 const latest = new Map(rows.map((row) => [row.task, row]));
 const costly = [...latest.values()].filter((row) => row.usd > 0.05).length;
+const counted = [...latest.values()].filter((row) => row.usd > 0);
+const usdPerTask = counted.reduce((sum, row) => sum + row.usd, 0) / Math.max(1, counted.length);
 if (summary === undefined || summary.ran !== summary.of) fail('beam-space eval incomplete');
 else if (costly < 3) fail(`beam-space eval: only ${costly} tasks show thread cost`);
-else
-  ok(`beam-space eval ${summary.passed}/${summary.of} at ${(summary.usdPerTask * 100).toFixed(1)}¢ / task`);
+else ok(`beam-space eval ${summary.passed}/${summary.of} at ${(usdPerTask * 100).toFixed(1)}¢ / task`);
 
 const page = await (await fetch(SITE, { signal: AbortSignal.timeout(20_000) })).text();
 if (!page.includes('class="cost-chart"')) fail('live page has no cost chart');
 else ok('live page has the cost chart');
 const start = page.indexOf('href="/d/beam-space"');
 const row = start < 0 ? '' : page.slice(start, page.indexOf('</tr>', start));
-const shownCents = summary === undefined ? '' : `${(summary.usdPerTask * 100).toFixed(1)}¢`;
+const shownCents = counted.length === 0 ? '' : `${(usdPerTask * 100).toFixed(1)}¢`;
 if (row === '' || shownCents === '' || !row.includes(shownCents))
   fail(`live beam-space row does not show ${shownCents}`);
 else ok(`live beam-space row shows ${shownCents}`);
