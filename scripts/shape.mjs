@@ -33,7 +33,7 @@ export const accountId = () => {
   return value;
 };
 
-const token = () => {
+export const token = () => {
   const fromEnv = process.env.CLOUDFLARE_API_TOKEN;
   if (fromEnv) return fromEnv;
   if (typeof profileValues().expires !== 'number' || profileValues().expires < Date.now() + 120_000)
@@ -214,6 +214,13 @@ const shapeKey = (slug) => {
 };
 
 const BEAM_SHAPES = ['beam-fleet', 'beam-space'];
+const NIX_SHAPES = ['nix-git'];
+const NIX_IMAGE = join(root, '.tmp', 'nix-out', 'image.tar.gz');
+
+const loadNixImage = () => {
+  if (!existsSync(NIX_IMAGE)) throw new Error(`${NIX_IMAGE} is missing: build it with .tmp/nix-build.sh`);
+  execFileSync('docker', ['load', '-i', NIX_IMAGE], { stdio: ['ignore', 'pipe', 'pipe'] });
+};
 
 const exportBeamShipment = () =>
   execFileSync('gleam', ['export', 'erlang-shipment'], {
@@ -225,6 +232,7 @@ const runStep = (slug, step, sub) => {
   const dir = join(root, 'shapes', slug);
   if (!existsSync(join(dir, 'alchemy.run.ts'))) throw new Error(`shapes/${slug}/alchemy.run.ts is missing`);
   if (step === 'up' && BEAM_SHAPES.includes(slug)) exportBeamShipment();
+  if (step === 'up' && NIX_SHAPES.includes(slug)) loadNixImage();
   const alchemy = join(root, 'shapes', 'node_modules', '.bin', 'alchemy');
   const command = {
     up: [alchemy, ['deploy', '--stage', 'shape', '--yes', '--no-input']],

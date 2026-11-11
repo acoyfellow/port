@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-08T13:48:49.845Z",
+  "at": "2026-11-09T12:04:17.940Z",
   "model": "workers-ai/@cf/moonshotai/kimi-k2.6",
   "tasks": ["business-days", "cart-merge", "csv-parse", "money-words", "sku-glob"],
   "shapes": {
@@ -104,6 +104,11 @@
       "swept": "{}"
     },
     "beam-space": {
+      "coldStartS": 6,
+      "note": "",
+      "swept": "{}"
+    },
+    "nix-git": {
       "coldStartS": 6,
       "note": "",
       "swept": "{}"
@@ -339,6 +344,17 @@
       "medianSeconds": 467,
       "coldStartS": 6,
       "resumed": 4,
+      "note": "",
+      "swept": "{}"
+    },
+    "nix-git": {
+      "passed": 5,
+      "of": 5,
+      "ran": 5,
+      "usd": 0.4422,
+      "medianSeconds": 309,
+      "coldStartS": 6,
+      "resumed": 5,
       "note": "",
       "swept": "{}"
     },
@@ -2186,6 +2202,96 @@
       "resumed": false,
       "reason": "still running at the 15 min cap",
       "capped": true,
+      "coldStartS": 6
+    },
+    {
+      "slug": "nix-git",
+      "task": "business-days",
+      "model": "workers-ai/@cf/moonshotai/kimi-k2.6",
+      "agent": "eval-business-days-56659c",
+      "passed": true,
+      "hiddenPassed": 3,
+      "hiddenTotal": 3,
+      "visiblePassed": 34,
+      "visibleTotal": 34,
+      "usd": 0.07656867000000002,
+      "tokens": 139601,
+      "seconds": 315,
+      "resumed": true,
+      "reason": "",
+      "capped": false,
+      "coldStartS": 6
+    },
+    {
+      "slug": "nix-git",
+      "task": "cart-merge",
+      "model": "workers-ai/@cf/moonshotai/kimi-k2.6",
+      "agent": "eval-cart-merge-776c89",
+      "passed": true,
+      "hiddenPassed": 2,
+      "hiddenTotal": 2,
+      "visiblePassed": 27,
+      "visibleTotal": 27,
+      "usd": 0.0246089,
+      "tokens": 35126,
+      "seconds": 62,
+      "resumed": true,
+      "reason": "",
+      "capped": false,
+      "coldStartS": 6
+    },
+    {
+      "slug": "nix-git",
+      "task": "csv-parse",
+      "model": "workers-ai/@cf/moonshotai/kimi-k2.6",
+      "agent": "eval-csv-parse-e1d4ed",
+      "passed": true,
+      "hiddenPassed": 3,
+      "hiddenTotal": 3,
+      "visiblePassed": 39,
+      "visibleTotal": 39,
+      "usd": 0.20097062000000002,
+      "tokens": 378628,
+      "seconds": 372,
+      "resumed": true,
+      "reason": "",
+      "capped": false,
+      "coldStartS": 6
+    },
+    {
+      "slug": "nix-git",
+      "task": "money-words",
+      "model": "workers-ai/@cf/moonshotai/kimi-k2.6",
+      "agent": "eval-money-words-810582",
+      "passed": true,
+      "hiddenPassed": 2,
+      "hiddenTotal": 2,
+      "visiblePassed": 33,
+      "visibleTotal": 33,
+      "usd": 0.02918987,
+      "tokens": 37830,
+      "seconds": 66,
+      "resumed": true,
+      "reason": "",
+      "capped": false,
+      "coldStartS": 6
+    },
+    {
+      "slug": "nix-git",
+      "task": "sku-glob",
+      "model": "workers-ai/@cf/moonshotai/kimi-k2.6",
+      "agent": "eval-sku-glob-903c10",
+      "passed": true,
+      "hiddenPassed": 3,
+      "hiddenTotal": 3,
+      "visiblePassed": 38,
+      "visibleTotal": 38,
+      "usd": 0.11087593999999998,
+      "tokens": 90192,
+      "seconds": 309,
+      "resumed": true,
+      "reason": "",
+      "capped": false,
       "coldStartS": 6
     }
   ]

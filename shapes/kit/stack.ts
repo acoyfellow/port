@@ -23,13 +23,21 @@ export const PI_BOX = `${import.meta.dirname}/box`;
 export const container = <Shape>(
   slug: string,
   className: string,
-  options: { readonly dockerfile?: string; readonly instanceType?: 'lite' | 'basic' | 'standard-1' } = {},
+  options: {
+    readonly dockerfile?: string;
+    readonly image?: string;
+    readonly instanceType?: 'lite' | 'basic' | 'standard-1';
+  } = {},
 ) =>
   Cloudflare.Container<Shape>(className, {
     name: containerName(slug, className.toLowerCase()),
     className,
-    context: PI_BOX,
-    ...(options.dockerfile === undefined ? {} : { dockerfile: `${PI_BOX}/${options.dockerfile}` }),
+    ...(options.image !== undefined
+      ? { image: options.image }
+      : {
+          context: PI_BOX,
+          ...(options.dockerfile === undefined ? {} : { dockerfile: `${PI_BOX}/${options.dockerfile}` }),
+        }),
     maxInstances: 2,
     instanceType: options.instanceType ?? 'basic',
   });

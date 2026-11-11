@@ -27,6 +27,7 @@ const order = [
   'write-list',
   'beam-fleet',
   'beam-space',
+  'nix-git',
 ];
 const rank = (slug) => order.indexOf(slug) + 1 || 99;
 

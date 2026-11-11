@@ -9,6 +9,7 @@ import { SHAPE as flight_recorder } from '../../shapes/flight-recorder/shape';
 import { SHAPE as gadget_workspace } from '../../shapes/gadget-workspace/shape';
 import { SHAPE as git_gatekeeper } from '../../shapes/git-gatekeeper/shape';
 import { SHAPE as isolate_agents } from '../../shapes/isolate-agents/shape';
+import { SHAPE as nix_git } from '../../shapes/nix-git/shape';
 import { SHAPE as person_with_computer } from '../../shapes/person-with-computer/shape';
 import { SHAPE as safe_sql } from '../../shapes/safe-sql/shape';
 import { SHAPE as scheduled_agent } from '../../shapes/scheduled-agent/shape';
@@ -131,6 +132,16 @@ const BUILDS: Readonly<Record<string, ShapeBuild>> = {
     resumed: true,
     on: '2026-10-31',
   },
+  'nix-git': {
+    task: 'wrote and checked fizzbuzz.py and NOTES.md',
+    infrastructure:
+      "The agent's container runs a git built by Nix (/nix/store/cmqmrxkr9h3yrhxbafxmz1phbynpsq9j-git-minimal-2.55.0, patch sha256 67b647b1f90e). 6 of 6 forms of force push were refused (--force=refused, -f=refused, --force-with-lease=refused, +refspec=refused, +refspec in config=refused, --mirror=refused), the remote branch was unchanged, and a normal push was accepted.",
+    usd: 0.00387148,
+    tokens: 6446,
+    seconds: 115,
+    resumed: true,
+    on: '2026-11-09',
+  },
   'person-with-computer': {
     task: 'wrote and checked fizzbuzz.py and NOTES.md',
     infrastructure:
@@ -251,7 +262,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 0,
     medianSeconds: 195,
     note: '',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'beam-space': {
     passed: 5,
@@ -260,7 +271,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 1,
     medianSeconds: 467,
     note: '',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'chat-with-sandbox': {
     passed: 4,
@@ -269,7 +280,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 1,
     medianSeconds: 275,
     note: 'sku-glob hit the 15 min cap at hidden 2/3',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'container-per-thread': {
     passed: 5,
@@ -278,7 +289,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 0,
     medianSeconds: 371,
     note: '',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'durable-session': {
     passed: 5,
@@ -287,7 +298,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 0,
     medianSeconds: 195,
     note: '',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'egress-filter': {
     passed: 5,
@@ -296,7 +307,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 0,
     medianSeconds: 186,
     note: '',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'flight-recorder': {
     passed: 5,
@@ -305,7 +316,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 0,
     medianSeconds: 132,
     note: '',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'gadget-workspace': {
     passed: 5,
@@ -314,7 +325,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 0,
     medianSeconds: 116,
     note: '',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'git-gatekeeper': {
     passed: 5,
@@ -323,7 +334,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 0,
     medianSeconds: 347,
     note: '',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'isolate-agents': {
     passed: 4,
@@ -332,7 +343,16 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 1,
     medianSeconds: 236,
     note: 'csv-parse used an enum (prompt forbids it); sku-glob passed at the cap',
-    on: '2026-11-08',
+    on: '2026-11-09',
+  },
+  'nix-git': {
+    passed: 5,
+    of: 5,
+    usdPerTask: 0.0884,
+    capped: 0,
+    medianSeconds: 309,
+    note: '',
+    on: '2026-11-09',
   },
   'person-with-computer': {
     passed: 5,
@@ -341,7 +361,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 1,
     medianSeconds: 472,
     note: 'rerun after a harness bug (one sign-in reused across tasks)',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'safe-sql': {
     passed: 4,
@@ -350,7 +370,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 0,
     medianSeconds: 137,
     note: '',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'scheduled-agent': {
     passed: 5,
@@ -359,7 +379,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 0,
     medianSeconds: 116,
     note: '',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'sealed-box': {
     passed: 4,
@@ -368,7 +388,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 1,
     medianSeconds: 214,
     note: 'sku-glob hit the 15 min cap; hidden file did not load',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'self-editing-app': {
     passed: 5,
@@ -377,7 +397,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 0,
     medianSeconds: 211,
     note: '',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'self-observe': {
     passed: 5,
@@ -386,7 +406,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 3,
     medianSeconds: 902,
     note: '3/5 runs hit the 15 min cap but their files passed; usd undercounted',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'shared-container': {
     passed: 5,
@@ -395,7 +415,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 0,
     medianSeconds: 231,
     note: '',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'snapshot-rollback': {
     passed: 5,
@@ -404,7 +424,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 0,
     medianSeconds: 179,
     note: '',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'vector-memory': {
     passed: 5,
@@ -413,7 +433,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 0,
     medianSeconds: 195,
     note: '',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'workflow-plan': {
     passed: 5,
@@ -422,7 +442,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 0,
     medianSeconds: 169,
     note: '',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
   'write-list': {
     passed: 5,
@@ -431,7 +451,7 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
     capped: 0,
     medianSeconds: 157,
     note: '',
-    on: '2026-11-08',
+    on: '2026-11-09',
   },
 };
 
@@ -517,5 +537,6 @@ export const ENTRIES: readonly Entry[] = [
   { ...write_list, added: '2026-11-07', build: BUILDS['write-list'], evalAll: EVALS['write-list'] },
   { ...beam_fleet, added: '2026-11-07', build: BUILDS['beam-fleet'], evalAll: EVALS['beam-fleet'] },
   { ...beam_space, added: '2026-11-07', build: BUILDS['beam-space'], evalAll: EVALS['beam-space'] },
+  { ...nix_git, added: '2026-11-11', build: BUILDS['nix-git'], evalAll: EVALS['nix-git'] },
   { ...self_observe, added: '2026-10-30', build: BUILDS['self-observe'], evalAll: EVALS['self-observe'] },
 ];

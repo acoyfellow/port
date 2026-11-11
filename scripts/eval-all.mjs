@@ -36,6 +36,7 @@ const ALL_SHAPES = [
   'write-list',
   'beam-fleet',
   'beam-space',
+  'nix-git',
 ];
 const EXCLUDED = {
   'agent-room': 'excluded: no file tools (environment is undefined)',

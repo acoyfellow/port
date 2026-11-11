@@ -1,0 +1,73 @@
+{
+  "slug": "nix-git",
+  "up": {
+    "ok": true,
+    "ms": 20451,
+    "tail": [
+      "[06:44:58.970] INFO (#423): [Box] creating",
+      "[06:44:58.971] INFO (#423): Cloudflare Container reconcile: starting port-shape-nix-git-box",
+      "[06:44:59.158] INFO (#422): Cloudflare Worker reconcile: existing durable object tags [\"alchemy:dos:BOX=Box\"]",
+      "[06:44:59.159] INFO (#422): Cloudflare Worker reconcile: previous durable object tags [\"alchemy:dos:BOX=Box\"]",
+      "[06:44:59.159] INFO (#422): Cloudflare Worker create: preparing bundle for port-shape-nix-git",
+      "[06:44:59.361] INFO (#422): Cloudflare Worker create: uploading script for port-shape-nix-git",
+      "[06:44:59.971] INFO (#422): Cloudflare Worker put: durable object reconciliation {\"oldDoClassNameByLogicalId\":{\"BOX\":\"Box\"},\"currentDoClassNameByLogicalId\":{\"BOX\":\"Box\"},\"deletedClasses\":[],\"renamedClasses\":[],\"transferredClasses\":[],\"newSqliteClasses\":[]}",
+      "[06:44:59.973] INFO (#423): Cloudflare Container reconcile: recreating port-shape-nix-git-box to attach durable object binding",
+      "[06:44:59.973] INFO (#423): [Box] Recreating container application port-shape-nix-git-box with durable object binding...",
+      "[06:45:02.110] INFO (#423): Cloudflare Container create: creating application port-shape-nix-git-box",
+      "[06:45:02.110] INFO (#423): [Box] Creating container application port-shape-nix-git-box...",
+      "[06:45:07.691] INFO (#624): [gateway] created (17.8s)",
+      "[06:45:07.691] INFO (#625): [Box] created (17.8s)",
+      "[06:45:07.691] INFO (#626): [worker] created — Reconciling custom domains (1) ... (17.8s)",
+      "[06:45:07.692] INFO (#1): ",
+      "[06:45:07.692] INFO (#1): Done: 3 succeeded (17.8s)",
+      "{",
+      "  url: 'https://port-shape-nix-git.customer0.dev',",
+      "  worker: 'port-shape-nix-git'",
+      "}"
+    ],
+    "at": "2026-11-09T11:45:07.883Z"
+  },
+  "down": {
+    "ok": true,
+    "ms": 6956,
+    "tail": [
+      "[07:04:01.769] INFO (#1): Plan: 3 to delete, 4 binding changes",
+      "[07:04:01.769] INFO (#1): [Box] delete",
+      "[07:04:01.769] INFO (#1): [Box/BOX] unbind",
+      "[07:04:01.769] INFO (#1): [gateway] delete",
+      "[07:04:01.769] INFO (#1): [worker] delete",
+      "[07:04:01.769] INFO (#1): [worker/AI] unbind",
+      "[07:04:01.769] INFO (#1): [worker/BOX] unbind",
+      "[07:04:01.769] INFO (#1): [worker/GATEWAY] unbind",
+      "[07:04:01.769] INFO (#1): ",
+      "[07:04:01.771] INFO (#324): [Box] deleting",
+      "[07:04:01.771] INFO (#326): [worker] deleting",
+      "[07:04:01.772] INFO (#326): Cloudflare Worker delete: deleting port-shape-nix-git",
+      "[07:04:01.773] INFO (#328): Cloudflare: using environment variables (CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN) instead of the profile.",
+      "[07:04:01.780] INFO (#324): Cloudflare Container delete: deleting port-shape-nix-git-box",
+      "[07:04:02.966] INFO (#324): [Box] deleted (1.2s)",
+      "[07:04:03.704] INFO (#326): [worker] deleted (1.9s)",
+      "[07:04:03.704] INFO (#325): [gateway] deleting",
+      "[07:04:06.615] INFO (#325): [gateway] deleted (2.9s)",
+      "[07:04:06.617] INFO (#1): ",
+      "[07:04:06.617] INFO (#1): Done: 3 succeeded (4.8s)",
+      "removed registry images and repos: port-shape-nix-git-box"
+    ],
+    "at": "2026-11-09T12:04:13.290Z"
+  },
+  "sweep": {
+    "at": "2026-11-10T15:43:42.436Z",
+    "prefix": "port-shape-nix-git",
+    "leftovers": {},
+    "errors": {}
+  },
+  "smoke": {
+    "ok": true,
+    "ms": 115046,
+    "tail": [
+      "{\"slug\":\"nix-git\",\"at\":\"2026-11-09T11:38:37.801Z\",\"agent\":\"pi-durable\",\"task\":\"wrote and checked fizzbuzz.py and NOTES.md\",\"passed\":true,\"restarted\":true,\"resumed\":true,\"usd\":0.00387148,\"tokens\":6446,\"seconds\":115,\"infrastructure\":\"The agent's container runs a git built by Nix (/nix/store/<redacted>.55.0, patch sha256 67b647b1f90e). 6 of 6 forms of force push were refused (--force=refused, -f=refused, --force-with-lease=refused, +refspec=refused, +refspec in config=refused, --mirror=refused), the remote branch was unchanged, and a normal push was accepted.\",\"infrastructureOk\":true,\"facts\":{\"boot\":\"00a2485c-ebd9-4d37-8b24-af33ab9cb3d7\",\"forcePushForms\":6,\"forcePushRefused\":6,\"refusedForms\":\"--force=refused, -f=refused, --force-with-lease=refused, +refspec=refused, +refspec in config=refused, --mirror=refused\",\"normalPush\":\"ok\",\"remote\":\"unchanged\",\"gitBin\":\"/nix/store/<redacted>.55.0/bin/git\",\"gitStorePath\":\"/nix/store/<redacted>.55.0\",\"gitIsNix\":true,\"patchSha256\":\"<redacted>\"},\"files\":[\"NOTES.md\",\"fizzbuzz.py\"]}",
+      "PROVED Stock Pi (pi-durable) wrote and checked fizzbuzz.py and NOTES.md on nix-git, resumed after a forced restart, and spent $0.0039 by Pi's own count. The agent's container runs a git built by Nix (/nix/store/<redacted>.55.0, patch sha256 67b647b1f90e). 6 of 6 forms of force push were refused (--force=refused, -f=refused, --force-with-lease=refused, +refspec=refused, +refspec in config=refused, --mirror=refused), the remote branch was unchanged, and a normal push was accepted."
+    ],
+    "at": "2026-11-09T11:38:37.808Z"
+  }
+}
