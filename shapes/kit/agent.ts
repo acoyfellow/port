@@ -20,6 +20,7 @@ import {
 import type { ExecutionEnv } from '@earendil-works/pi-durable/env';
 import { openDurableObjectSqliteStorage } from '@earendil-works/pi-durable/storage/sqlite/cloudflare';
 import { createCodingTools } from '@earendil-works/pi-durable/tools';
+import { boundedModelFetch, type ModelLimits } from './bounded-model.ts';
 
 export const PI_PROVIDER = 'port-gateway';
 export const DEFAULT_MODEL = 'workers-ai/@cf/moonshotai/kimi-k2.6';
@@ -62,9 +63,10 @@ const BINDING_HEADERS = {
   'x-api-key': null,
 };
 
-const throughBinding = (ai: Ai): ProviderStreams => {
+const throughBinding = (ai: Ai, storage?: DurableObjectStorage, limits?: ModelLimits): ProviderStreams => {
   const inner = openAICompletionsApi();
-  const fetch = createAiBindingFetch(ai);
+  const bindingFetch = createAiBindingFetch(ai);
+  const fetch = storage && limits ? boundedModelFetch(bindingFetch, storage, limits) : bindingFetch;
   return {
     stream: (model, transcript, options) =>
       inner.stream(model, transcript, {
@@ -81,7 +83,12 @@ const throughBinding = (ai: Ai): ProviderStreams => {
   };
 };
 
-const gatewayProvider = (ai: Ai, gateway: string): Provider =>
+const gatewayProvider = (
+  ai: Ai,
+  gateway: string,
+  storage?: DurableObjectStorage,
+  limits?: ModelLimits,
+): Provider =>
   createProvider({
     id: PI_PROVIDER,
     name: 'AI Gateway through the Workers AI binding',
@@ -95,7 +102,7 @@ const gatewayProvider = (ai: Ai, gateway: string): Provider =>
       },
     },
     models: gatewayModels(gateway),
-    api: { 'openai-completions': throughBinding(ai) },
+    api: { 'openai-completions': throughBinding(ai, storage, limits) },
   });
 
 const lastText = (messages: readonly { role: string; content: unknown }[]) => {
@@ -117,6 +124,8 @@ export type Probe = { readonly facts: Record<string, string | number | boolean> 
 
 export type AgentShape<Env extends AgentEnv> = {
   readonly name: string;
+  readonly modelLimits?: ModelLimits;
+  readonly lifetimeDeadlineKey?: string;
   readonly instructions: string;
   readonly environment: (
     env: Env,
@@ -196,7 +205,7 @@ export const piAgent = <Env extends AgentEnv>(shape: AgentShape<Env>) =>
           if (current === null || current > fallback) await ctx.storage.setAlarm(fallback);
         }
         const models = createModels();
-        models.setProvider(gatewayProvider(env.AI, env.GATEWAY));
+        models.setProvider(gatewayProvider(env.AI, env.GATEWAY, ctx.storage, shape.modelLimits));
         const registry = createRegistry();
         registry.install(createCodingTools());
         registry.install(
@@ -228,8 +237,13 @@ export const piAgent = <Env extends AgentEnv>(shape: AgentShape<Env>) =>
         heartbeat === undefined || wake.at === undefined
           ? (heartbeat ?? wake.at)
           : Math.min(heartbeat, wake.at);
-      if (at === undefined) await this.ctx.storage.deleteAlarm();
-      else await this.ctx.storage.setAlarm(at);
+      const lifetime =
+        shape.lifetimeDeadlineKey === undefined
+          ? undefined
+          : await this.ctx.storage.get<number>(shape.lifetimeDeadlineKey);
+      const next = at === undefined ? lifetime : lifetime === undefined ? at : Math.min(at, lifetime);
+      if (next === undefined) await this.ctx.storage.deleteAlarm();
+      else await this.ctx.storage.setAlarm(next);
     }
 
     async wake() {

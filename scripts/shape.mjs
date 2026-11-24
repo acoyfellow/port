@@ -17,15 +17,24 @@ const profileValues = () => {
   return JSON.parse(readFileSync(profileFile, 'utf8')).values ?? {};
 };
 
-const refreshProfile = () =>
-  execFileSync(
-    join(root, 'shapes', 'node_modules', '.bin', 'alchemy'),
-    ['profile', 'refresh', '--profile', PROFILE, '--no-input'],
-    {
-      cwd: root,
-      stdio: 'ignore',
-    },
-  );
+const refreshProfile = () => {
+  try {
+    execFileSync(
+      join(root, 'shapes', 'node_modules', '.bin', 'alchemy'),
+      ['profile', 'refresh', '--profile', PROFILE, '--no-input'],
+      {
+        cwd: root,
+        stdio: 'ignore',
+        timeout: 30_000,
+        env: { ...process.env, BROWSER: 'none', CI: '1' },
+      },
+    );
+  } catch {
+    throw new Error(
+      `Cloudflare login for profile ${PROFILE} expired and could not refresh without a browser. Run: npx alchemy profile edit --profile ${PROFILE}`,
+    );
+  }
+};
 
 export const accountId = () => {
   const value = profileValues().accountId;

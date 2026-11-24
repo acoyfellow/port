@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "adapter": "scripts/architecture-search/live-adapter.mjs",
+  "directory": ".tmp/architecture-search-fair",
+  "priorLedgers": [
+    ".tmp/architecture-search-live/ledger.json",
+    ".tmp/architecture-search-diagnostic/ledger.json",
+    ".tmp/architecture-search-diagnostic-2/ledger.json"
+  ],
+  "concurrency": 2,
+  "limitUsd": 20,
+  "experiments": [
+    {
+      "id": "search-lite",
+      "maximumUsd": 4.5,
+      "tasks": ["business-days", "cart-merge", "csv-parse", "money-words", "sku-glob"]
+    },
+    {
+      "id": "search-basic",
+      "maximumUsd": 4.5,
+      "tasks": ["business-days", "cart-merge", "csv-parse", "money-words", "sku-glob"]
+    },
+    {
+      "id": "search-standard",
+      "maximumUsd": 4.5,
+      "tasks": ["business-days", "cart-merge", "csv-parse", "money-words", "sku-glob"]
+    }
+  ]
+}

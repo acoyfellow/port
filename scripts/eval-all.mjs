@@ -239,6 +239,8 @@ const runTask = async (slug, task, auth) => {
       await pause(5000);
       status = await retrying(slug, auth, 'GET', `/status?agent=${agent}`, undefined, 60);
     }
+    if (args.diagnostics === 'true')
+      row.diagnostics = await retrying(slug, auth, 'GET', `/probe?agent=${agent}`);
     row.usd = status.usd ?? 0;
     row.tokens = status.tokens ?? 0;
     row.resumed = runningAtRestart && status.status === 'done';

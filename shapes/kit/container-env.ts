@@ -8,6 +8,7 @@ const pause = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export type ContainerOptions = {
   readonly internet: boolean;
+  readonly lifetimeMs?: number;
   readonly cwd?: string;
   readonly env?: Record<string, string>;
 };
@@ -15,6 +16,22 @@ export type ContainerOptions = {
 const started = async (ctx: DurableObjectState, options: ContainerOptions) => {
   const container = ctx.container;
   if (container === undefined) throw new Error('this Durable Object has no container');
+  const lifetimeMs = options.lifetimeMs;
+  if (lifetimeMs !== undefined) {
+    if (!Number.isSafeInteger(lifetimeMs) || lifetimeMs <= 0) throw new Error('Invalid container lifetime');
+    const deadline = await ctx.storage.transaction(async (transaction) => {
+      const prior = await transaction.get<number>('search-container-deadline');
+      const end = prior ?? Date.now() + lifetimeMs;
+      if (prior === undefined) await transaction.put('search-container-deadline', end);
+      return end;
+    });
+    const alarm = await ctx.storage.getAlarm();
+    if (alarm === null || alarm > deadline) await ctx.storage.setAlarm(deadline);
+    if (Date.now() >= deadline) {
+      if (container.running) await container.destroy();
+      throw new Error('Container lifetime exhausted');
+    }
+  }
   if (!container.running)
     container.start({
       enableInternet: options.internet,

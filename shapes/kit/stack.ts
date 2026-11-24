@@ -27,9 +27,12 @@ export const container = <Shape>(
     readonly dockerfile?: string;
     readonly image?: string;
     readonly instanceType?: 'lite' | 'basic' | 'standard-1';
+    readonly maxInstances?: number;
   } = {},
-) =>
-  Cloudflare.Container<Shape>(className, {
+) => {
+  const envMax = Number(process.env.SHAPE_MAX_INSTANCES);
+  const maxInstances = options.maxInstances ?? (Number.isInteger(envMax) && envMax > 0 ? envMax : 2);
+  return Cloudflare.Container<Shape>(className, {
     name: containerName(slug, className.toLowerCase()),
     className,
     ...(options.image !== undefined
@@ -38,9 +41,10 @@ export const container = <Shape>(
           context: PI_BOX,
           ...(options.dockerfile === undefined ? {} : { dockerfile: `${PI_BOX}/${options.dockerfile}` }),
         }),
-    maxInstances: 2,
+    maxInstances,
     instanceType: options.instanceType ?? 'basic',
   });
+};
 
 export type ShapeOptions = {
   readonly gateway?: { readonly binding: string };

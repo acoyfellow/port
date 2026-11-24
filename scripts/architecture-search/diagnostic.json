@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "adapter": "scripts/architecture-search/live-adapter.mjs",
+  "directory": ".tmp/architecture-search-diagnostic",
+  "priorLedger": ".tmp/architecture-search-live/ledger.json",
+  "concurrency": 1,
+  "limitUsd": 20,
+  "experiments": [{ "id": "search-diagnostic", "maximumUsd": 2 }]
+}

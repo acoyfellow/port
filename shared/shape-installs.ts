@@ -80,6 +80,17 @@ export const SHAPE_INSTALLS: readonly ShapeInstall[] = [
   shape('beam-fleet', [DO('SEAT', 'Seat'), BOX('BOX', 'Fleet', BEAM_BOX_IMAGE)]),
   shape('beam-space', [DO('SPACE', 'Space'), DO('THREAD', 'Thread'), BOX('BOX', 'Fleet', BEAM_BOX_IMAGE)]),
   shape('nix-git', [BOX('BOX', 'Box', NIX_GIT_BOX_IMAGE)]),
+  shape('pull-fleet', [
+    DO('COORDINATOR', 'Coordinator'),
+    DO('SEAT', 'Seat'),
+    BOX('VESSEL', 'Vessel', PI_BOX_IMAGE),
+  ]),
+  shape('tiered-fleet', [
+    DO('AGENT', 'Agent'),
+    DO('TRACKER', 'Tracker'),
+    BOX('VESSEL', 'Vessel', PI_BOX_IMAGE),
+    LOADER,
+  ]),
   {
     ...shape('git-gatekeeper', [
       BOX('SESSION', 'Session', PI_BOX_IMAGE),

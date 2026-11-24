@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "adapter": "scripts/architecture-search/live-adapter.mjs",
+  "directory": ".tmp/architecture-search-live",
+  "concurrency": 1,
+  "limitUsd": 20,
+  "experiments": [
+    { "id": "search-lite-retry", "maximumUsd": 2 },
+    { "id": "search-lite", "maximumUsd": 2 },
+    { "id": "search-basic", "maximumUsd": 2 },
+    { "id": "search-standard", "maximumUsd": 2 }
+  ]
+}
