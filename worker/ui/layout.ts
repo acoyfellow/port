@@ -2,7 +2,7 @@ import { html, type Part, raw, renderHtml } from './html';
 
 export type Viewer = { readonly email: string | null; readonly accountName: string | null } | null;
 
-export type Section = 'home' | 'installs' | 'account' | 'none';
+export type Section = 'home' | 'benchmarks' | 'installs' | 'account' | 'none';
 
 export type Crumb = { readonly label: string; readonly href?: string };
 
@@ -17,12 +17,13 @@ export type Layout = {
 
 const NAV: readonly { readonly section: Section; readonly label: string; readonly href: string }[] = [
   { section: 'home', label: 'Directory', href: '/' },
+  { section: 'benchmarks', label: 'Fleet setups', href: '/benchmarks' },
   { section: 'installs', label: 'Installs', href: '/installs' },
 ];
 
 const navLinks = (current: Section, viewer: Viewer) =>
   html`<nav class="nav-links" aria-label="Main">${NAV.filter(
-    (link) => link.section === 'home' || viewer !== null,
+    (link) => link.section === 'home' || link.section === 'benchmarks' || viewer !== null,
   ).map(
     (link) =>
       html`<a href="${link.href}"${link.section === current ? html` aria-current="page"` : ''}>${link.label}</a>`,

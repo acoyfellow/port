@@ -53,6 +53,26 @@ const piSection = (entry: Entry) => {
   }</section>`;
 };
 
+const fleetBenchSection = (entry: Entry) => {
+  const bench = entry.fleetBench;
+  if (bench === undefined) return '';
+  const ten = bench.tenSeats;
+  const one = bench.oneSeat;
+  return html`<section class="card build"><h2>Fleet benchmark ${
+    bench.onPareto10 ? badge('ok', '10-seat Pareto') : badge('plain', 'Measured')
+  }</h2><p class="muted" style="margin:4px 0 10px">Measured on Customer 0 using <code>${bench.model}</code> on <code>${bench.on}</code>. Every sweep left 0 resources behind. <a href="/benchmarks">Compare all 6 architectures →</a></p><dl>${
+    ten === undefined
+      ? ''
+      : html`<div><dt>10-seat passed</dt><dd>${ten.passed}/${ten.attempted}</dd></div><div><dt>10-seat makespan</dt><dd>${ten.makespanSeconds} s</dd></div><div><dt>10-seat container-s</dt><dd>${ten.containerSeconds} s</dd></div><div><dt>Total / accepted</dt><dd>${
+          ten.totalUsdPerOk === null ? '—' : cents(ten.totalUsdPerOk)
+        }</dd></div>`
+  }${
+    one === undefined
+      ? ''
+      : html`<div><dt>1-seat baseline</dt><dd>${one.passed}/${one.attempted} in ${one.makespanSeconds} s (${one.containerSeconds} container-s)</dd></div>`
+  }</dl></section>`;
+};
+
 const installAction = (entry: Entry, viewer: Viewer) =>
   shapeInstallOf(entry.slug) === undefined
     ? ''
@@ -76,7 +96,7 @@ export const entryPage = (viewer: Viewer, entry: Entry) =>
     viewer,
     section: 'home',
     crumbs: [{ label: 'Directory', href: '/' }, { label: entry.name }],
-    body: html`${pageHead(entry.name, entry.oneLine, installAction(entry, viewer))}${sourceLinks(entry)}<div class="stack">${piSection(entry)}<figure class="card diagram"><figcaption>${entry.shape}</figcaption>${raw(
+    body: html`${pageHead(entry.name, entry.oneLine, installAction(entry, viewer))}${sourceLinks(entry)}<div class="stack">${fleetBenchSection(entry)}${piSection(entry)}<figure class="card diagram"><figcaption>${entry.shape}</figcaption>${raw(
       entryDiagram(entry),
     )}</figure><div class="grid">${list('Strengths', entry.strengths)}${list('Limits', entry.limits)}<section class="card"><h2>Parts</h2><ul class="muted">${entry.parts.map(
       (part) => html`<li><strong>${part.label}</strong> · ${part.detail}</li>`,

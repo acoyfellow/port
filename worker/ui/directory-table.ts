@@ -62,6 +62,22 @@ const COLUMNS: readonly Column[] = [
     value: (entry) => (entry.evalAll === undefined ? undefined : entry.evalAll.passed / entry.evalAll.of),
   },
   {
+    key: 'fleet10',
+    label: '10-seat fleet',
+    numeric: true,
+    cell: (entry) => {
+      const ten = entry.fleetBench?.tenSeats;
+      if (ten === undefined) return DASH;
+      const tone =
+        ten.passed / ten.attempted >= 0.8 ? 'ok' : ten.passed / ten.attempted >= 0.4 ? 'warn' : 'bad';
+      return html`${pill(tone, `${ten.passed}/${ten.attempted}`)} <small class="muted">${Math.round(ten.makespanSeconds)}s</small>`;
+    },
+    value: (entry) =>
+      entry.fleetBench?.tenSeats === undefined
+        ? undefined
+        : entry.fleetBench.tenSeats.passed / entry.fleetBench.tenSeats.attempted,
+  },
+  {
     key: 'cost',
     label: 'AI cost / task',
     numeric: true,

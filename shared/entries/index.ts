@@ -11,6 +11,7 @@ import { SHAPE as git_gatekeeper } from '../../shapes/git-gatekeeper/shape';
 import { SHAPE as isolate_agents } from '../../shapes/isolate-agents/shape';
 import { SHAPE as nix_git } from '../../shapes/nix-git/shape';
 import { SHAPE as person_with_computer } from '../../shapes/person-with-computer/shape';
+import { SHAPE as pull_fleet } from '../../shapes/pull-fleet/shape';
 import { SHAPE as safe_sql } from '../../shapes/safe-sql/shape';
 import { SHAPE as scheduled_agent } from '../../shapes/scheduled-agent/shape';
 import { SHAPE as sealed_box } from '../../shapes/sealed-box/shape';
@@ -18,10 +19,12 @@ import { SHAPE as self_editing_app } from '../../shapes/self-editing-app/shape';
 import { SHAPE as self_observe } from '../../shapes/self-observe/shape';
 import { SHAPE as shared_container } from '../../shapes/shared-container/shape';
 import { SHAPE as snapshot_rollback } from '../../shapes/snapshot-rollback/shape';
+import { SHAPE as tiered_fleet } from '../../shapes/tiered-fleet/shape';
+import { SHAPE as tiered_pull_fleet } from '../../shapes/tiered-pull-fleet/shape';
 import { SHAPE as vector_memory } from '../../shapes/vector-memory/shape';
 import { SHAPE as workflow_plan } from '../../shapes/workflow-plan/shape';
 import { SHAPE as write_list } from '../../shapes/write-list/shape';
-import type { Entry, EvalAll, ShapeBuild } from '../entry.ts';
+import type { Entry, EvalAll, FleetBenchEntry, ShapeBuild } from '../entry.ts';
 
 const BUILDS: Readonly<Record<string, ShapeBuild>> = {
   'agent-room': {
@@ -455,12 +458,222 @@ const EVALS: Readonly<Record<string, EvalAll>> = {
   },
 };
 
+const FLEET_BENCHES: Readonly<Record<string, FleetBenchEntry>> = {
+  'container-per-thread': {
+    model: 'workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017',
+    on: '2026-11-25',
+    oneSeat: {
+      seats: 1,
+      passed: 1,
+      attempted: 1,
+      makespanSeconds: 124.2,
+      p50Seconds: 124.2,
+      p95Seconds: 124.2,
+      containerSeconds: 124.2,
+      containerSecondsPerOk: 124.2,
+      aiUsd: 0.0057,
+      projectedInfraUsd: 0.00116,
+      totalUsdPerOk: 0.0068,
+      sweptClean: true,
+    },
+    tenSeats: {
+      seats: 10,
+      passed: 5,
+      attempted: 10,
+      makespanSeconds: 246.4,
+      p50Seconds: 128.1,
+      p95Seconds: 246.4,
+      containerSeconds: 1510,
+      containerSecondsPerOk: 302,
+      aiUsd: 0.0344,
+      projectedInfraUsd: 0.01411,
+      totalUsdPerOk: 0.0097,
+      sweptClean: true,
+    },
+    onPareto10: false,
+  },
+  'isolate-agents': {
+    model: 'workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017',
+    on: '2026-11-25',
+    oneSeat: {
+      seats: 1,
+      passed: 1,
+      attempted: 1,
+      makespanSeconds: 61.8,
+      p50Seconds: 61.8,
+      p95Seconds: 61.8,
+      containerSeconds: 0,
+      containerSecondsPerOk: 0,
+      aiUsd: 0.015,
+      projectedInfraUsd: 0.0001,
+      totalUsdPerOk: 0.0151,
+      sweptClean: true,
+    },
+    tenSeats: {
+      seats: 10,
+      passed: 2,
+      attempted: 10,
+      makespanSeconds: 64.4,
+      p50Seconds: 26.7,
+      p95Seconds: 64.4,
+      containerSeconds: 0,
+      containerSecondsPerOk: 0,
+      aiUsd: 0.0286,
+      projectedInfraUsd: 0.00058,
+      totalUsdPerOk: 0.0146,
+      sweptClean: true,
+    },
+    onPareto10: true,
+  },
+  'pull-fleet': {
+    model: 'workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017',
+    on: '2026-11-25',
+    oneSeat: {
+      seats: 1,
+      passed: 1,
+      attempted: 1,
+      makespanSeconds: 143.6,
+      p50Seconds: 143.6,
+      p95Seconds: 143.6,
+      containerSeconds: 141.1,
+      containerSecondsPerOk: 141.1,
+      aiUsd: 0.0078,
+      projectedInfraUsd: 0.00132,
+      totalUsdPerOk: 0.0091,
+      sweptClean: true,
+    },
+    tenSeats: {
+      seats: 10,
+      passed: 9,
+      attempted: 10,
+      makespanSeconds: 482.9,
+      p50Seconds: 252.2,
+      p95Seconds: 482.9,
+      containerSeconds: 718.1,
+      containerSecondsPerOk: 79.8,
+      aiUsd: 0.1287,
+      projectedInfraUsd: 0.0099,
+      totalUsdPerOk: 0.0154,
+      sweptClean: true,
+    },
+    onPareto10: true,
+  },
+  'shared-container': {
+    model: 'workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017',
+    on: '2026-11-25',
+    oneSeat: {
+      seats: 1,
+      passed: 1,
+      attempted: 1,
+      makespanSeconds: 143.2,
+      p50Seconds: 143.2,
+      p95Seconds: 143.2,
+      containerSeconds: 143.2,
+      containerSecondsPerOk: 143.2,
+      aiUsd: 0.0086,
+      projectedInfraUsd: 0.00134,
+      totalUsdPerOk: 0.0099,
+      sweptClean: true,
+    },
+    tenSeats: {
+      seats: 10,
+      passed: 3,
+      attempted: 10,
+      makespanSeconds: 312.6,
+      p50Seconds: 121.2,
+      p95Seconds: 312.6,
+      containerSeconds: 312.6,
+      containerSecondsPerOk: 104.2,
+      aiUsd: 0.0652,
+      projectedInfraUsd: 0.00503,
+      totalUsdPerOk: 0.0234,
+      sweptClean: true,
+    },
+    onPareto10: false,
+  },
+  'tiered-fleet': {
+    model: 'workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017',
+    on: '2026-11-25',
+    oneSeat: {
+      seats: 1,
+      passed: 0,
+      attempted: 1,
+      makespanSeconds: 187.1,
+      p50Seconds: 187.1,
+      p95Seconds: 187.1,
+      containerSeconds: 0,
+      containerSecondsPerOk: null,
+      aiUsd: 0.0115,
+      projectedInfraUsd: 0.00029,
+      totalUsdPerOk: null,
+      sweptClean: true,
+      isolateCommands: 0,
+      totalCommands: 0,
+    },
+    tenSeats: {
+      seats: 10,
+      passed: 1,
+      attempted: 10,
+      makespanSeconds: 307,
+      p50Seconds: 22.2,
+      p95Seconds: 307,
+      containerSeconds: 11.1,
+      containerSecondsPerOk: 11.1,
+      aiUsd: 0.0491,
+      projectedInfraUsd: 0.00113,
+      totalUsdPerOk: 0.0502,
+      sweptClean: true,
+      isolateCommands: 0,
+      totalCommands: 0,
+    },
+    onPareto10: false,
+  },
+  'tiered-pull-fleet': {
+    model: 'workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017',
+    on: '2026-11-25',
+    oneSeat: {
+      seats: 1,
+      passed: 1,
+      attempted: 1,
+      makespanSeconds: 64.7,
+      p50Seconds: 64.7,
+      p95Seconds: 64.7,
+      containerSeconds: 6.2,
+      containerSecondsPerOk: 6.2,
+      aiUsd: 0.0125,
+      projectedInfraUsd: 0.00015,
+      totalUsdPerOk: 0.0126,
+      sweptClean: true,
+      isolateCommands: 11,
+      totalCommands: 14,
+    },
+    tenSeats: {
+      seats: 10,
+      passed: 8,
+      attempted: 10,
+      makespanSeconds: 194.2,
+      p50Seconds: 111.4,
+      p95Seconds: 194.2,
+      containerSeconds: 106.6,
+      containerSecondsPerOk: 13.3,
+      aiUsd: 0.0678,
+      projectedInfraUsd: 0.00263,
+      totalUsdPerOk: 0.0088,
+      sweptClean: true,
+      isolateCommands: 48,
+      totalCommands: 57,
+    },
+    onPareto10: true,
+  },
+};
+
 export const ENTRIES: readonly Entry[] = [
   {
     ...isolate_agents,
     added: '2026-10-30',
     build: BUILDS['isolate-agents'],
     evalAll: EVALS['isolate-agents'],
+    fleetBench: FLEET_BENCHES['isolate-agents'],
   },
   {
     ...durable_session,
@@ -480,6 +693,7 @@ export const ENTRIES: readonly Entry[] = [
     added: '2026-10-30',
     build: BUILDS['container-per-thread'],
     evalAll: EVALS['container-per-thread'],
+    fleetBench: FLEET_BENCHES['container-per-thread'],
   },
   {
     ...person_with_computer,
@@ -492,6 +706,7 @@ export const ENTRIES: readonly Entry[] = [
     added: '2026-10-30',
     build: BUILDS['shared-container'],
     evalAll: EVALS['shared-container'],
+    fleetBench: FLEET_BENCHES['shared-container'],
   },
   { ...sealed_box, added: '2026-10-30', build: BUILDS['sealed-box'], evalAll: EVALS['sealed-box'] },
   {
@@ -538,5 +753,8 @@ export const ENTRIES: readonly Entry[] = [
   { ...beam_fleet, added: '2026-11-07', build: BUILDS['beam-fleet'], evalAll: EVALS['beam-fleet'] },
   { ...beam_space, added: '2026-11-07', build: BUILDS['beam-space'], evalAll: EVALS['beam-space'] },
   { ...nix_git, added: '2026-11-11', build: BUILDS['nix-git'], evalAll: EVALS['nix-git'] },
+  { ...pull_fleet, added: '2026-11-25', fleetBench: FLEET_BENCHES['pull-fleet'] },
+  { ...tiered_fleet, added: '2026-11-25', fleetBench: FLEET_BENCHES['tiered-fleet'] },
+  { ...tiered_pull_fleet, added: '2026-11-25', fleetBench: FLEET_BENCHES['tiered-pull-fleet'] },
   { ...self_observe, added: '2026-10-30', build: BUILDS['self-observe'], evalAll: EVALS['self-observe'] },
 ];

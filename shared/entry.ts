@@ -41,6 +41,7 @@ export type Entry = {
   readonly links?: readonly { readonly label: string; readonly href: string }[];
   readonly build?: ShapeBuild;
   readonly evalAll?: EvalAll;
+  readonly fleetBench?: FleetBenchEntry;
   readonly added?: string;
   readonly tools?: string;
   readonly traits?: Traits;
@@ -64,6 +65,31 @@ export type EvalAll = {
   readonly medianSeconds: number;
   readonly note: string;
   readonly on: string;
+};
+
+export type FleetBenchRun = {
+  readonly seats: number;
+  readonly passed: number;
+  readonly attempted: number;
+  readonly makespanSeconds: number;
+  readonly p50Seconds: number;
+  readonly p95Seconds: number;
+  readonly containerSeconds: number;
+  readonly containerSecondsPerOk: number | null;
+  readonly aiUsd: number;
+  readonly projectedInfraUsd: number;
+  readonly totalUsdPerOk: number | null;
+  readonly sweptClean: boolean;
+  readonly isolateCommands?: number;
+  readonly totalCommands?: number;
+};
+
+export type FleetBenchEntry = {
+  readonly model: string;
+  readonly on: string;
+  readonly oneSeat?: FleetBenchRun;
+  readonly tenSeats?: FleetBenchRun;
+  readonly onPareto10: boolean;
 };
 
 export type Traits = {

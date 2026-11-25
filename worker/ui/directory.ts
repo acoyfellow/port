@@ -35,12 +35,15 @@ const howItWorks = html`<section class="blueprint" aria-labelledby="how"><div cl
     html`<li class="bp-step"><div class="bp-text"><span class="bp-num">${String(index + 1).padStart(2, '0')}</span><strong>${title}</strong><p>${text}</p></div>${art}</li>`,
 )}</ol></section>`;
 
+const fleetCallout = () =>
+  html`<section class="card" style="margin-bottom:20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between"><div><strong>Running 10 agents at once? Start with our measured fleet winners.</strong><p class="muted" style="margin-top:4px">We tested 6 fleet setups on Cloudflare. Putting a 3-wide queue over Worker isolates beat every baseline at under 1¢ per finished task.</p></div>${linkButton('/benchmarks', { label: 'See the winners →' })}</section>`;
+
 export const homePage = (viewer: Viewer, sort: Sort = { key: '', dir: 'asc' }) =>
   page({
     title: 'Agent infra for your Cloudflare account',
     viewer,
     section: 'home',
-    body: html`${howItWorks}<section id="directory"><div class="section-head"><div><h2>Directory</h2><p>Every shape runs stock Pi. Open a shape for the full details.</p><p class="cost-note"><strong>Coding eval</strong>: every shape that has file tools got the same 5 coding tasks, the same model (Kimi K2.6) and the same hidden tests. <strong>AI cost / task</strong> is the average the AI model charged per task (100¢ = $1), not counting the Cloudflare products the shape runs on. * means some tasks hit the 15 minute cap in an older run that did not record their cost, so those tasks are left out of the average. A dash means the shape has no file tools, so it was not in this eval.</p></div></div>${costChart(ENTRIES)}${directoryTable(ENTRIES, sort)}</section></div>`,
+    body: html`${howItWorks}${fleetCallout()}<section id="directory"><div class="section-head"><div><h2>Directory</h2><p>Every shape runs stock Pi on your Cloudflare account. Pick one to inspect its architecture and deploy it.</p><details class="cost-note" style="margin-top:6px"><summary style="cursor:pointer">About the scores and costs</summary><p style="margin-top:6px"><strong>Coding eval</strong>: 5 coding tasks graded by hidden tests on Kimi K2.6 (deprecated by Workers AI on 2026-11-20). <strong>10-seat fleet</strong>: 10 concurrent seats on live DeepSeek V4.1 Flash — see <a href="/benchmarks">Fleet setups</a> for details. <strong>AI cost / task</strong> is model spend only (100¢ = $1); * marks older capped runs.</p></details></div></div>${costChart(ENTRIES)}${directoryTable(ENTRIES, sort)}</section></div>`,
   });
 
 export const fleetPage = (viewer: Viewer) =>

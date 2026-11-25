@@ -5,6 +5,7 @@ import { type AuthEnv, authRoute, currentUser, grantFor, safeNext, viewerOf } fr
 import type { GrantEnv } from './grant';
 import { installRoute, receiptRoute } from './routes/installs';
 import { accountPage } from './ui/auth';
+import { benchmarksPage } from './ui/benchmarks';
 import { fleetPage, homePage } from './ui/directory';
 import { sortOf } from './ui/directory-table';
 import { entryPage } from './ui/entries';
@@ -31,6 +32,7 @@ const pageRoute = async (env: Env, request: Request, url: URL): Promise<Response
   const viewer = await viewerOf(env, user);
 
   if (url.pathname === '/') return homePage(viewer, sortOf(url.searchParams));
+  if (url.pathname === '/benchmarks') return benchmarksPage(viewer);
   if (url.pathname === '/fleet') return fleetPage(viewer);
   const entry = ENTRIES.find((each) => url.pathname === `/d/${each.slug}`);
   if (entry !== undefined) return entryPage(viewer, entry);
