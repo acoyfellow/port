@@ -24,8 +24,8 @@ export const validateFleetRun = (run) => {
       throw new Error(`Invalid trial timing in ${run.slug}`);
     if (trial.deployFailed === true) throw new Error(`Failed deploy recorded as run in ${run.slug}`);
   }
-  if (!run.sweep || run.sweep.leftovers !== 0 || run.sweep.errors !== 0)
-    throw new Error(`Unclean sweep for ${run.slug}`);
+  if (run.sweep === null || run.sweep === undefined) throw new Error(`Unclean sweep for ${run.slug}`);
+  if (run.sweep.leftovers !== 0 || run.sweep.errors !== 0) throw new Error(`Unclean sweep for ${run.slug}`);
   return run;
 };
 
@@ -86,7 +86,8 @@ export const fleetTradeoffFrontier = (runs, seats) => {
 };
 
 export const validateFleetReport = (report) => {
-  if (!report || report.version !== 1) throw new Error('Unsupported fleet report');
+  if (report === null || report === undefined) throw new Error('Unsupported fleet report');
+  if (report.version !== 1) throw new Error('Unsupported fleet report');
   validateSpendLedger(report.spend);
   if (
     !report.calibration ||

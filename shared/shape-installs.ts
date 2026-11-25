@@ -91,6 +91,12 @@ export const SHAPE_INSTALLS: readonly ShapeInstall[] = [
     BOX('VESSEL', 'Vessel', PI_BOX_IMAGE),
     LOADER,
   ]),
+  shape('tiered-pull-fleet', [
+    DO('COORDINATOR', 'Coordinator'),
+    DO('SEAT', 'Seat'),
+    BOX('VESSEL', 'Vessel', PI_BOX_IMAGE),
+    LOADER,
+  ]),
   {
     ...shape('git-gatekeeper', [
       BOX('SESSION', 'Session', PI_BOX_IMAGE),

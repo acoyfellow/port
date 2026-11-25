@@ -75,7 +75,8 @@ export const createPullQueue = (options) => {
 
   const complete = (id, vesselId, result, nowMs) => {
     const record = byId.get(id);
-    if (!record || record.status !== 'running' || record.vesselId !== vesselId) {
+    if (record === undefined) throw new Error(`Item ${id} is not running on vessel ${vesselId}`);
+    if (record.status !== 'running' || record.vesselId !== vesselId) {
       throw new Error(`Item ${id} is not running on vessel ${vesselId}`);
     }
     record.status = 'done';
@@ -94,7 +95,8 @@ export const createPullQueue = (options) => {
 
   const fail = (id, vesselId, reason, nowMs) => {
     const record = byId.get(id);
-    if (!record || record.status !== 'running' || record.vesselId !== vesselId) {
+    if (record === undefined) throw new Error(`Item ${id} is not running on vessel ${vesselId}`);
+    if (record.status !== 'running' || record.vesselId !== vesselId) {
       throw new Error(`Item ${id} is not running on vessel ${vesselId}`);
     }
     record.failures.push({

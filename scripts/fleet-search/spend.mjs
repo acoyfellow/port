@@ -177,7 +177,8 @@ export const readBenchmarkSpend = (benchmarkFiles) => {
 };
 
 export const validateSpendLedger = (ledger, caps = DEFAULT_CAPS) => {
-  if (!ledger || ledger.version !== 1) throw new Error('Invalid spend ledger');
+  if (ledger === null || ledger === undefined) throw new Error('Invalid spend ledger');
+  if (ledger.version !== 1) throw new Error('Invalid spend ledger');
   for (const key of ['orchestrator', 'builders', 'judges', 'benchmark']) {
     const line = ledger[key];
     if (!line || !Number.isFinite(line.usd) || line.usd < 0 || typeof line.unknownSpend !== 'boolean')

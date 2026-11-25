@@ -291,7 +291,7 @@ const main = async () => {
     coldStartS = Math.round((Date.now() - upAt) / 1000);
     log(`${slug}: healthy in ${coldStartS}s, launching ${seats} seats`);
 
-    const mode = slug === 'pull-fleet' ? 'pull-fleet' : 'standard';
+    const mode = slug === 'pull-fleet' || slug === 'tiered-pull-fleet' ? 'pull-fleet' : 'standard';
     const batchStart = Date.now();
     trials = await Promise.all(seatTasks.map((task, idx) => runSeat(slug, auth, task, idx + 1, mode, model)));
     makespanMs = Math.max(1, Date.now() - batchStart);
@@ -337,7 +337,9 @@ const main = async () => {
         slug,
         seats,
         model,
-        usesContainer: usesContainer && !(slug === 'tiered-fleet' && containerSeconds === 0),
+        usesContainer:
+          usesContainer &&
+          !((slug === 'tiered-fleet' || slug === 'tiered-pull-fleet') && containerSeconds === 0),
         instanceType: usesContainer ? instanceType : 'none',
         coldStartS,
         makespanMs,

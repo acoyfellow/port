@@ -1,0 +1,341 @@
+{
+  "version": 1,
+  "generatedAt": "2026-11-25T10:59:16.059Z",
+  "model": "workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017",
+  "spend": {
+    "version": 1,
+    "at": "2026-11-25T10:59:16.056Z",
+    "caps": {
+      "orchestratorUsd": 15,
+      "buildersUsd": 5,
+      "benchmarkUsd": 10
+    },
+    "orchestrator": {
+      "usd": 0,
+      "warmUsd": 0,
+      "coldUsd": 0,
+      "turns": 62,
+      "coldTurns": 0,
+      "unpricedTurns": 62,
+      "unknownSpend": true,
+      "lastContextTokens": 598745,
+      "inputTokens": 1256360,
+      "outputTokens": 37689,
+      "cacheReadTokens": 34049102,
+      "cacheWriteTokens": 0,
+      "byModel": {
+        "gemini-4-neon": {
+          "turns": 62,
+          "usd": 0,
+          "unpricedTurns": 62
+        }
+      }
+    },
+    "builders": {
+      "usd": 0.0196,
+      "seats": 1,
+      "unpricedSeats": 0,
+      "unknownSpend": false,
+      "runs": [
+        {
+          "file": ".tmp/tiered-pull/build/runs/tiered-pull-core-20261125T10125865/tiered-pull-core/receipt.json",
+          "seats": 1,
+          "usd": 0.0196
+        }
+      ]
+    },
+    "judges": {
+      "usd": 0.000037733999999999995,
+      "calls": 1,
+      "items": 3,
+      "unpricedCalls": 0,
+      "unknownSpend": false
+    },
+    "benchmark": {
+      "usd": 0.354409,
+      "aiUsd": 0.33328399999999997,
+      "projectedInfraUsd": 0.021124999999999998,
+      "runs": 7,
+      "unpricedRuns": 0,
+      "unknownSpend": false
+    }
+  },
+  "escalation": {
+    "at": "2026-11-25T10:57:22.037Z",
+    "slug": "tiered-pull-fleet",
+    "agent": "esc-76d773",
+    "model": "workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017",
+    "elapsedMs": 103925,
+    "answer": "42",
+    "passed": true,
+    "escalatedSeats": 1,
+    "containerCommands": 1,
+    "isolateCommands": 0,
+    "containerSeconds": 93.123,
+    "aiUsd": 0.000291,
+    "projectedInfraUsd": 0.000887,
+    "metrics": {
+      "concurrency": 3,
+      "admitted": 1,
+      "refused": 0,
+      "completed": 1,
+      "queued": 0,
+      "activeSlots": 0,
+      "totalCommands": 1,
+      "isolateCommands": 0,
+      "containerCommands": 1,
+      "escalatedSeats": 1,
+      "containerSeconds": 93.123,
+      "reservedUsd": 0,
+      "settledUsd": 0.000291468
+    },
+    "sweep": {
+      "at": "2026-11-25T10:57:45.802Z",
+      "prefix": "port-shape-tiered-pull-fleet",
+      "leftovers": 0,
+      "errors": 0
+    }
+  },
+  "baselinePullFleet10": {
+    "passed": 9,
+    "attempted": 10,
+    "containerSeconds": 718.13,
+    "makespanMs": 482889,
+    "aiUsd": 0.128668,
+    "projectedInfraUsd": 0.009902
+  },
+  "runs": [
+    {
+      "version": 1,
+      "at": "2026-11-25T10:51:02.029Z",
+      "slug": "tiered-pull-fleet",
+      "seats": 1,
+      "model": "workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017",
+      "usesContainer": true,
+      "instanceType": "basic",
+      "coldStartS": 29,
+      "makespanMs": 64652,
+      "containerSeconds": 6.16,
+      "containerSecondsSource": "coordinator-measured",
+      "aiUsd": 0.012453,
+      "projectedInfraUsd": 0.000149,
+      "infraRateBasis": "projected-from-measured-container-seconds-plus-do-gb-seconds",
+      "fleetMetrics": {
+        "concurrency": 3,
+        "admitted": 1,
+        "refused": 0,
+        "completed": 1,
+        "queued": 0,
+        "activeSlots": 0,
+        "totalCommands": 14,
+        "isolateCommands": 11,
+        "containerCommands": 3,
+        "escalatedSeats": 1,
+        "containerSeconds": 6.162000000000001,
+        "reservedUsd": 0,
+        "settledUsd": 0.012452892
+      },
+      "trials": [
+        {
+          "seat": 1,
+          "agent": "fl-1-business-days-35ad",
+          "task": "business-days",
+          "passed": true,
+          "hiddenPassed": 3,
+          "hiddenTotal": 3,
+          "visiblePassed": 33,
+          "visibleTotal": 33,
+          "usd": 0.012452892,
+          "tokens": 134048,
+          "elapsedMs": 64652,
+          "reason": ""
+        }
+      ],
+      "sweep": {
+        "at": "2026-11-25T10:51:02.025Z",
+        "prefix": "port-shape-tiered-pull-fleet",
+        "leftovers": 0,
+        "errors": 0
+      }
+    },
+    {
+      "version": 1,
+      "at": "2026-11-25T10:55:09.377Z",
+      "slug": "tiered-pull-fleet",
+      "seats": 10,
+      "model": "workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017",
+      "usesContainer": true,
+      "instanceType": "basic",
+      "coldStartS": 29,
+      "makespanMs": 194173,
+      "containerSeconds": 106.6,
+      "containerSecondsSource": "coordinator-measured",
+      "aiUsd": 0.06775,
+      "projectedInfraUsd": 0.002634,
+      "infraRateBasis": "projected-from-measured-container-seconds-plus-do-gb-seconds",
+      "fleetMetrics": {
+        "concurrency": 3,
+        "admitted": 10,
+        "refused": 0,
+        "completed": 10,
+        "queued": 0,
+        "activeSlots": 0,
+        "totalCommands": 57,
+        "isolateCommands": 48,
+        "containerCommands": 9,
+        "escalatedSeats": 5,
+        "containerSeconds": 106.604,
+        "reservedUsd": 0,
+        "settledUsd": 0.067749696
+      },
+      "trials": [
+        {
+          "seat": 1,
+          "agent": "fl-1-business-days-0a54",
+          "task": "business-days",
+          "passed": true,
+          "hiddenPassed": 3,
+          "hiddenTotal": 3,
+          "visiblePassed": 34,
+          "visibleTotal": 34,
+          "usd": 0.008331276,
+          "tokens": 81620,
+          "elapsedMs": 40041,
+          "reason": ""
+        },
+        {
+          "seat": 2,
+          "agent": "fl-2-cart-merge-a8d5",
+          "task": "cart-merge",
+          "passed": true,
+          "hiddenPassed": 2,
+          "hiddenTotal": 2,
+          "visiblePassed": 29,
+          "visibleTotal": 29,
+          "usd": 0.005606531999999999,
+          "tokens": 53590,
+          "elapsedMs": 72693,
+          "reason": ""
+        },
+        {
+          "seat": 3,
+          "agent": "fl-3-csv-parse-2dfb",
+          "task": "csv-parse",
+          "passed": true,
+          "hiddenPassed": 3,
+          "hiddenTotal": 3,
+          "visiblePassed": 30,
+          "visibleTotal": 30,
+          "usd": 0.009265547999999998,
+          "tokens": 78054,
+          "elapsedMs": 94915,
+          "reason": ""
+        },
+        {
+          "seat": 4,
+          "agent": "fl-4-money-words-4afa",
+          "task": "money-words",
+          "passed": true,
+          "hiddenPassed": 2,
+          "hiddenTotal": 2,
+          "visiblePassed": 29,
+          "visibleTotal": 29,
+          "usd": 0.006543024000000001,
+          "tokens": 38602,
+          "elapsedMs": 111362,
+          "reason": ""
+        },
+        {
+          "seat": 5,
+          "agent": "fl-5-sku-glob-f40e",
+          "task": "sku-glob",
+          "passed": false,
+          "hiddenPassed": 0,
+          "hiddenTotal": 1,
+          "visiblePassed": 23,
+          "visibleTotal": 23,
+          "usd": 0.00056238,
+          "tokens": 3767,
+          "elapsedMs": 116871,
+          "reason": "unanswered: model_error"
+        },
+        {
+          "seat": 6,
+          "agent": "fl-6-business-days-a30f",
+          "task": "business-days",
+          "passed": true,
+          "hiddenPassed": 3,
+          "hiddenTotal": 3,
+          "visiblePassed": 23,
+          "visibleTotal": 23,
+          "usd": 0.006286776,
+          "tokens": 40829,
+          "elapsedMs": 161870,
+          "reason": "unanswered: model_error"
+        },
+        {
+          "seat": 7,
+          "agent": "fl-7-cart-merge-0f2f",
+          "task": "cart-merge",
+          "passed": true,
+          "hiddenPassed": 2,
+          "hiddenTotal": 2,
+          "visiblePassed": 29,
+          "visibleTotal": 29,
+          "usd": 0.006915744000000001,
+          "tokens": 50702,
+          "elapsedMs": 31228,
+          "reason": ""
+        },
+        {
+          "seat": 8,
+          "agent": "fl-8-csv-parse-4c23",
+          "task": "csv-parse",
+          "passed": false,
+          "hiddenPassed": 0,
+          "hiddenTotal": 1,
+          "visiblePassed": 23,
+          "visibleTotal": 23,
+          "usd": 0.001466088,
+          "tokens": 11516,
+          "elapsedMs": 149415,
+          "reason": "unanswered: model_error"
+        },
+        {
+          "seat": 9,
+          "agent": "fl-9-money-words-30c4",
+          "task": "money-words",
+          "passed": true,
+          "hiddenPassed": 2,
+          "hiddenTotal": 2,
+          "visiblePassed": 29,
+          "visibleTotal": 29,
+          "usd": 0.007453295999999999,
+          "tokens": 49776,
+          "elapsedMs": 194171,
+          "reason": ""
+        },
+        {
+          "seat": 10,
+          "agent": "fl-10-sku-glob-f30d",
+          "task": "sku-glob",
+          "passed": true,
+          "hiddenPassed": 3,
+          "hiddenTotal": 3,
+          "visiblePassed": 34,
+          "visibleTotal": 34,
+          "usd": 0.015319032,
+          "tokens": 109489,
+          "elapsedMs": 182415,
+          "reason": ""
+        }
+      ],
+      "sweep": {
+        "at": "2026-11-25T10:55:09.373Z",
+        "prefix": "port-shape-tiered-pull-fleet",
+        "leftovers": 0,
+        "errors": 0
+      }
+    }
+  ]
+}
